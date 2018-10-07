@@ -25,6 +25,11 @@ public class Channel implements Serializable
         listClient = new ArrayList<>();
     }
 
+    public Channel()
+    {
+        
+    }
+
     public String getName()
     {
         return name;

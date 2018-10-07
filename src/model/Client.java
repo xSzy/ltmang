@@ -20,6 +20,11 @@ public class Client implements Serializable
     private Channel channel;
     private boolean ready;
 
+    public Client()
+    {
+        
+    }
+
     public boolean isReady()
     {
         return ready;

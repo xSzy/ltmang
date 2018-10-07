@@ -7,6 +7,7 @@ package Client.view;
 
 import java.net.Socket;
 import java.util.ArrayList;
+import javax.swing.DefaultListModel;
 import model.*;
 
 /**
@@ -127,15 +128,16 @@ public class ClientMainFrm extends javax.swing.JFrame
      */
     public void updateChannelList(ArrayList<Channel> list)
     {
-        listChannel.removeAll();
+        DefaultListModel dlm = new DefaultListModel();
         for(Channel channel : list)
         {
-            listChannel.add(channel.getName(), this);
+            dlm.addElement(channel.getName());
             for(Client client : channel.getListClient())
             {
-                listChannel.add("\t" + client.getUsername(), this);
+                dlm.addElement("     " + client.getUsername());
             }
         }
+        listChannel.setModel(dlm);
         writeConsole("updated");
     }
     

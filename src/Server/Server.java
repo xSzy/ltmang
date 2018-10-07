@@ -61,6 +61,7 @@ public class Server extends javax.swing.JFrame
         listClient = new ArrayList<>();
         listChannel = new ArrayList<>();
         lobby = new Channel("Lobby", "");
+        listChannel.add(lobby);
     }
 
     /**
@@ -158,8 +159,9 @@ public class Server extends javax.swing.JFrame
         lobby.addClient(client);
         printConsole("Client " + client.getUsername() + " entered server lobby!");
         
-        //send all channel list to client
-        sendChannelList(client);
+        //send all channel list to allclient
+        for(Client c : listClient)
+            sendChannelList(c);
     }
     
     /**
@@ -175,9 +177,22 @@ public class Server extends javax.swing.JFrame
                 {
                     Thread.sleep(1000);
                     DataOutputStream dos = new DataOutputStream(client.getSocket().getOutputStream());
-                    ObjectOutputStream oos = new ObjectOutputStream(client.getSocket().getOutputStream());
-                    dos.writeUTF("Channel list");
-                    oos.writeObject(listChannel);
+                    dos.writeUTF("Channel-list");
+                    //write the number of available channel
+                    dos.writeInt(listChannel.size());
+                    //write all channel's info
+                    for(Channel channel : listChannel)
+                    {
+                        //write channel name
+                        dos.writeUTF(channel.getName());
+                        //write the number of channel's client
+                        dos.writeInt(channel.getListClient().size());
+                        //write all channel's username
+                        for(Client c : channel.getListClient())
+                        {
+                            dos.writeUTF(c.getUsername());
+                        }
+                    }
                     printConsole("Channel list sent to client " + client.getSocket().getRemoteSocketAddress());
                 }
                 catch (InterruptedException ex)

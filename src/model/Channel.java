@@ -69,4 +69,12 @@ public class Channel implements Serializable
     {
         this.listClient = listClient;
     }
+    
+    public boolean isClientInChannel(Client client)
+    {
+        for(Client c : listClient)
+            if(c == client)
+                return true;
+        return false;
+    }
 }

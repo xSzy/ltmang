@@ -62,6 +62,7 @@ public class Server extends javax.swing.JFrame
         listChannel = new ArrayList<>();
         lobby = new Channel("Lobby", "");
         listChannel.add(lobby);
+        listChannel.add(new Channel("muh channel", "123321"));
     }
 
     /**
@@ -161,13 +162,33 @@ public class Server extends javax.swing.JFrame
         
         //send all channel list to allclient
         for(Client c : listClient)
-            sendChannelList(c);
+            updateChannelList(c);
+    }
+    
+    /**
+     * This function change client's channel
+     */
+    private void changeChannel(Client client, Channel channel)
+    {
+        //remove client from old channel clientlist
+        for(Channel ch : listChannel)
+        {
+            if(ch.isClientInChannel(client))
+                ch.removeClient(client);
+        }
+        //add client to new channel clientlist
+        channel.addClient(client);
+        //update client's channel list
+        for(Client c : listClient)
+        {
+            updateChannelList(c);
+        }
     }
     
     /**
      * This function send all channel available to client
      */
-    private void sendChannelList(Client client)
+    private void updateChannelList(Client client)
     {
         Thread t = new Thread(new Runnable() {
             @Override
@@ -175,7 +196,6 @@ public class Server extends javax.swing.JFrame
             {
                 try
                 {
-                    Thread.sleep(1000);
                     DataOutputStream dos = new DataOutputStream(client.getSocket().getOutputStream());
                     dos.writeUTF("Channel-list");
                     //write the number of available channel
@@ -194,10 +214,6 @@ public class Server extends javax.swing.JFrame
                         }
                     }
                     printConsole("Channel list sent to client " + client.getSocket().getRemoteSocketAddress());
-                }
-                catch (InterruptedException ex)
-                {
-                    Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 catch (IOException ex)
                 {
@@ -283,11 +299,11 @@ public class Server extends javax.swing.JFrame
             }
             else if(protocol.equals("Ready"))
             {
-                client.setReady(true);
-                printConsole("Ready received from client " + client.getSocket().getLocalAddress().toString());
-                dos.writeUTF("Ready received");
-                initializeClient(client);
-                return;
+                clientReady(client);
+            }
+            else if(protocol.equals("Channel-change"))
+            {
+                clientChangeChannel(client);
             }
         }
         catch (IOException ex)
@@ -296,6 +312,79 @@ public class Server extends javax.swing.JFrame
         }
     }
     
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////PROTOCOL HANDLING SECTION////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    /**
+     * This function start when server received Ready protocol
+     */
+    private void clientReady(Client client)
+    {
+        DataOutputStream dos = null;
+        try
+        {
+            dos = new DataOutputStream(client.getSocket().getOutputStream());
+            client.setReady(true);
+            printConsole("Ready received from client " + client.getSocket().getLocalAddress().toString());
+            dos.writeUTF("Ready received");
+            initializeClient(client);
+        }
+        catch (IOException ex)
+        {
+            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    /**
+     * This function start when client request to change channel
+     */
+    private void clientChangeChannel(Client client)
+    {
+        try
+        {
+            DataInputStream dis = new DataInputStream(client.getSocket().getInputStream());
+            DataOutputStream dos = new DataOutputStream(client.getSocket().getOutputStream());
+            String channelName = dis.readUTF();
+            Channel channel = searchChannel(channelName);
+            if(channel != null)
+            {
+                if(channel.getName().equals("Lobby"))
+                {
+                    changeChannel(client, channel);
+                    return;
+                }
+                //password handling here
+                String channelPassword = dis.readUTF();
+                if(channelPassword.equals(channel.getPassword()))
+                    //change channel for client
+                    changeChannel(client, channel);
+                else    //wrong password
+                {
+                    dos.writeUTF("Wrong-password");
+                }
+            }
+        }
+        catch (IOException ex)
+        {
+            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////MISCELLANEOUS///////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    /**
+     * Search channel by name
+     */
+    private Channel searchChannel(String channelName)
+    {
+        for(Channel channel : listChannel)
+            if(channelName.equals(channel.getName()))
+                return channel;
+        return null;
+    }
     
     /**
      * Print a new line on console

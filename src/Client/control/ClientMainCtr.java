@@ -6,6 +6,7 @@
 package Client.control;
 
 import Client.view.ClientMainFrm;
+import java.awt.event.MouseEvent;
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -13,6 +14,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import model.*;
 
 /**
@@ -31,7 +34,7 @@ public class ClientMainCtr
         try
         {
             this.server = server;
-            cmf = new ClientMainFrm();
+            cmf = new ClientMainFrm(this);
             dis = new DataInputStream(server.getInputStream());
             dos = new DataOutputStream(server.getOutputStream());
             Thread t = new Thread(new ListeningThread());
@@ -101,11 +104,54 @@ public class ClientMainCtr
             {
                 cmf.writeConsole("Ready message has been sent.");
             }
+            else if(protocol.equals("Wrong-password"))
+            {
+                JOptionPane.showMessageDialog(cmf, "Wrong password!", "ERROR", JOptionPane.ERROR_MESSAGE);
+            }
         }
         catch (IOException ex)
         {
             Logger.getLogger(ClientMainCtr.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    public void ChannelListClicked(MouseEvent evt)
+    {
+        //check if right mouse button clicked
+        if(SwingUtilities.isRightMouseButton(evt))
+        {
+        }
+    }
+    
+    public void itemConnectClicked()
+    {
+        //get channel name
+        String channelName = cmf.getSelectedChannel();
+        if(channelName == null)
+            return;
+        String channelPassword = null;
+        if(!channelName.equals("Lobby"))
+        {
+            channelPassword = cmf.getPassword();
+            if(channelPassword == null)
+                return;
+        }
+        try
+        {
+            dos.writeUTF("Channel-change");
+            dos.writeUTF(channelName);
+            if(!channelName.equals("Lobby"))
+                dos.writeUTF(channelPassword);
+        }
+        catch (IOException ex)
+        {
+            Logger.getLogger(ClientMainCtr.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void itemCreateClicked()
+    {
+        
     }
     
     private class ListeningThread implements Runnable

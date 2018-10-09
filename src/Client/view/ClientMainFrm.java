@@ -5,22 +5,33 @@
  */
 package Client.view;
 
-import java.net.Socket;
+import Client.control.ClientMainCtr;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
-import model.*;
+import javax.swing.JLabel;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JPopupMenu;
+import model.Channel;
+import model.Client;
 
 /**
  *
- * @author xSzy
+ * @author ns_red
  */
-public class ClientMainFrm extends javax.swing.JFrame
-{
+public class ClientMainFrm extends javax.swing.JFrame {
+    
+    private ClientMainCtr cmc;
     /**
      * Creates new form ClientMainFrm
      */
-    public ClientMainFrm()
+    public ClientMainFrm(ClientMainCtr cmc)
     {
+        this.cmc = cmc;
         initComponents();
         this.setVisible(true);
     }
@@ -35,50 +46,221 @@ public class ClientMainFrm extends javax.swing.JFrame
     private void initComponents()
     {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        listChannel = new javax.swing.JList<>();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        txtInfo = new javax.swing.JTextArea();
-        txtChatmsg = new javax.swing.JTextField();
-        btnSend = new javax.swing.JButton();
-        jTabbedPane1 = new javax.swing.JTabbedPane();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jToolBar1 = new javax.swing.JToolBar();
         jPanel1 = new javax.swing.JPanel();
-        jScrollPane3 = new javax.swing.JScrollPane();
+        underBar = new javax.swing.JPanel();
+        splitPanel1 = new javax.swing.JSplitPane();
+        splitPanel2 = new javax.swing.JSplitPane();
+        roomInfoPanel = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
+        roomPanel = new javax.swing.JPanel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        listChannel = new javax.swing.JList<>();
+        chat_msgPanel = new javax.swing.JPanel();
+        msgPanel = new javax.swing.JTabbedPane();
+        jPanel2 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
         txtConsole = new javax.swing.JTextArea();
+        serverMsgPanel = new javax.swing.JPanel();
+        roomMsgPanel = new javax.swing.JPanel();
+        chatPanel = new javax.swing.JPanel();
+        textFieldChat = new javax.swing.JTextField();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
+        itemConnect = new javax.swing.JMenuItem();
+        txtCreate = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
 
+        jMenuItem1.setText("jMenuItem1");
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        getContentPane().setLayout(new java.awt.BorderLayout(1, 1));
 
-        jScrollPane1.setViewportView(listChannel);
+        jToolBar1.setRollover(true);
 
-        txtInfo.setColumns(20);
-        txtInfo.setRows(5);
-        jScrollPane2.setViewportView(txtInfo);
-
-        txtChatmsg.setToolTipText("Enter chat message...");
-
-        btnSend.setText("Send");
-
-        txtConsole.setColumns(20);
-        txtConsole.setRows(5);
-        jScrollPane3.setViewportView(txtConsole);
+        jPanel1.setPreferredSize(new java.awt.Dimension(487, 25));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 491, Short.MAX_VALUE)
+            .addGap(0, 487, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 156, Short.MAX_VALUE)
+            .addGap(0, 25, Short.MAX_VALUE)
         );
 
-        jTabbedPane1.addTab("tab1", jPanel1);
+        jToolBar1.add(jPanel1);
+
+        getContentPane().add(jToolBar1, java.awt.BorderLayout.PAGE_START);
+
+        underBar.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        underBar.setPreferredSize(new java.awt.Dimension(673, 25));
+
+        javax.swing.GroupLayout underBarLayout = new javax.swing.GroupLayout(underBar);
+        underBar.setLayout(underBarLayout);
+        underBarLayout.setHorizontalGroup(
+            underBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 496, Short.MAX_VALUE)
+        );
+        underBarLayout.setVerticalGroup(
+            underBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 21, Short.MAX_VALUE)
+        );
+
+        getContentPane().add(underBar, java.awt.BorderLayout.PAGE_END);
+
+        splitPanel1.setDividerLocation(250);
+        splitPanel1.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
+
+        splitPanel2.setDividerLocation(250);
+        splitPanel2.setPreferredSize(new java.awt.Dimension(671, 300));
+
+        roomInfoPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        roomInfoPanel.setPreferredSize(new java.awt.Dimension(300, 250));
+
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jScrollPane1.setViewportView(jTextArea1);
+
+        javax.swing.GroupLayout roomInfoPanelLayout = new javax.swing.GroupLayout(roomInfoPanel);
+        roomInfoPanel.setLayout(roomInfoPanelLayout);
+        roomInfoPanelLayout.setHorizontalGroup(
+            roomInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 238, Short.MAX_VALUE)
+        );
+        roomInfoPanelLayout.setVerticalGroup(
+            roomInfoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 243, Short.MAX_VALUE)
+        );
+
+        splitPanel2.setRightComponent(roomInfoPanel);
+
+        roomPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        roomPanel.setPreferredSize(new java.awt.Dimension(350, 250));
+
+        listChannel.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        listChannel.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseClicked(java.awt.event.MouseEvent evt)
+            {
+                listChannelMouseClicked(evt);
+            }
+        });
+        jScrollPane4.setViewportView(listChannel);
+
+        javax.swing.GroupLayout roomPanelLayout = new javax.swing.GroupLayout(roomPanel);
+        roomPanel.setLayout(roomPanelLayout);
+        roomPanelLayout.setHorizontalGroup(
+            roomPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 245, Short.MAX_VALUE)
+        );
+        roomPanelLayout.setVerticalGroup(
+            roomPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 243, Short.MAX_VALUE)
+        );
+
+        splitPanel2.setLeftComponent(roomPanel);
+
+        splitPanel1.setTopComponent(splitPanel2);
+
+        chat_msgPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        chat_msgPanel.setPreferredSize(new java.awt.Dimension(671, 150));
+        chat_msgPanel.setLayout(new javax.swing.BoxLayout(chat_msgPanel, javax.swing.BoxLayout.Y_AXIS));
+
+        msgPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        msgPanel.setPreferredSize(new java.awt.Dimension(100, 230));
+
+        txtConsole.setColumns(20);
+        txtConsole.setRows(5);
+        jScrollPane2.setViewportView(txtConsole);
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 485, Short.MAX_VALUE)
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 233, Short.MAX_VALUE)
+        );
+
+        msgPanel.addTab("Console", jPanel2);
+
+        serverMsgPanel.setMinimumSize(new java.awt.Dimension(100, 0));
+        serverMsgPanel.setPreferredSize(new java.awt.Dimension(485, 260));
+
+        javax.swing.GroupLayout serverMsgPanelLayout = new javax.swing.GroupLayout(serverMsgPanel);
+        serverMsgPanel.setLayout(serverMsgPanelLayout);
+        serverMsgPanelLayout.setHorizontalGroup(
+            serverMsgPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 485, Short.MAX_VALUE)
+        );
+        serverMsgPanelLayout.setVerticalGroup(
+            serverMsgPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 233, Short.MAX_VALUE)
+        );
+
+        msgPanel.addTab("Server", serverMsgPanel);
+
+        javax.swing.GroupLayout roomMsgPanelLayout = new javax.swing.GroupLayout(roomMsgPanel);
+        roomMsgPanel.setLayout(roomMsgPanelLayout);
+        roomMsgPanelLayout.setHorizontalGroup(
+            roomMsgPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 485, Short.MAX_VALUE)
+        );
+        roomMsgPanelLayout.setVerticalGroup(
+            roomMsgPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 233, Short.MAX_VALUE)
+        );
+
+        msgPanel.addTab("RoomName", roomMsgPanel);
+
+        chat_msgPanel.add(msgPanel);
+
+        chatPanel.setMaximumSize(new java.awt.Dimension(2147483647, 50));
+        chatPanel.setMinimumSize(new java.awt.Dimension(0, 20));
+        chatPanel.setName(""); // NOI18N
+        chatPanel.setPreferredSize(new java.awt.Dimension(494, 50));
+        chatPanel.setLayout(new java.awt.BorderLayout());
+
+        textFieldChat.setMaximumSize(new java.awt.Dimension(2147483647, 15));
+        textFieldChat.setMinimumSize(new java.awt.Dimension(6, 15));
+        textFieldChat.setPreferredSize(new java.awt.Dimension(6, 15));
+        chatPanel.add(textFieldChat, java.awt.BorderLayout.CENTER);
+
+        chat_msgPanel.add(chatPanel);
+
+        splitPanel1.setRightComponent(chat_msgPanel);
+
+        getContentPane().add(splitPanel1, java.awt.BorderLayout.CENTER);
 
         jMenu1.setText("File");
+
+        itemConnect.setText("Connect to channel");
+        itemConnect.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                itemConnectActionPerformed(evt);
+            }
+        });
+        jMenu1.add(itemConnect);
+
+        txtCreate.setText("Create new channel");
+        txtCreate.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                txtCreateActionPerformed(evt);
+            }
+        });
+        jMenu1.add(txtCreate);
+
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Edit");
@@ -86,42 +268,23 @@ public class ClientMainFrm extends javax.swing.JFrame
 
         setJMenuBar(jMenuBar1);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTabbedPane1)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane2))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(txtChatmsg, javax.swing.GroupLayout.PREFERRED_SIZE, 408, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnSend, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane2)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 323, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTabbedPane1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtChatmsg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnSend))
-                .addContainerGap())
-        );
-
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void listChannelMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_listChannelMouseClicked
+    {//GEN-HEADEREND:event_listChannelMouseClicked
+        cmc.ChannelListClicked(evt);
+    }//GEN-LAST:event_listChannelMouseClicked
+
+    private void itemConnectActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_itemConnectActionPerformed
+    {//GEN-HEADEREND:event_itemConnectActionPerformed
+        cmc.itemConnectClicked();
+    }//GEN-LAST:event_itemConnectActionPerformed
+
+    private void txtCreateActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_txtCreateActionPerformed
+    {//GEN-HEADEREND:event_txtCreateActionPerformed
+        cmc.itemCreateClicked();
+    }//GEN-LAST:event_txtCreateActionPerformed
 
     /**
      * This function update the channel list
@@ -142,6 +305,50 @@ public class ClientMainFrm extends javax.swing.JFrame
     }
     
     /**
+     * This function shows a create channel dialog
+     */
+    public void showCreateChannelDialog()
+    {
+        
+    }
+    
+    /**
+     * This function returns currently selected channel
+     */
+    public String getSelectedChannel()
+    {
+        int index = listChannel.getSelectedIndex();
+        if(index == -1)
+            return null;
+        else
+            return listChannel.getModel().getElementAt(index);
+    }
+    
+    /**
+     * This function show a password dialog and return the password
+     */
+    public String getPassword()
+    {
+        JPanel panel = new JPanel();
+        JLabel label = new JLabel("Enter channel's password:");
+        JPasswordField jpf = new JPasswordField();
+        jpf.setColumns(20);
+        panel.add(label);
+        panel.add(jpf);
+        String[] options = new String[]
+        {
+            "OK", "Cancel"
+        };
+        int option = JOptionPane.showOptionDialog(null, panel, "Enter password", JOptionPane.NO_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[1]);
+        if(option == 0)
+        {
+            char[] password = jpf.getPassword();
+            return new String(password);
+        }
+        return null;
+    }
+    
+    /**
      * This function writes a new line in console
      */
     public void writeConsole(String s)
@@ -149,19 +356,97 @@ public class ClientMainFrm extends javax.swing.JFrame
         txtConsole.setText(txtConsole.getText() + s + "\n");
     }
     
+    
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Windows".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(ClientMainFrm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(ClientMainFrm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(ClientMainFrm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(ClientMainFrm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new ClientMainFrm(null).setVisible(true);
+            }
+        });
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnSend;
+    private javax.swing.JPanel chatPanel;
+    private javax.swing.JPanel chat_msgPanel;
+    private javax.swing.JMenuItem itemConnect;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JToolBar jToolBar1;
     private javax.swing.JList<String> listChannel;
-    private javax.swing.JTextField txtChatmsg;
+    private javax.swing.JTabbedPane msgPanel;
+    private javax.swing.JPanel roomInfoPanel;
+    private javax.swing.JPanel roomMsgPanel;
+    private javax.swing.JPanel roomPanel;
+    private javax.swing.JPanel serverMsgPanel;
+    private javax.swing.JSplitPane splitPanel1;
+    private javax.swing.JSplitPane splitPanel2;
+    private javax.swing.JTextField textFieldChat;
     private javax.swing.JTextArea txtConsole;
-    private javax.swing.JTextArea txtInfo;
+    private javax.swing.JMenuItem txtCreate;
+    private javax.swing.JPanel underBar;
     // End of variables declaration//GEN-END:variables
+
+    public class ChannelPopupMenu extends JPopupMenu
+    {
+        JMenuItem itemConnect, itemCreate;
+        public ChannelPopupMenu(Channel channel)
+        {
+            JMenuItem itemConnect = new JMenuItem("Connect to channel");
+            itemConnect.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent ae)
+                {
+                    cmc.itemConnectClicked();
+                }
+            });
+            add(itemConnect);
+            JMenuItem itemCreate = new JMenuItem("Create new channel");
+            itemCreate.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent ae)
+                {
+                    showCreateChannelDialog();
+                }
+            });
+            
+        }
+    }
 }

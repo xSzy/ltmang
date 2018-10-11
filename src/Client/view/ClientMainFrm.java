@@ -35,9 +35,14 @@ public class ClientMainFrm extends javax.swing.JFrame {
     {
         this.cmc = cmc;
         initComponents();
-        this.setVisible(true);
+        this.setVisible(true);        
+        mySetting();
     }
-
+    
+    public void mySetting(){        
+        txtConsole.setEditable(false);
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -312,6 +317,11 @@ public class ClientMainFrm extends javax.swing.JFrame {
         textFieldChat.setMaximumSize(new java.awt.Dimension(2147483647, 15));
         textFieldChat.setMinimumSize(new java.awt.Dimension(6, 15));
         textFieldChat.setPreferredSize(new java.awt.Dimension(6, 15));
+        textFieldChat.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                textFieldChatKeyPressed(evt);
+            }
+        });
         chatPanel.add(textFieldChat, java.awt.BorderLayout.CENTER);
 
         chat_msgPanel.add(chatPanel);
@@ -362,6 +372,14 @@ public class ClientMainFrm extends javax.swing.JFrame {
     {//GEN-HEADEREND:event_txtCreateActionPerformed
         cmc.itemCreateClicked();
     }//GEN-LAST:event_txtCreateActionPerformed
+
+    private void textFieldChatKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textFieldChatKeyPressed
+        if (evt.getKeyCode() == 10){
+            textFieldChat.getText();
+            textFieldChat.setText("");
+        }
+            
+    }//GEN-LAST:event_textFieldChatKeyPressed
 
     /**
      * This function update the channel list

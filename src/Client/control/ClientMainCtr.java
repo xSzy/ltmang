@@ -154,6 +154,17 @@ public class ClientMainCtr
         
     }
     
+    public void sendMsg(String msg){
+        try {
+            dos.writeUTF("Chat-message");
+            dos.writeUTF(msg);
+        } catch (IOException ex) {
+            System.out.println("Exception in send Msg");
+        }
+    }
+    
+    
+    
     private class ListeningThread implements Runnable
     {
         @Override

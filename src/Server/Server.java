@@ -62,7 +62,6 @@ public class Server extends javax.swing.JFrame
         listChannel = new ArrayList<>();
         lobby = new Channel("Lobby", "");
         listChannel.add(lobby);
-        listChannel.add(new Channel("muh channel", "123321"));
     }
 
     /**
@@ -158,6 +157,7 @@ public class Server extends javax.swing.JFrame
         
         //add client to lobby
         lobby.addClient(client);
+        client.setChannel(lobby);
         printConsole("Client " + client.getUsername() + " entered server lobby!");
         
         //send all channel list to allclient
@@ -178,6 +178,7 @@ public class Server extends javax.swing.JFrame
         }
         //add client to new channel clientlist
         channel.addClient(client);
+        client.setChannel(channel);
         //update client's channel list
         for(Client c : listClient)
         {
@@ -305,6 +306,14 @@ public class Server extends javax.swing.JFrame
             {
                 clientChangeChannel(client);
             }
+            else if(protocol.equals("Channel-create"))
+            {
+                clientCreateChannel(client);
+            }
+            else if(protocol.equals("Chat-message"))
+            {
+                clientSendMessage(client);
+            }
         }
         catch (IOException ex)
         {
@@ -357,8 +366,12 @@ public class Server extends javax.swing.JFrame
                 //password handling here
                 String channelPassword = dis.readUTF();
                 if(channelPassword.equals(channel.getPassword()))
+                {
                     //change channel for client
                     changeChannel(client, channel);
+                    //send the success response to client
+                    dos.writeUTF("Channel-change-success");
+                }
                 else    //wrong password
                 {
                     dos.writeUTF("Wrong-password");
@@ -366,6 +379,74 @@ public class Server extends javax.swing.JFrame
             }
         }
         catch (IOException ex)
+        {
+            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    /**
+     * This function starts when client request to create a channel
+     */
+    private void clientCreateChannel(Client client)
+    {
+        DataOutputStream dos = null;
+        DataInputStream dis = null;
+        try
+        {
+            dis = new DataInputStream(client.getSocket().getInputStream());
+            dos = new DataOutputStream(client.getSocket().getOutputStream());
+            String channelName = dis.readUTF();
+            String channelPassword = dis.readUTF();
+            String channelTopic = dis.readUTF();
+            String channelDesc = dis.readUTF();
+            //check availability
+            for(Channel channel : listChannel)
+            {
+                if(channel.getName().equals(channelName)) //name exist
+                {
+                    //send channel exist response
+                    dos.writeUTF("Channel-exist");
+                    return;
+                }
+            }
+            //create channel
+            Channel channel = createChannel(client, channelName, channelPassword, channelTopic, channelDesc);
+            //move client to channel
+            changeChannel(client, channel);
+            //send the success response to client
+            dos.writeUTF("Channel-change-success");
+            
+        }
+        catch(IOException ex)
+        {
+            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+        }   
+    }
+    
+    /**
+     * This function starts when client send a message to a channel
+     */
+    private void clientSendMessage(Client client)
+    {
+        DataInputStream dis = null;
+        DataOutputStream dos = null;
+        try
+        {
+            dis = new DataInputStream(client.getSocket().getInputStream());
+            String msg = dis.readUTF();
+            Channel channel = client.getChannel();
+            
+            printConsole("Channel: " + channel.getName() + " - " + client.getSocket().getRemoteSocketAddress().toString() + " " + client.getUsername() + ": " + msg);
+            
+            for(Client c : channel.getListClient())
+            {
+                dos = new DataOutputStream(c.getSocket().getOutputStream());
+                dos.writeUTF("Broadcast-message");
+                dos.writeUTF(client.getUsername());
+                dos.writeUTF(msg);
+            }
+        }
+        catch(IOException ex)
         {
             Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -384,6 +465,20 @@ public class Server extends javax.swing.JFrame
             if(channelName.equals(channel.getName()))
                 return channel;
         return null;
+    }
+    
+    /**
+     * Create new channel
+     */
+    private Channel createChannel(Client owner, String channelName, String channelPassword, String channelTopic, String channelDesc)
+    {
+        Channel channel = new Channel(channelName, channelPassword);
+        channel.setTopic(channelTopic);
+        channel.setDescription(channelDesc);
+        channel.setOwner(owner);
+        listChannel.add(channel);
+        printConsole("Channel " + channelName + " has been created!");
+        return channel;
     }
     
     /**

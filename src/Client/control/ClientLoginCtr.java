@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.net.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.Client;
 
 /**
  *
@@ -23,6 +24,7 @@ public class ClientLoginCtr
     public DataInputStream dis;
     public DataOutputStream dos;
     private ClientLoginFrm clf;
+    public Client user;
     
     public ClientLoginCtr(ClientLoginFrm clf)
     {
@@ -32,6 +34,9 @@ public class ClientLoginCtr
     {
         try
         {
+            user = new Client();
+            user.setUsername(username);
+            user.setPassword(new String(password));
             socket = new Socket(serverIP, port);
             dis = new DataInputStream(socket.getInputStream());
             dos = new DataOutputStream(socket.getOutputStream());
@@ -70,6 +75,6 @@ public class ClientLoginCtr
     
     public void finishLogin()
     {
-        new ClientMainCtr(socket);
+        new ClientMainCtr(socket, user);
     }
 }

@@ -28,15 +28,19 @@ public class ClientMainCtr
     ClientMainFrm cmf;
     DataInputStream dis;
     DataOutputStream dos;
+    Client user;
+    public Channel currentChannel;
     
-    public ClientMainCtr(Socket server)
+    public ClientMainCtr(Socket server, Client user)
     {
         try
         {
             this.server = server;
+            this.user = user;
             cmf = new ClientMainFrm(this);
             dis = new DataInputStream(server.getInputStream());
             dos = new DataOutputStream(server.getOutputStream());
+            currentChannel = new Channel("Lobby", "");
             Thread t = new Thread(new ListeningThread());
             t.start();
             ready();
@@ -85,6 +89,10 @@ public class ClientMainCtr
                         Client client = new Client();
                         //read client's name
                         String clientName = dis.readUTF();
+                        if(clientName == user.getUsername())
+                        {
+                            currentChannel.setName(channel.getName());
+                        }
                         client.setUsername(clientName);
                         listClient.add(client);
                     }
@@ -107,6 +115,18 @@ public class ClientMainCtr
             else if(protocol.equals("Wrong-password"))
             {
                 JOptionPane.showMessageDialog(cmf, "Wrong password!", "ERROR", JOptionPane.ERROR_MESSAGE);
+            }
+            else if(protocol.equals("Channel-exist"))
+            {
+                JOptionPane.showMessageDialog(cmf, "Channel name exist!", "ERROR", JOptionPane.ERROR_MESSAGE);
+            }
+            else if(protocol.equals("Channel-change-success"))
+            {
+                cmf.setMsgPanel();
+            }
+            else if(protocol.equals("Broadcast-message"))
+            {
+                receiveMessage();
             }
         }
         catch (IOException ex)
@@ -151,19 +171,49 @@ public class ClientMainCtr
     
     public void itemCreateClicked()
     {
-        
+        //get channel info
+        Channel channel = cmf.showCreateChannelDialog();
+        if(channel == null)
+            return;
+        try
+        {
+            //send channel create request
+            dos.writeUTF("Channel-create");
+            dos.writeUTF(channel.getName());
+            dos.writeUTF(channel.getPassword());
+            dos.writeUTF(channel.getTopic());
+            dos.writeUTF(channel.getDescription());
+        }
+        catch(IOException ex)
+        {
+            Logger.getLogger(ClientMainCtr.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     public void sendMsg(String msg){
         try {
             dos.writeUTF("Chat-message");
             dos.writeUTF(msg);
-        } catch (IOException ex) {
-            System.out.println("Exception in send Msg");
+        }
+        catch(IOException ex)
+        {
+            Logger.getLogger(ClientMainCtr.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
-    
+    private void receiveMessage()
+    {
+        try
+        {
+            String sender = dis.readUTF();
+            String msg = dis.readUTF();
+            cmf.printMessage(sender, msg);
+        }
+        catch(IOException ex)
+        {
+            Logger.getLogger(ClientMainCtr.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     
     private class ListeningThread implements Runnable
     {

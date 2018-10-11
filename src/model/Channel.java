@@ -17,6 +17,39 @@ public class Channel implements Serializable
     private String name;
     private String password;
     private ArrayList<Client> listClient;
+    private String topic;
+    private String description;
+    private Client owner;
+
+    public Client getOwner()
+    {
+        return owner;
+    }
+
+    public void setOwner(Client owner)
+    {
+        this.owner = owner;
+    }
+
+    public String getTopic()
+    {
+        return topic;
+    }
+
+    public void setTopic(String topic)
+    {
+        this.topic = topic;
+    }
+
+    public String getDescription()
+    {
+        return description;
+    }
+
+    public void setDescription(String description)
+    {
+        this.description = description;
+    }
 
     public Channel(String name, String password)
     {

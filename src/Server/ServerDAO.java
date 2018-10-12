@@ -16,9 +16,15 @@ public class ServerDAO
 {
     /**
      * Check login from database
-     */
+     */                
     public static int checkLogin(String username, String password)
     {
+        if (username.equals("test") && password.equals("test"))
+            return 0;
+        
+        if (username.equals("test2") && password.equals("test2"))
+            return 0;
+        /*
         String dbClass = "net.sourceforge.jtds.jdbc.Driver";
         try
         {
@@ -47,7 +53,8 @@ public class ServerDAO
             Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println("SQL Exception");
             return 1;
-        }
+        }*/
+        return 0;
     }
     
     public static int register(String username, String password)

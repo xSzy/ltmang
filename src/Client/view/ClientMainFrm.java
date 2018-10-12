@@ -9,11 +9,14 @@ import Client.control.ClientMainCtr;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import javax.swing.DefaultListModel;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
@@ -43,7 +46,7 @@ public class ClientMainFrm extends javax.swing.JFrame {
     
     public void mySetting(){        
         txtConsole.setEditable(false);
-        msgPanel.remove(channelMsgPanel);
+        msgPanel.remove(channelMsgPanel);                
     }
     
     /**
@@ -53,8 +56,7 @@ public class ClientMainFrm extends javax.swing.JFrame {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         jMenuItem1 = new javax.swing.JMenuItem();
         dlgCreate = new javax.swing.JDialog();
@@ -94,6 +96,7 @@ public class ClientMainFrm extends javax.swing.JFrame {
         itemConnect = new javax.swing.JMenuItem();
         txtCreate = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
+        fileTransferItem = new javax.swing.JMenuItem();
 
         jMenuItem1.setText("jMenuItem1");
 
@@ -222,10 +225,8 @@ public class ClientMainFrm extends javax.swing.JFrame {
         roomPanel.setPreferredSize(new java.awt.Dimension(350, 250));
 
         listChannel.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        listChannel.addMouseListener(new java.awt.event.MouseAdapter()
-        {
-            public void mouseClicked(java.awt.event.MouseEvent evt)
-            {
+        listChannel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
                 listChannelMouseClicked(evt);
             }
         });
@@ -314,10 +315,8 @@ public class ClientMainFrm extends javax.swing.JFrame {
         textFieldChat.setMaximumSize(new java.awt.Dimension(2147483647, 15));
         textFieldChat.setMinimumSize(new java.awt.Dimension(6, 15));
         textFieldChat.setPreferredSize(new java.awt.Dimension(6, 15));
-        textFieldChat.addKeyListener(new java.awt.event.KeyAdapter()
-        {
-            public void keyPressed(java.awt.event.KeyEvent evt)
-            {
+        textFieldChat.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
                 textFieldChatKeyPressed(evt);
             }
         });
@@ -332,20 +331,16 @@ public class ClientMainFrm extends javax.swing.JFrame {
         jMenu1.setText("File");
 
         itemConnect.setText("Connect to channel");
-        itemConnect.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        itemConnect.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 itemConnectActionPerformed(evt);
             }
         });
         jMenu1.add(itemConnect);
 
         txtCreate.setText("Create new channel");
-        txtCreate.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        txtCreate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtCreateActionPerformed(evt);
             }
         });
@@ -353,7 +348,17 @@ public class ClientMainFrm extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu1);
 
-        jMenu2.setText("Edit");
+        jMenu2.setText("Tool");
+
+        fileTransferItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/ftransfer.png"))); // NOI18N
+        fileTransferItem.setText("File Transfer");
+        fileTransferItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fileTransferItemActionPerformed(evt);
+            }
+        });
+        jMenu2.add(fileTransferItem);
+
         jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
@@ -384,6 +389,10 @@ public class ClientMainFrm extends javax.swing.JFrame {
             textFieldChat.setText("");
         }
     }//GEN-LAST:event_textFieldChatKeyPressed
+
+    private void fileTransferItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileTransferItemActionPerformed
+        doFileTransfer();
+    }//GEN-LAST:event_fileTransferItemActionPerformed
 
     /**
      * This function update the channel list
@@ -490,6 +499,19 @@ public class ClientMainFrm extends javax.swing.JFrame {
     }
     
     
+    /*
+    *   this function opens fileChooser and does file transfer
+    */
+    private void doFileTransfer(){
+        JFileChooser fileChooser = new JFileChooser();        
+        int action = fileChooser.showDialog(this, "Choose");
+        if (action == JFileChooser.APPROVE_OPTION){
+            File file = fileChooser.getSelectedFile();
+            System.out.println(file.getAbsoluteFile());
+        }
+    }
+    
+    
     /**
      * @param args the command line arguments
      */
@@ -533,6 +555,7 @@ public class ClientMainFrm extends javax.swing.JFrame {
     private javax.swing.JPanel chatPanel;
     private javax.swing.JPanel chat_msgPanel;
     private javax.swing.JDialog dlgCreate;
+    private javax.swing.JMenuItem fileTransferItem;
     private javax.swing.JMenuItem itemConnect;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

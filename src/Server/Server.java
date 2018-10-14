@@ -5,6 +5,7 @@
  */
 package Server;
 
+import Server.Controller.FTPServer;
 import model.*;
 import demo.Socket.ServerSocketDemo;
 import java.io.*;
@@ -31,7 +32,7 @@ public class Server extends javax.swing.JFrame
     private final int port = 9713;
     private ArrayList<Channel> listChannel;
     private Channel lobby;
-    
+    private FTPServer ftpServer;
     /**
      * Creates new form Server
      */
@@ -50,6 +51,10 @@ public class Server extends javax.swing.JFrame
         {
             printConsole("Error while starting server!");
         }
+        
+        //Ftp server
+        ftpServer = new FTPServer();
+        ftpServer.start();
     }
     
     /**

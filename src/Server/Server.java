@@ -30,9 +30,12 @@ public class Server extends javax.swing.JFrame
     private ArrayList<Client> listClient;
     private ServerSocket server;
     private final int port = 9713;
+    private final int udpPort = port+1;
     private ArrayList<Channel> listChannel;
     private Channel lobby;
     private FTPServer ftpServer;
+    private DatagramSocket udpServer;
+    private int dataSize = 16000;
     /**
      * Creates new form Server
      */
@@ -42,10 +45,14 @@ public class Server extends javax.swing.JFrame
         try
         {
             server = new ServerSocket(port);
+            udpServer = new DatagramSocket(udpPort);
             initialize();
             
             Thread t = new Thread(new ConnectionThread());
             t.start();
+            
+            Thread t1 = new Thread(new UDPThread());
+            t1.start();
         }
         catch (IOException ex)
         {
@@ -458,6 +465,47 @@ public class Server extends javax.swing.JFrame
     }
     
     /////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////UDP HANDLING/////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
+    private void readPacket()
+    {
+        try
+        {
+            DatagramPacket receivePacket;
+            byte[] receiveData = new byte[dataSize];
+            receivePacket = new DatagramPacket(receiveData, dataSize);
+            udpServer.receive(receivePacket);
+            System.out.println("UDP received from " + receivePacket.getAddress().toString());
+            //find the client who sent the packet
+            Client sender = null;
+            for(Client c : listClient)
+            {
+                if(c.getSocket().getInetAddress().toString().equals(receivePacket.getAddress().toString()))
+                {
+                    sender = c;
+                    break;
+                }
+            }
+            //broadcast the packet to all other client in the same channel
+            Channel channel = sender.getChannel();
+            byte[] data = receivePacket.getData();
+            for(Client c : channel.getListClient())
+            {
+                if(c == sender)
+                    continue;
+                DatagramPacket packet = new DatagramPacket(data, data.length);
+                packet.setAddress(c.getSocket().getInetAddress());
+                packet.setPort(9715);
+                udpServer.send(packet);
+            }
+        }
+        catch(IOException ex)
+        {
+            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////
     /////////////////////////////////MISCELLANEOUS///////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////////////////////
     
@@ -567,6 +615,18 @@ public class Server extends javax.swing.JFrame
             catch (IOException ex)
             {
                 Logger.getLogger(ServerSocketDemo.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    
+    private class UDPThread implements Runnable
+    {
+        @Override
+        public void run()
+        {
+            while(true)
+            {
+                readPacket();
             }
         }
     }

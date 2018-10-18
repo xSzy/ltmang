@@ -406,6 +406,8 @@ public class ClientMainFrm extends javax.swing.JFrame {
             for(Client client : channel.getListClient())
             {
                 dlm.addElement("     " + client.getUsername());
+                if(client.getUsername().equals(cmc.user.getUsername()))
+                    cmc.currentChannel.setName(channel.getName());
             }
         }
         listChannel.setModel(dlm);

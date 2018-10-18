@@ -8,12 +8,18 @@ package Client.control;
 import Client.view.ClientMainFrm;
 import java.awt.event.MouseEvent;
 import java.io.*;
-import java.net.Socket;
+import java.net.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.DataLine;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.SourceDataLine;
+import javax.sound.sampled.TargetDataLine;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import model.*;
@@ -28,8 +34,20 @@ public class ClientMainCtr
     ClientMainFrm cmf;
     DataInputStream dis;
     DataOutputStream dos;
-    Client user;
+    public Client user;
+    DatagramSocket udpServer;
     public Channel currentChannel;
+    private int udpPort;
+    private int dataSize;
+    //audio settings
+    private float sampleRate = 8000;
+    private int sampleSizeInBits = 8;
+    private int channel = 1;
+    private boolean signed = true;
+    private boolean bigEndian = true;
+    byte buffer[];
+    TargetDataLine tdline;
+    SourceDataLine sdline;
     
     public ClientMainCtr(Socket server, Client user)
     {
@@ -37,12 +55,18 @@ public class ClientMainCtr
         {
             this.server = server;
             this.user = user;
+            udpPort = 9715;
+            udpServer = new DatagramSocket(udpPort);
             cmf = new ClientMainFrm(this);
             dis = new DataInputStream(server.getInputStream());
             dos = new DataOutputStream(server.getOutputStream());
             currentChannel = new Channel("Lobby", "");
             Thread t = new Thread(new ListeningThread());
             t.start();
+            Thread t1 = new Thread(new UDPSendThread());
+            t1.start();
+            Thread t2 = new Thread(new UDPReceiveThread());
+            t2.start();
             ready();
         }
         catch (IOException ex)
@@ -215,6 +239,43 @@ public class ClientMainCtr
         }
     }
     
+    private void sendPacket()
+    {
+        DatagramPacket packet;
+        //get sound from device
+        int count = tdline.read(buffer, 0, buffer.length);
+        //create the packet
+        if(count > 0)
+        {
+            try {
+                packet = new DatagramPacket(buffer, buffer.length);
+                packet.setAddress(server.getInetAddress());
+                packet.setData(buffer, 0, buffer.length);
+                packet.setPort(9714);
+                udpServer.send(packet);
+            }
+            catch(IOException ex) {
+                Logger.getLogger(ClientMainCtr.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    
+    private void receivePacket()
+    {
+        try
+        {
+            byte[] data = new byte[dataSize];
+            DatagramPacket packet = new DatagramPacket(data, dataSize);
+            udpServer.receive(packet);
+            data = packet.getData();
+            sdline.write(data, 0, data.length);
+        }
+        catch(IOException ex)
+        {
+            Logger.getLogger(ClientMainCtr.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     private class ListeningThread implements Runnable
     {
         @Override
@@ -224,6 +285,61 @@ public class ClientMainCtr
             {
                 readProtocol();
             }
+        }
+    }
+    
+    private class UDPSendThread implements Runnable
+    {
+        @Override
+        public void run()
+        {
+            try
+            {
+                //create an audio format for the recording
+                AudioFormat format = new AudioFormat(sampleRate, sampleSizeInBits, channel, signed, bigEndian);
+                
+                //get the input dataline
+                DataLine.Info tdi = new DataLine.Info(TargetDataLine.class, format);
+                tdline = (TargetDataLine) AudioSystem.getLine(tdi);
+                
+                //get the output dataline
+                DataLine.Info sdi = new DataLine.Info(SourceDataLine.class, format);
+                sdline = (SourceDataLine) AudioSystem.getLine(sdi);
+                
+                //open and start both line
+                tdline.open(format);
+                tdline.start();
+                sdline.open(format);
+                sdline.start();
+                
+                //initialize buffer
+                dataSize = (int) format.getSampleRate()*format.getFrameSize();
+                buffer = new byte[dataSize];
+                
+                while(true)
+                {
+                    System.out.println(currentChannel.getName());
+                    if(!currentChannel.getName().equals("Lobby"))
+                    {
+                        System.out.println("Sending packet to server...");
+                        sendPacket();
+                    }
+                }
+            }
+            catch(LineUnavailableException ex)
+            {
+                Logger.getLogger(ClientMainCtr.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    
+    private class UDPReceiveThread implements Runnable
+    {
+        @Override
+        public void run()
+        {
+            while(true)
+                receivePacket();
         }
     }
 }

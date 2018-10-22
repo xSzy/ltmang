@@ -517,3 +517,61 @@ java.io.IOException: An existing connection was forcibly closed by the remote ho
 [ INFO] 2018-10-14 20:25:06,300 [admin] [127.0.0.1] SENT: 226 Transfer complete.
 
 [ INFO] 2018-10-14 20:25:06,310 [admin] [127.0.0.1] CLOSED
+[ INFO] 2018-10-19 00:40:36,628 [] [] FTP server started
+[ INFO] 2018-10-19 00:41:15,979 [] [127.0.0.1] CREATED
+[ INFO] 2018-10-19 00:41:16,019 [] [127.0.0.1] OPENED
+[ INFO] 2018-10-19 00:41:16,049 [] [127.0.0.1] SENT: 220 Service ready for new user.
+
+[ INFO] 2018-10-19 00:41:16,049 [] [127.0.0.1] RECEIVED: USER admin
+[ INFO] 2018-10-19 00:41:16,059 [admin] [127.0.0.1] SENT: 331 User name okay, need password for admin.
+
+[ INFO] 2018-10-19 00:41:16,059 [admin] [127.0.0.1] RECEIVED: PASS *****
+[ WARN] 2018-10-19 00:41:16,059 [admin] [127.0.0.1] User failed to log in
+[ WARN] 2018-10-19 00:41:16,559 [admin] [127.0.0.1] Login failure - admin
+[ INFO] 2018-10-19 00:41:16,559 [admin] [127.0.0.1] SENT: 530 Authentication failed.
+
+[ INFO] 2018-10-19 00:41:16,559 [admin] [127.0.0.1] RECEIVED: PWD
+[ INFO] 2018-10-19 00:41:16,579 [admin] [127.0.0.1] SENT: 530 Access denied.
+
+[ INFO] 2018-10-19 00:41:16,589 [admin] [127.0.0.1] CLOSED
+[ INFO] 2018-10-19 00:41:22,962 [] [127.0.0.1] CREATED
+[ INFO] 2018-10-19 00:41:22,962 [] [127.0.0.1] OPENED
+[ INFO] 2018-10-19 00:41:22,964 [] [127.0.0.1] SENT: 220 Service ready for new user.
+
+[ WARN] 2018-10-19 00:41:27,746 [] [127.0.0.1] EXCEPTION :
+java.io.IOException: An existing connection was forcibly closed by the remote host
+	at sun.nio.ch.SocketDispatcher.read0(Native Method)
+	at sun.nio.ch.SocketDispatcher.read(SocketDispatcher.java:43)
+	at sun.nio.ch.IOUtil.readIntoNativeBuffer(IOUtil.java:223)
+	at sun.nio.ch.IOUtil.read(IOUtil.java:197)
+	at sun.nio.ch.SocketChannelImpl.read(SocketChannelImpl.java:380)
+	at org.apache.mina.transport.socket.nio.NioProcessor.read(NioProcessor.java:317)
+	at org.apache.mina.transport.socket.nio.NioProcessor.read(NioProcessor.java:45)
+	at org.apache.mina.core.polling.AbstractPollingIoProcessor.read(AbstractPollingIoProcessor.java:683)
+	at org.apache.mina.core.polling.AbstractPollingIoProcessor.process(AbstractPollingIoProcessor.java:659)
+	at org.apache.mina.core.polling.AbstractPollingIoProcessor.process(AbstractPollingIoProcessor.java:648)
+	at org.apache.mina.core.polling.AbstractPollingIoProcessor.access$600(AbstractPollingIoProcessor.java:68)
+	at org.apache.mina.core.polling.AbstractPollingIoProcessor$Processor.run(AbstractPollingIoProcessor.java:1120)
+	at org.apache.mina.util.NamePreservingRunnable.run(NamePreservingRunnable.java:64)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:745)
+[ERROR] 2018-10-19 00:41:27,819 [] [127.0.0.1] Exception caught, closing session
+java.io.IOException: An existing connection was forcibly closed by the remote host
+	at sun.nio.ch.SocketDispatcher.read0(Native Method)
+	at sun.nio.ch.SocketDispatcher.read(SocketDispatcher.java:43)
+	at sun.nio.ch.IOUtil.readIntoNativeBuffer(IOUtil.java:223)
+	at sun.nio.ch.IOUtil.read(IOUtil.java:197)
+	at sun.nio.ch.SocketChannelImpl.read(SocketChannelImpl.java:380)
+	at org.apache.mina.transport.socket.nio.NioProcessor.read(NioProcessor.java:317)
+	at org.apache.mina.transport.socket.nio.NioProcessor.read(NioProcessor.java:45)
+	at org.apache.mina.core.polling.AbstractPollingIoProcessor.read(AbstractPollingIoProcessor.java:683)
+	at org.apache.mina.core.polling.AbstractPollingIoProcessor.process(AbstractPollingIoProcessor.java:659)
+	at org.apache.mina.core.polling.AbstractPollingIoProcessor.process(AbstractPollingIoProcessor.java:648)
+	at org.apache.mina.core.polling.AbstractPollingIoProcessor.access$600(AbstractPollingIoProcessor.java:68)
+	at org.apache.mina.core.polling.AbstractPollingIoProcessor$Processor.run(AbstractPollingIoProcessor.java:1120)
+	at org.apache.mina.util.NamePreservingRunnable.run(NamePreservingRunnable.java:64)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:745)
+[ INFO] 2018-10-19 00:41:27,820 [] [127.0.0.1] CLOSED

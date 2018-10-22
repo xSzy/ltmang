@@ -23,6 +23,8 @@ import javax.sound.sampled.TargetDataLine;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import model.*;
+import org.apache.commons.net.ftp.FTPClient;
+import java.util.Properties;
 
 /**
  *
@@ -48,6 +50,9 @@ public class ClientMainCtr
     byte buffer[];
     TargetDataLine tdline;
     SourceDataLine sdline;
+    
+    //ftp
+    private FTPClient ftpClient;
     
     public ClientMainCtr(Socket server, Client user)
     {
@@ -341,5 +346,5 @@ public class ClientMainCtr
             while(true)
                 receivePacket();
         }
-    }
+    }               
 }

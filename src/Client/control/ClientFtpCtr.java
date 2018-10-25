@@ -31,7 +31,7 @@ import org.apache.commons.net.ftp.FTPReply;
 public class ClientFtpCtr {
     private static File config;
     private Properties prop;
-    
+    private String userHomeDirectory;
     private FTPClient ftpClient;
     private int replyCode;
     
@@ -83,20 +83,23 @@ public class ClientFtpCtr {
             replyCode = ftpClient.getReplyCode();            
                 
         } catch (IOException ex) {
-            Logger.getLogger(ClientFtpCtr.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("fail on uploadFile");
         }
     }
     
-    public ArrayList<FtpFile> listFile(){
+    public ArrayList<FtpFile> listFile(String folder){
         ArrayList<FtpFile> list = new ArrayList<>();
         
         try {            
+            boolean flagCd = ftpClient.changeWorkingDirectory(folder);
+            //System.out.println("Cd operation is " + flagCd);
             FTPFile[] files = ftpClient.listFiles();
             for (int i = 0; i < files.length; i++)
-                list.add(new FtpFile(files[i].getName(), files[i].getSize(), files[i].getType()));
+                list.add(new FtpFile(files[i].getName(), files[i].getSize(), files[i].getType()));                                              
         } catch (IOException ex) {
-            ex.printStackTrace();
+            ex.printStackTrace();            
         }
+        
         return list;
     }
        
@@ -121,11 +124,12 @@ public class ClientFtpCtr {
     }
     
     public boolean downloadFile(String fileName){
-        File downloadFile = new File("C:\\Users\\" +fileName);
+        File downloadFile = new File(userHomeDirectory + "\\" +fileName);        
         boolean flag = false;
         try {
-            OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(downloadFile));
+            OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(downloadFile));            
             flag = ftpClient.retrieveFile(fileName, outputStream);
+            outputStream.close();            
         } catch (IOException ex) {
             System.out.println("File not found");
         }  
@@ -151,4 +155,7 @@ public class ClientFtpCtr {
         return ftpClient.getReplyString();
     }
    
+    public void setUserHomeDirectory(String userHomeDirectory){
+        this.userHomeDirectory = userHomeDirectory;
+    }
 }

@@ -10,7 +10,11 @@ import Client.control.ClientMainCtr;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
@@ -39,6 +43,9 @@ public class ClientMainFrm extends javax.swing.JFrame {
     private File fileSelected;
     private ClientFtpCtr cfc;
     private DefaultTableModel fileTblModel;
+    private JFileChooser fileChooser;
+    private String currentDirectory = "";
+    private String userHomeDirectory = "";
     /**
      * Creates new form ClientMainFrm
      */
@@ -55,6 +62,10 @@ public class ClientMainFrm extends javax.swing.JFrame {
         msgPanel.remove(channelMsgPanel);  
         cfc = new ClientFtpCtr();
         fileTbl.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        fileTblModel = (DefaultTableModel) fileTbl.getModel();
+        fileChooser = new JFileChooser();
+        userHomeDirectory =  fileChooser.getFileSystemView().getHomeDirectory().getPath();   
+        cfc.setUserHomeDirectory(userHomeDirectory);        
     }
     
     /**
@@ -84,11 +95,11 @@ public class ClientMainFrm extends javax.swing.JFrame {
         dowloadBtn = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         fileUpload = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
         browseBtn = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
         jScrollPane7 = new javax.swing.JScrollPane();
         fileTbl = new javax.swing.JTable();
+<<<<<<< HEAD
         jLabel6 = new javax.swing.JLabel();
         serverDirectory = new javax.swing.JLabel();
         dlgEditChannel = new javax.swing.JDialog();
@@ -101,6 +112,8 @@ public class ClientMainFrm extends javax.swing.JFrame {
         jScrollPane6 = new javax.swing.JScrollPane();
         txtChannelDesc = new javax.swing.JTextArea();
         txtChannelPassword = new javax.swing.JPasswordField();
+=======
+>>>>>>> a6d8814b2e26356db72d281350b3af48992a2bcd
         jToolBar1 = new javax.swing.JToolBar();
         jPanel1 = new javax.swing.JPanel();
         underBar = new javax.swing.JPanel();
@@ -190,6 +203,7 @@ public class ClientMainFrm extends javax.swing.JFrame {
                 .addContainerGap(59, Short.MAX_VALUE))
         );
 
+        transferPanel.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         transferPanel.setResizable(false);
         transferPanel.setSize(new java.awt.Dimension(400, 300));
 
@@ -217,16 +231,19 @@ public class ClientMainFrm extends javax.swing.JFrame {
 
         fileUpload.setText("no file selected");
 
-        jLabel7.setText("File Name");
-
-        jLabel8.setText("no file selected");
-
         browseBtn.setText("Browse");
         browseBtn.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
             {
                 browseBtnActionPerformed(evt);
+            }
+        });
+
+        jButton1.setText("Cd");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
             }
         });
 
@@ -237,19 +254,17 @@ public class ClientMainFrm extends javax.swing.JFrame {
             .addGroup(fileDownloadLayout.createSequentialGroup()
                 .addGap(18, 18, 18)
                 .addGroup(fileDownloadLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(uploadBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(dowloadBtn))
-                .addGap(44, 44, 44)
-                .addGroup(fileDownloadLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel5)
-                    .addComponent(jLabel7))
-                .addGap(34, 34, 34)
-                .addGroup(fileDownloadLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel8)
                     .addGroup(fileDownloadLayout.createSequentialGroup()
-                        .addComponent(fileUpload)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
-                        .addComponent(browseBtn)))
+                        .addComponent(uploadBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(44, 44, 44)
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(fileUpload))
+                    .addComponent(dowloadBtn))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
+                .addGroup(fileDownloadLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(browseBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         fileDownloadLayout.setVerticalGroup(
@@ -262,11 +277,9 @@ public class ClientMainFrm extends javax.swing.JFrame {
                     .addComponent(fileUpload)
                     .addComponent(browseBtn))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(fileDownloadLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(dowloadBtn, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, fileDownloadLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel7)
-                        .addComponent(jLabel8)))
+                .addGroup(fileDownloadLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(dowloadBtn)
+                    .addComponent(jButton1))
                 .addContainerGap())
         );
 
@@ -275,6 +288,7 @@ public class ClientMainFrm extends javax.swing.JFrame {
             {
 
             },
+<<<<<<< HEAD
             new String []
             {
                 "STT", "Name", "Size (Byte)"
@@ -297,6 +311,17 @@ public class ClientMainFrm extends javax.swing.JFrame {
 
             public boolean isCellEditable(int rowIndex, int columnIndex)
             {
+=======
+            new String [] {
+                "Type", "Name", "Size (Byte)"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+>>>>>>> a6d8814b2e26356db72d281350b3af48992a2bcd
                 return canEdit [columnIndex];
             }
         });
@@ -310,32 +335,17 @@ public class ClientMainFrm extends javax.swing.JFrame {
             fileTbl.getColumnModel().getColumn(2).setResizable(false);
         }
 
-        jLabel6.setText("Server directory");
-
-        serverDirectory.setText("server");
-
         javax.swing.GroupLayout transferPanelLayout = new javax.swing.GroupLayout(transferPanel.getContentPane());
         transferPanel.getContentPane().setLayout(transferPanelLayout);
         transferPanelLayout.setHorizontalGroup(
             transferPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(fileDownload, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-            .addGroup(transferPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel6)
-                .addGap(18, 18, 18)
-                .addComponent(serverDirectory)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         transferPanelLayout.setVerticalGroup(
             transferPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(transferPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(transferPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(serverDirectory))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
-                .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(fileDownload, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -666,10 +676,16 @@ public class ClientMainFrm extends javax.swing.JFrame {
         downloadClick();
     }//GEN-LAST:event_dowloadBtnActionPerformed
 
+<<<<<<< HEAD
     private void itemEditChannelActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_itemEditChannelActionPerformed
     {//GEN-HEADEREND:event_itemEditChannelActionPerformed
         cmc.itemEditChannelClicked();
     }//GEN-LAST:event_itemEditChannelActionPerformed
+=======
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        changeDirectory();
+    }//GEN-LAST:event_jButton1ActionPerformed
+>>>>>>> a6d8814b2e26356db72d281350b3af48992a2bcd
 
     /**
      * This function update the channel list
@@ -823,14 +839,21 @@ public class ClientMainFrm extends javax.swing.JFrame {
         transferPanel.setVisible(true);
         transferPanel.pack();                 
         cfc.connect();
-        ArrayList<FtpFile> files = cfc.listFile();
-        
-        fileTblModel = (DefaultTableModel) fileTbl.getModel();
+        ArrayList<FtpFile> files = cfc.listFile(currentDirectory);
+                
         fileTblModel.setRowCount(0);
-        
+        Object[] firstRow = {"Folder", "..", ""};
+        fileTblModel.addRow(firstRow);        
         if (!files.isEmpty()){
             for (int i = 0; i < files.size(); i++){
-                Object[] row = {i+1, files.get(i).getName(), files.get(i).getSize()};
+                //Object[] row = , files.get(i).getName(), files.get(i).getSize()};
+                Object[] row = new Object[4];
+                if (files.get(i).getType() == 1)
+                    row[0] = "Folder";
+                else
+                    row[0] = "File";
+                row[1] = files.get(i).getName();
+                row[2] = files.get(i).getSize();
                 fileTblModel.addRow(row);
             }            
         }                                                   
@@ -864,18 +887,30 @@ public class ClientMainFrm extends javax.swing.JFrame {
             return;
         String fileName = (String) fileTblModel.getValueAt(rowSelected, 1);
         boolean flag = cfc.downloadFile(fileName);
+        System.out.println(flag);
     }
     
-    private void browseClick(){
-        JFileChooser fileChooser = new JFileChooser();
+    private void browseClick(){        
         FileFilter filter = new FileNameExtensionFilter("txt", "png", "jpeg", "docx");
         fileChooser.setFileFilter(filter);
-        int selection = fileChooser.showDialog(this, "Upload");
+        int selection = fileChooser.showDialog(this, "Upload");        
         if (selection == JFileChooser.APPROVE_OPTION){
             fileSelected = fileChooser.getSelectedFile();
             fileUpload.setText(fileSelected.getName());            
-        }        
+        }                        
     }
+    
+    private void changeDirectory(){
+        int row = fileTbl.getSelectedRow();
+        if (row != -1){
+            String fileType = (String) fileTblModel.getValueAt(row, 0);
+            String fileName = (String) fileTblModel.getValueAt(row, 1);
+            currentDirectory = "/" + fileName;
+            if (fileType.equals("Folder"))
+                listFileInServer();
+        }
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -927,7 +962,11 @@ public class ClientMainFrm extends javax.swing.JFrame {
     private javax.swing.JMenuItem fileTransferItem;
     private javax.swing.JLabel fileUpload;
     private javax.swing.JMenuItem itemConnect;
+<<<<<<< HEAD
     private javax.swing.JMenuItem itemEditChannel;
+=======
+    private javax.swing.JButton jButton1;
+>>>>>>> a6d8814b2e26356db72d281350b3af48992a2bcd
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -936,10 +975,13 @@ public class ClientMainFrm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+<<<<<<< HEAD
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+=======
+>>>>>>> a6d8814b2e26356db72d281350b3af48992a2bcd
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
@@ -959,7 +1001,6 @@ public class ClientMainFrm extends javax.swing.JFrame {
     private javax.swing.JTabbedPane msgPanel;
     private javax.swing.JPanel roomInfoPanel;
     private javax.swing.JPanel roomPanel;
-    private javax.swing.JLabel serverDirectory;
     private javax.swing.JPanel serverMsgPanel;
     private javax.swing.JSplitPane splitPanel1;
     private javax.swing.JSplitPane splitPanel2;

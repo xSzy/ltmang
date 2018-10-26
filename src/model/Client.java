@@ -18,21 +18,22 @@ public class Client implements Serializable
     private String username;
     private String password;
     private Channel channel;
-    private boolean ready;
+    private int udpPort;
 
     public Client()
     {
-        
+        username = new String();
+        password = new String();
     }
 
-    public boolean isReady()
+    public int getUdpPort()
     {
-        return ready;
+        return udpPort;
     }
 
-    public void setReady(boolean ready)
+    public void setUdpPort(int udpPort)
     {
-        this.ready = ready;
+        this.udpPort = udpPort;
     }
 
     public Channel getChannel()
@@ -48,7 +49,7 @@ public class Client implements Serializable
     public Client(Socket s)
     {
         this.socket = s;
-        ready = false;
+        
     }
 
     public Socket getSocket()

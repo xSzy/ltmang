@@ -50,6 +50,7 @@ public class ClientMainCtr
     byte buffer[];
     TargetDataLine tdline;
     SourceDataLine sdline;
+    public ArrayList<Channel> listChannel;
     
     //ftp
     private FTPClient ftpClient;
@@ -60,12 +61,15 @@ public class ClientMainCtr
         {
             this.server = server;
             this.user = user;
-            udpPort = 9715;
+            
+            //attemp to find an available udp port
+            udpPort = getAvailablePort();
             udpServer = new DatagramSocket(udpPort);
+            
             cmf = new ClientMainFrm(this);
             dis = new DataInputStream(server.getInputStream());
             dos = new DataOutputStream(server.getOutputStream());
-            currentChannel = new Channel("Lobby", "");
+            
             Thread t = new Thread(new ListeningThread());
             t.start();
             Thread t1 = new Thread(new UDPSendThread());
@@ -84,7 +88,8 @@ public class ClientMainCtr
     {
         try
         {
-            dos.writeUTF("Ready");
+            dos.writeUTF("UDP-Port");
+            dos.writeInt(udpPort);
         }
         catch (IOException ex)
         {
@@ -101,34 +106,7 @@ public class ClientMainCtr
             cmf.writeConsole("protocol received:" + protocol);
             if(protocol.equals("Channel-list"))
             {
-                ArrayList<Channel> listChannel = new ArrayList<>();
-                //read number of channel
-                int channelSize = dis.readInt();
-                for(int i = 0; i < channelSize; i++)
-                {
-                    Channel channel = new Channel();
-                    //read channel name
-                    String channelName = dis.readUTF();
-                    channel.setName(channelName);
-                    //read number of client
-                    int clientSize = dis.readInt();
-                    ArrayList<Client> listClient = new ArrayList<>();
-                    for(int j = 0; j < clientSize; j++)
-                    {
-                        Client client = new Client();
-                        //read client's name
-                        String clientName = dis.readUTF();
-                        if(clientName == user.getUsername())
-                        {
-                            currentChannel.setName(channel.getName());
-                        }
-                        client.setUsername(clientName);
-                        listClient.add(client);
-                    }
-                    channel.setListClient(listClient);
-                    listChannel.add(channel);
-                }
-                cmf.updateChannelList(listChannel);
+                readChannelList();
                 cmf.writeConsole("Channel list received");
                 return;
             }
@@ -218,6 +196,44 @@ public class ClientMainCtr
             Logger.getLogger(ClientMainCtr.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    public void itemEditChannelClicked()
+    {
+        String channelName = cmf.getSelectedChannel();
+        if(channelName == null)
+            return;
+        Channel channel = getChannelbyName(channelName);
+        if(channel == null)
+            return;
+        if(!user.getUsername().equals(channel.getOwner().getUsername()))
+        {
+            JOptionPane.showMessageDialog(cmf, "You do not have permission to edit this channel!", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        Channel newChannel = cmf.showEditChannelDialog(channel);
+        if(newChannel == null)
+            return;
+        try
+        {
+            dos.writeUTF("Edit-channel");
+            dos.writeUTF(channel.getName());
+            dos.writeUTF(newChannel.getName());
+            dos.writeUTF(newChannel.getPassword());
+            dos.writeUTF(newChannel.getTopic());
+            dos.writeUTF(newChannel.getDescription());
+        }
+        catch(IOException ex)
+        {
+            Logger.getLogger(ClientMainCtr.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    private Channel getChannelbyName(String name)
+    {
+        for(Channel c : listChannel)
+            if(c.getName().equals(name))
+                return c;
+        return null;
+    }
     
     public void sendMsg(String msg){
         try {
@@ -237,6 +253,52 @@ public class ClientMainCtr
             String sender = dis.readUTF();
             String msg = dis.readUTF();
             cmf.printMessage(sender, msg);
+        }
+        catch(IOException ex)
+        {
+            Logger.getLogger(ClientMainCtr.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    private void readChannelList()
+    {
+        try
+        {
+            listChannel = new ArrayList<>();
+            //read number of channel
+            int channelSize = dis.readInt();
+            for(int i = 0; i < channelSize; i++)
+            {
+                Channel c = new Channel();
+                //read channel name
+                String channelName = dis.readUTF();
+                c.setName(channelName);
+                //read channel password
+                String channelPassword = dis.readUTF();
+                c.setPassword(channelPassword);
+                //read channel owner
+                Client owner = new Client();
+                owner.setUsername(dis.readUTF());
+                c.setOwner(owner);
+                //read number of client
+                int clientSize = dis.readInt();
+                ArrayList<Client> listClient = new ArrayList<>();
+                for(int j = 0; j < clientSize; j++)
+                {
+                    Client client = new Client();
+                    //read client's name
+                    String clientName = dis.readUTF();
+                    if(clientName.equals(user.getUsername()))
+                    {
+                        currentChannel = c;
+                    }
+                    client.setUsername(clientName);
+                    listClient.add(client);
+                }
+                c.setListClient(listClient);
+                listChannel.add(c);
+            }
+            cmf.updateChannelList(listChannel);
         }
         catch(IOException ex)
         {
@@ -323,10 +385,11 @@ public class ClientMainCtr
                 
                 while(true)
                 {
-                    System.out.println(currentChannel.getName());
+                    //System.out.println(currentChannel.getName());
+                    Thread.sleep(1);
                     if(!currentChannel.getName().equals("Lobby"))
                     {
-                        System.out.println("Sending packet to server...");
+                        //System.out.println("Sending packet to server...");
                         sendPacket();
                     }
                 }
@@ -335,6 +398,42 @@ public class ClientMainCtr
             {
                 Logger.getLogger(ClientMainCtr.class.getName()).log(Level.SEVERE, null, ex);
             }
+            catch(InterruptedException ex)
+            {
+                Logger.getLogger(ClientMainCtr.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    
+    public int getAvailablePort()
+    {
+        int startPort = 8050;
+        int endPort = 27000;
+        for(int i = startPort; i < endPort; i++)
+        {
+            if(isPortAvailable(i))
+                return i;
+        }
+        return -1;
+    }
+    
+    private boolean isPortAvailable(int port)
+    {
+        DatagramSocket portChecker = null;
+        try
+        {
+            portChecker = new DatagramSocket(port);
+            portChecker.setReuseAddress(true);
+            return true;
+        }
+        catch(SocketException ex)
+        {
+            return false;
+        }
+        finally
+        {
+            if(portChecker != null)
+                portChecker.close();
         }
     }
     

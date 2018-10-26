@@ -55,7 +55,7 @@ public class RecordAudioDemo extends JFrame
         if(isRecording)
         {
             isRecording = false;
-            btnRecord.setText("Stop");
+            btnRecord.setText("Stopped");
         }
         //otherwise start the recording
         else
@@ -91,6 +91,7 @@ public class RecordAudioDemo extends JFrame
                 //initialize buffer
                 int bufferSize = (int) (format.getSampleRate()*format.getFrameSize());
                 byte buffer[] = new byte[bufferSize];
+                byte previousBuffer[] = new byte[bufferSize];
                 
                 //create a new thread
                 SwingWorker recordThread = new SwingWorker<Void, Void>() {
@@ -99,12 +100,18 @@ public class RecordAudioDemo extends JFrame
                     {
                         while(isRecording)
                         {
+                            for(int i = 0; i < bufferSize; i++)
+                                previousBuffer[i] = buffer[i];
+                            
                             //read data from input line
                             int count = line.read(buffer, 0, buffer.length);
                             
                             //write data to output line
                             if(count > 0)
+                            {
                                 sline.write(buffer, 0, buffer.length);
+                                sline.write(previousBuffer, 0, buffer.length);
+                            }
                         }
                         
                         //drain the rest of output line
@@ -119,8 +126,48 @@ public class RecordAudioDemo extends JFrame
                 
                 //start the thread
                 recordThread.execute();
+                
+                //test
+                AudioInputStream ais = AudioSystem.getAudioInputStream(new File("test.wav"));
+                AudioFormat musicFormat = ais.getFormat();
+                SourceDataLine musicOut = AudioSystem.getSourceDataLine(musicFormat);
+                musicOut.open();
+                musicOut.start();
+                byte testbuffer[] = new byte[(int)musicFormat.getSampleRate()*musicFormat.getFrameSize()];
+                
+                //create another thread
+                SwingWorker playThread = new SwingWorker<Void, Void>()
+                {
+                    @Override
+                    protected Void doInBackground() throws Exception
+                    {
+                        
+                        while(true)
+                        {
+                            int c = ais.read(testbuffer, 0, testbuffer.length);
+                            
+                            if(c > 0)
+                                musicOut.write(testbuffer, 0, testbuffer.length);
+                            else
+                                break;
+                        }
+                        System.out.println("Music finished");
+                        return null;
+                    }
+                };
+                
+                //start the thread
+                playThread.execute();
             }
             catch (LineUnavailableException ex) {
+                Logger.getLogger(RecordAudioDemo.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            catch(UnsupportedAudioFileException ex)
+            {
+                Logger.getLogger(RecordAudioDemo.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            catch(IOException ex)
+            {
                 Logger.getLogger(RecordAudioDemo.class.getName()).log(Level.SEVERE, null, ex);
             }
         }

@@ -99,7 +99,7 @@ public class ClientMainFrm extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jScrollPane7 = new javax.swing.JScrollPane();
         fileTbl = new javax.swing.JTable();
-<<<<<<< HEAD
+
         jLabel6 = new javax.swing.JLabel();
         serverDirectory = new javax.swing.JLabel();
         dlgEditChannel = new javax.swing.JDialog();
@@ -112,8 +112,8 @@ public class ClientMainFrm extends javax.swing.JFrame {
         jScrollPane6 = new javax.swing.JScrollPane();
         txtChannelDesc = new javax.swing.JTextArea();
         txtChannelPassword = new javax.swing.JPasswordField();
-=======
->>>>>>> a6d8814b2e26356db72d281350b3af48992a2bcd
+
+
         jToolBar1 = new javax.swing.JToolBar();
         jPanel1 = new javax.swing.JPanel();
         underBar = new javax.swing.JPanel();
@@ -288,7 +288,7 @@ public class ClientMainFrm extends javax.swing.JFrame {
             {
 
             },
-<<<<<<< HEAD
+
             new String []
             {
                 "STT", "Name", "Size (Byte)"
@@ -311,7 +311,7 @@ public class ClientMainFrm extends javax.swing.JFrame {
 
             public boolean isCellEditable(int rowIndex, int columnIndex)
             {
-=======
+
             new String [] {
                 "Type", "Name", "Size (Byte)"
             }
@@ -321,7 +321,6 @@ public class ClientMainFrm extends javax.swing.JFrame {
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
->>>>>>> a6d8814b2e26356db72d281350b3af48992a2bcd
                 return canEdit [columnIndex];
             }
         });
@@ -676,16 +675,16 @@ public class ClientMainFrm extends javax.swing.JFrame {
         downloadClick();
     }//GEN-LAST:event_dowloadBtnActionPerformed
 
-<<<<<<< HEAD
+
     private void itemEditChannelActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_itemEditChannelActionPerformed
     {//GEN-HEADEREND:event_itemEditChannelActionPerformed
         cmc.itemEditChannelClicked();
     }//GEN-LAST:event_itemEditChannelActionPerformed
-=======
+
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         changeDirectory();
     }//GEN-LAST:event_jButton1ActionPerformed
->>>>>>> a6d8814b2e26356db72d281350b3af48992a2bcd
+
 
     /**
      * This function update the channel list
@@ -962,11 +961,11 @@ public class ClientMainFrm extends javax.swing.JFrame {
     private javax.swing.JMenuItem fileTransferItem;
     private javax.swing.JLabel fileUpload;
     private javax.swing.JMenuItem itemConnect;
-<<<<<<< HEAD
+
     private javax.swing.JMenuItem itemEditChannel;
-=======
+
     private javax.swing.JButton jButton1;
->>>>>>> a6d8814b2e26356db72d281350b3af48992a2bcd
+
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -975,13 +974,12 @@ public class ClientMainFrm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-<<<<<<< HEAD
+
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-=======
->>>>>>> a6d8814b2e26356db72d281350b3af48992a2bcd
+
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;

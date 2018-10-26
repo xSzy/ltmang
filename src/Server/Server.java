@@ -17,6 +17,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -73,6 +75,7 @@ public class Server extends javax.swing.JFrame
         listClient = new ArrayList<>();
         listChannel = new ArrayList<>();
         lobby = new Channel("Lobby", "");
+        lobby.setOwner(new Client());
         listChannel.add(lobby);
     }
 
@@ -218,6 +221,10 @@ public class Server extends javax.swing.JFrame
                     {
                         //write channel name
                         dos.writeUTF(channel.getName());
+                        //write channel password
+                        dos.writeUTF(channel.getPassword());
+                        //write channel owner name
+                        dos.writeUTF(channel.getOwner().getUsername());
                         //write the number of channel's client
                         dos.writeInt(channel.getListClient().size());
                         //write all channel's username
@@ -310,7 +317,7 @@ public class Server extends javax.swing.JFrame
                 client.getSocket().close();
                 return;
             }
-            else if(protocol.equals("Ready"))
+            else if(protocol.equals("UDP-Port"))
             {
                 clientReady(client);
             }
@@ -325,6 +332,10 @@ public class Server extends javax.swing.JFrame
             else if(protocol.equals("Chat-message"))
             {
                 clientSendMessage(client);
+            }
+            else if(protocol.equals("Edit-channel"))
+            {
+                clientEditChannel(client);
             }
         }
         catch (IOException ex)
@@ -343,10 +354,13 @@ public class Server extends javax.swing.JFrame
     private void clientReady(Client client)
     {
         DataOutputStream dos = null;
+        DataInputStream dis = null;
         try
         {
+            dis = new DataInputStream(client.getSocket().getInputStream());
+            int port = dis.readInt();
             dos = new DataOutputStream(client.getSocket().getOutputStream());
-            client.setReady(true);
+            client.setUdpPort(port);
             printConsole("Ready received from client " + client.getSocket().getLocalAddress().toString());
             dos.writeUTF("Ready received");
             initializeClient(client);
@@ -464,6 +478,43 @@ public class Server extends javax.swing.JFrame
         }
     }
     
+    /**
+     * This function starts when client request to edit channel
+     */
+    private void clientEditChannel(Client client)
+    {
+        DataInputStream dis = null;
+        DataOutputStream dos = null;
+        try
+        {
+            dis = new DataInputStream(client.getSocket().getInputStream());
+            dos = new DataOutputStream(client.getSocket().getOutputStream());
+            String channelName = dis.readUTF();
+            String newChannelName = dis.readUTF();
+            String newChannelPassword = dis.readUTF();
+            String newChannelTopic = dis.readUTF();
+            String newChannelDesc = dis.readUTF();
+            Channel oldChannel = searchChannel(channelName);
+            if(oldChannel == null)
+                return;
+            if(searchChannel(newChannelName) != null && searchChannel(newChannelName) != oldChannel)   //channel with that name exists
+            {
+                dos.writeUTF("Channel-exists");
+                return;
+            }
+            oldChannel.setName(newChannelName);
+            oldChannel.setPassword(newChannelPassword);
+            oldChannel.setTopic(newChannelTopic);
+            oldChannel.setDescription(newChannelDesc);
+            for(Client c : listClient)
+                updateChannelList(c);
+        }
+        catch(IOException ex)
+        {
+            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     /////////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////UDP HANDLING/////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -475,7 +526,7 @@ public class Server extends javax.swing.JFrame
             byte[] receiveData = new byte[dataSize];
             receivePacket = new DatagramPacket(receiveData, dataSize);
             udpServer.receive(receivePacket);
-            System.out.println("UDP received from " + receivePacket.getAddress().toString());
+            //System.out.println("UDP received from " + receivePacket.getAddress().toString());
             //find the client who sent the packet
             Client sender = null;
             for(Client c : listClient)
@@ -495,7 +546,7 @@ public class Server extends javax.swing.JFrame
                     continue;
                 DatagramPacket packet = new DatagramPacket(data, data.length);
                 packet.setAddress(c.getSocket().getInetAddress());
-                packet.setPort(9715);
+                packet.setPort(c.getUdpPort());
                 udpServer.send(packet);
             }
         }

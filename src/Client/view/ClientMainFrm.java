@@ -64,7 +64,8 @@ public class ClientMainFrm extends javax.swing.JFrame {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
 
         jMenuItem1 = new javax.swing.JMenuItem();
         dlgCreate = new javax.swing.JDialog();
@@ -90,6 +91,16 @@ public class ClientMainFrm extends javax.swing.JFrame {
         fileTbl = new javax.swing.JTable();
         jLabel6 = new javax.swing.JLabel();
         serverDirectory = new javax.swing.JLabel();
+        dlgEditChannel = new javax.swing.JDialog();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        txtChannelName = new javax.swing.JTextField();
+        jLabel11 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        txtChannelTopic = new javax.swing.JTextField();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        txtChannelDesc = new javax.swing.JTextArea();
+        txtChannelPassword = new javax.swing.JPasswordField();
         jToolBar1 = new javax.swing.JToolBar();
         jPanel1 = new javax.swing.JPanel();
         underBar = new javax.swing.JPanel();
@@ -116,6 +127,7 @@ public class ClientMainFrm extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         itemConnect = new javax.swing.JMenuItem();
         txtCreate = new javax.swing.JMenuItem();
+        itemEditChannel = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         fileTransferItem = new javax.swing.JMenuItem();
 
@@ -184,15 +196,19 @@ public class ClientMainFrm extends javax.swing.JFrame {
         fileDownload.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         uploadBtn.setText("Upload");
-        uploadBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        uploadBtn.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 uploadBtnActionPerformed(evt);
             }
         });
 
         dowloadBtn.setText("Download");
-        dowloadBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        dowloadBtn.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 dowloadBtnActionPerformed(evt);
             }
         });
@@ -206,8 +222,10 @@ public class ClientMainFrm extends javax.swing.JFrame {
         jLabel8.setText("no file selected");
 
         browseBtn.setText("Browse");
-        browseBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        browseBtn.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 browseBtnActionPerformed(evt);
             }
         });
@@ -253,30 +271,38 @@ public class ClientMainFrm extends javax.swing.JFrame {
         );
 
         fileTbl.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+            new Object [][]
+            {
 
             },
-            new String [] {
+            new String []
+            {
                 "STT", "Name", "Size (Byte)"
             }
-        ) {
-            Class[] types = new Class [] {
+        )
+        {
+            Class[] types = new Class []
+            {
                 java.lang.Integer.class, java.lang.Object.class, java.lang.Object.class
             };
-            boolean[] canEdit = new boolean [] {
+            boolean[] canEdit = new boolean []
+            {
                 false, false, false
             };
 
-            public Class getColumnClass(int columnIndex) {
+            public Class getColumnClass(int columnIndex)
+            {
                 return types [columnIndex];
             }
 
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
+            public boolean isCellEditable(int rowIndex, int columnIndex)
+            {
                 return canEdit [columnIndex];
             }
         });
         jScrollPane7.setViewportView(fileTbl);
-        if (fileTbl.getColumnModel().getColumnCount() > 0) {
+        if (fileTbl.getColumnModel().getColumnCount() > 0)
+        {
             fileTbl.getColumnModel().getColumn(0).setMinWidth(30);
             fileTbl.getColumnModel().getColumn(0).setPreferredWidth(40);
             fileTbl.getColumnModel().getColumn(0).setMaxWidth(60);
@@ -312,6 +338,63 @@ public class ClientMainFrm extends javax.swing.JFrame {
                 .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(fileDownload, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        dlgEditChannel.setTitle("Create Channel");
+        dlgEditChannel.setIconImage(new ImageIcon("img/plus.png").getImage());
+        dlgEditChannel.setResizable(false);
+
+        jLabel9.setText("Name");
+
+        jLabel10.setText("Password");
+
+        jLabel11.setText("Topic");
+
+        jLabel12.setText("Description");
+
+        txtChannelDesc.setColumns(20);
+        txtChannelDesc.setRows(5);
+        jScrollPane6.setViewportView(txtChannelDesc);
+
+        javax.swing.GroupLayout dlgEditChannelLayout = new javax.swing.GroupLayout(dlgEditChannel.getContentPane());
+        dlgEditChannel.getContentPane().setLayout(dlgEditChannelLayout);
+        dlgEditChannelLayout.setHorizontalGroup(
+            dlgEditChannelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(dlgEditChannelLayout.createSequentialGroup()
+                .addGap(24, 24, 24)
+                .addGroup(dlgEditChannelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel9)
+                    .addComponent(jLabel10)
+                    .addComponent(jLabel11)
+                    .addComponent(jLabel12))
+                .addGap(35, 35, 35)
+                .addGroup(dlgEditChannelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txtChannelName)
+                    .addComponent(txtChannelTopic)
+                    .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 227, Short.MAX_VALUE)
+                    .addComponent(txtChannelPassword))
+                .addContainerGap(51, Short.MAX_VALUE))
+        );
+        dlgEditChannelLayout.setVerticalGroup(
+            dlgEditChannelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(dlgEditChannelLayout.createSequentialGroup()
+                .addGap(31, 31, 31)
+                .addGroup(dlgEditChannelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel9)
+                    .addComponent(txtChannelName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(dlgEditChannelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel10)
+                    .addComponent(txtChannelPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(dlgEditChannelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel11)
+                    .addComponent(txtChannelTopic, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(dlgEditChannelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel12)
+                    .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(59, Short.MAX_VALUE))
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -382,8 +465,10 @@ public class ClientMainFrm extends javax.swing.JFrame {
         roomPanel.setPreferredSize(new java.awt.Dimension(350, 250));
 
         listChannel.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        listChannel.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
+        listChannel.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseClicked(java.awt.event.MouseEvent evt)
+            {
                 listChannelMouseClicked(evt);
             }
         });
@@ -472,8 +557,10 @@ public class ClientMainFrm extends javax.swing.JFrame {
         textFieldChat.setMaximumSize(new java.awt.Dimension(2147483647, 15));
         textFieldChat.setMinimumSize(new java.awt.Dimension(6, 15));
         textFieldChat.setPreferredSize(new java.awt.Dimension(6, 15));
-        textFieldChat.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
+        textFieldChat.addKeyListener(new java.awt.event.KeyAdapter()
+        {
+            public void keyPressed(java.awt.event.KeyEvent evt)
+            {
                 textFieldChatKeyPressed(evt);
             }
         });
@@ -488,20 +575,34 @@ public class ClientMainFrm extends javax.swing.JFrame {
         jMenu1.setText("File");
 
         itemConnect.setText("Connect to channel");
-        itemConnect.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        itemConnect.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 itemConnectActionPerformed(evt);
             }
         });
         jMenu1.add(itemConnect);
 
         txtCreate.setText("Create new channel");
-        txtCreate.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        txtCreate.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 txtCreateActionPerformed(evt);
             }
         });
         jMenu1.add(txtCreate);
+
+        itemEditChannel.setText("Edit channel");
+        itemEditChannel.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                itemEditChannelActionPerformed(evt);
+            }
+        });
+        jMenu1.add(itemEditChannel);
 
         jMenuBar1.add(jMenu1);
 
@@ -509,8 +610,10 @@ public class ClientMainFrm extends javax.swing.JFrame {
 
         fileTransferItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/ftransfer.png"))); // NOI18N
         fileTransferItem.setText("File Transfer");
-        fileTransferItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        fileTransferItem.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 fileTransferItemActionPerformed(evt);
             }
         });
@@ -562,6 +665,11 @@ public class ClientMainFrm extends javax.swing.JFrame {
     private void dowloadBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dowloadBtnActionPerformed
         downloadClick();
     }//GEN-LAST:event_dowloadBtnActionPerformed
+
+    private void itemEditChannelActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_itemEditChannelActionPerformed
+    {//GEN-HEADEREND:event_itemEditChannelActionPerformed
+        cmc.itemEditChannelClicked();
+    }//GEN-LAST:event_itemEditChannelActionPerformed
 
     /**
      * This function update the channel list
@@ -615,6 +723,43 @@ public class ClientMainFrm extends javax.swing.JFrame {
             channel.setDescription(txtDesc.getText());
         }
         return channel;
+    }
+    
+    /**
+     * this function shows a edit channel dialog and return the result
+     */
+    public Channel showEditChannelDialog(Channel channel)
+    {
+        Channel result = null;
+        String[] options = {
+            "Edit",
+            "Cancel"
+        };
+        txtChannelName.setText(channel.getName());
+        txtChannelPassword.setText(channel.getPassword());
+        txtChannelTopic.setText(channel.getTopic());
+        txtChannelDesc.setText(channel.getDescription());
+        int option = JOptionPane.showOptionDialog(this, dlgEditChannel.getRootPane(), "Create channel", JOptionPane.NO_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+        if(option == 0)
+        {
+            //check difference
+            if(txtChannelName.getText().equals(channel.getName()) && txtChannelTopic.getText().equals(channel.getTopic()) && txtChannelDesc.getText().equals(channel.getDescription()) && new String(txtPassword.getPassword()).equals(channel.getPassword()))
+                return null;
+            //check if channel name and password are empty
+            if(txtChannelName.equals("") || txtChannelPassword.equals(""))
+            {
+                JOptionPane.showMessageDialog(this, "Channel name or password is empty!", "Error", JOptionPane.ERROR_MESSAGE);
+                return showEditChannelDialog(channel);
+            }
+            //save new channel info
+            result = new Channel();
+            result.setName(txtChannelName.getText());
+            result.setPassword(new String(txtChannelPassword.getPassword()));
+            result.setTopic(txtChannelTopic.getText());
+            result.setDescription(txtChannelDesc.getText());
+            return result;
+        }
+        return null;
     }
     
     /**
@@ -775,13 +920,18 @@ public class ClientMainFrm extends javax.swing.JFrame {
     private javax.swing.JPanel chatPanel;
     private javax.swing.JPanel chat_msgPanel;
     private javax.swing.JDialog dlgCreate;
+    private javax.swing.JDialog dlgEditChannel;
     private javax.swing.JButton dowloadBtn;
     private javax.swing.JPanel fileDownload;
     private javax.swing.JTable fileTbl;
     private javax.swing.JMenuItem fileTransferItem;
     private javax.swing.JLabel fileUpload;
     private javax.swing.JMenuItem itemConnect;
+    private javax.swing.JMenuItem itemEditChannel;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -789,6 +939,7 @@ public class ClientMainFrm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
@@ -800,6 +951,7 @@ public class ClientMainFrm extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JToolBar jToolBar1;
@@ -813,7 +965,11 @@ public class ClientMainFrm extends javax.swing.JFrame {
     private javax.swing.JSplitPane splitPanel2;
     private javax.swing.JTextField textFieldChat;
     private javax.swing.JDialog transferPanel;
+    private javax.swing.JTextArea txtChannelDesc;
     private javax.swing.JTextArea txtChannelMsg;
+    private javax.swing.JTextField txtChannelName;
+    private javax.swing.JPasswordField txtChannelPassword;
+    private javax.swing.JTextField txtChannelTopic;
     private javax.swing.JTextArea txtConsole;
     private javax.swing.JMenuItem txtCreate;
     private javax.swing.JTextArea txtDesc;

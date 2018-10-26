@@ -36,6 +36,7 @@ public class ClientFtpCtr {
     private int replyCode;
     
     private FtpFile ftpFile;
+    private String userHomeDirectory;
     
     static {
         config = new File("ftpConfig.properties");
@@ -69,13 +70,26 @@ public class ClientFtpCtr {
             boolean loginFlag = ftpClient.login(prop.getProperty("user.username"), prop.getProperty("user.password"));
             if (!loginFlag){
                 System.out.println("acess denied");
-            }
-            System.out.println(ftpClient.getStatus());
+            }            
         } catch (Exception ex) {
             ex.printStackTrace();
         }                
         return true;
     }
+    
+    public void changeDirectory(String directory){
+        try {
+            String pwd = ftpClient.printWorkingDirectory();            
+            boolean flag =false;
+            if (directory.equals(".."))
+                flag = ftpClient.changeToParentDirectory();
+            else
+                flag = ftpClient.changeWorkingDirectory(pwd + "/" + directory);                        
+        } catch (IOException ex) {
+            Logger.getLogger(ClientFtpCtr.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+        
     
     public void uploadFile(File fileUpload){
         try {
@@ -90,8 +104,9 @@ public class ClientFtpCtr {
     public ArrayList<FtpFile> listFile(){
         ArrayList<FtpFile> list = new ArrayList<>();
         
-        try {            
-            FTPFile[] files = ftpClient.listFiles();
+        try {                         
+            
+            FTPFile[] files = ftpClient.listFiles();            
             for (int i = 0; i < files.length; i++)
                 list.add(new FtpFile(files[i].getName(), files[i].getSize(), files[i].getType()));
         } catch (IOException ex) {
@@ -121,11 +136,12 @@ public class ClientFtpCtr {
     }
     
     public boolean downloadFile(String fileName){
-        File downloadFile = new File("C:\\Users\\" +fileName);
+        File downloadFile = new File(userHomeDirectory + "\\" +fileName);
         boolean flag = false;
         try {
             OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(downloadFile));
             flag = ftpClient.retrieveFile(fileName, outputStream);
+            outputStream.close();
         } catch (IOException ex) {
             System.out.println("File not found");
         }  
@@ -151,4 +167,7 @@ public class ClientFtpCtr {
         return ftpClient.getReplyString();
     }
    
+    public void setUserHomeDirectory(String userHomeDirectory){
+        this.userHomeDirectory = userHomeDirectory;
+    }
 }

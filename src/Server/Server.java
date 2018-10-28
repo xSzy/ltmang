@@ -597,7 +597,7 @@ public class Server extends javax.swing.JFrame
             byte[] receiveData = new byte[dataSize];
             receivePacket = new DatagramPacket(receiveData, dataSize);
             udpServer.receive(receivePacket);
-            //System.out.println("UDP received from " + receivePacket.getAddress().toString());
+            System.out.println("UDP received from " + receivePacket.getAddress().toString());
             //find the client who sent the packet
             Client sender = null;
             for(Client c : listClient)

@@ -72,9 +72,4 @@ public class ClientLoginCtr
             return 1;
         }
     }
-    
-    public void finishLogin()
-    {
-        new ClientMainCtr(socket, user);
-    }
 }

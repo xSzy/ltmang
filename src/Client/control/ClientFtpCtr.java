@@ -37,16 +37,17 @@ public class ClientFtpCtr {
     
     private FtpFile ftpFile;
     private String userHomeDirectory;
-    
+    private String ipServer; 
     static {
         config = new File("ftpConfig.properties");
     }
     
-    public ClientFtpCtr(){
+    public ClientFtpCtr(String ipServer){
         try {
             FileInputStream fis = new FileInputStream(config);
             prop = new Properties();
             prop.load(fis);
+            this.ipServer = ipServer;
             
         } catch (IOException ex) {
             System.out.println("no such a file");
@@ -56,7 +57,7 @@ public class ClientFtpCtr {
     public boolean connect(){
         ftpClient = new FTPClient();                          
         String serverIp = prop.getProperty("serverIp");
-        byte[] ip = ipParse(serverIp);
+        byte[] ip = ipParse(ipServer);
         try {
             InetAddress address = InetAddress.getByAddress(ip);
             int port = Integer.parseInt(prop.getProperty("port"));

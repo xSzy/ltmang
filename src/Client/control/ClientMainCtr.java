@@ -55,7 +55,7 @@ public class ClientMainCtr
     //ftp
     private FTPClient ftpClient;
     
-    public ClientMainCtr(Socket server, Client user)
+    public ClientMainCtr(ClientMainFrm cmf, Socket server, Client user)
     {
         try
         {
@@ -66,7 +66,7 @@ public class ClientMainCtr
             udpPort = getAvailablePort();
             udpServer = new DatagramSocket(udpPort);
             
-            cmf = new ClientMainFrm(this);
+            this.cmf = cmf;
             dis = new DataInputStream(server.getInputStream());
             dos = new DataOutputStream(server.getOutputStream());
             
@@ -440,7 +440,7 @@ public class ClientMainCtr
                 {
                     //System.out.println(currentChannel.getName());
                     Thread.sleep(1);
-                    if(!currentChannel.getName().equals("Lobby"))
+                    if(currentChannel != null && !currentChannel.getName().equals("Lobby"))
                     {
                         //System.out.println("Sending packet to server...");
                         sendPacket();

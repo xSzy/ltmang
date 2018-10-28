@@ -6,6 +6,7 @@
 package Client.view;
 
 import Client.control.ClientLoginCtr;
+import Client.control.ClientMainCtr;
 import java.util.Arrays;
 import javax.swing.JOptionPane;
 import javax.swing.JRootPane;
@@ -201,7 +202,7 @@ public class ClientLoginFrm extends javax.swing.JFrame
         {
             case 0: //success
             {
-                clc.finishLogin();
+                finishLogin();
                 this.dispose();
                 return;
             }
@@ -267,6 +268,14 @@ public class ClientLoginFrm extends javax.swing.JFrame
         }
     }//GEN-LAST:event_btnRegisterActionPerformed
 
+    /**
+     * This function starts when user is able to log in
+     */
+    public void finishLogin()
+    {
+        ClientMainFrm clientMainFrm = new ClientMainFrm(clc.socket, clc.user);
+    }
+    
     /**
      * @param args the command line arguments
      */

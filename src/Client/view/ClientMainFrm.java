@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.net.InetAddress;
+import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -46,21 +47,32 @@ public class ClientMainFrm extends javax.swing.JFrame {
     private JFileChooser fileChooser;
     private String currentDirectory = "";
     private String userHomeDirectory = "";
+    private String ipServer;
     /**
      * Creates new form ClientMainFrm
      */
-    public ClientMainFrm(ClientMainCtr cmc)
+    /*public ClientMainFrm(ClientMainCtr cmc)
     {
         this.cmc = cmc;
         initComponents();
         this.setVisible(true);        
         mySetting();
+    }*/
+    
+    public ClientMainFrm(Socket server, Client user)
+    {
+        initComponents();
+        this.setVisible(true); 
+        ipServer = server.getInetAddress().getHostAddress();
+        System.out.println(ipServer);
+        mySetting();
+        cmc = new ClientMainCtr(this, server, user);
     }
     
     public void mySetting(){        
         txtConsole.setEditable(false);
         msgPanel.remove(channelMsgPanel);  
-        cfc = new ClientFtpCtr();
+        cfc = new ClientFtpCtr(ipServer);
         cfc.connect();
         fileTbl.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         fileTblModel = (DefaultTableModel) fileTbl.getModel();
@@ -963,7 +975,7 @@ public class ClientMainFrm extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ClientMainFrm(null).setVisible(true);
+                new ClientMainFrm(null, null).setVisible(true);
             }
         });
     }

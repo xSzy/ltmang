@@ -7,6 +7,7 @@ package model;
 
 import java.io.Serializable;
 import java.net.*;
+import java.util.ArrayList;
 
 /**
  *
@@ -19,11 +20,13 @@ public class Client implements Serializable
     private String password;
     private Channel channel;
     private int udpPort;
+    private ArrayList<Client> friendList;
 
     public Client()
     {
         username = new String();
         password = new String();
+        friendList = new ArrayList<>();
     }
 
     public int getUdpPort()
@@ -80,5 +83,29 @@ public class Client implements Serializable
     public void setPassword(String password)
     {
         this.password = password;
+    }
+    
+    public ArrayList<Client> getFriendList()
+    {
+        return friendList;
+    }
+
+    public void setFriendList(ArrayList<Client> friendList)
+    {
+        this.friendList = friendList;
+    }
+    
+    public void addToFriendList(Client c)
+    {
+        friendList.add(c);
+    }
+    
+    public void removeFromFriendList(String clientName)
+    {
+        for(Client c : friendList)
+        {
+            if(c.getUsername().equals(clientName))
+                friendList.remove(c);
+        }
     }
 }

@@ -337,6 +337,18 @@ public class Server extends javax.swing.JFrame
             {
                 clientEditChannel(client);
             }
+            else if(protocol.equals("Add-friend"))
+            {
+                clientAddFriend(client);
+            }
+            else if(protocol.equals("Friend-request-accepted"))
+            {
+                friendRequestHandle(client, true);
+            }
+            else if(protocol.equals("Friend-request-declined"))
+            {
+                friendRequestHandle(client, false);
+            }
         }
         catch (IOException ex)
         {
@@ -515,6 +527,65 @@ public class Server extends javax.swing.JFrame
         }
     }
     
+    /**
+     * This function starts when a client is adding a friend
+     */
+    private void clientAddFriend(Client client)
+    {
+        DataInputStream dis = null;
+        DataOutputStream dos = null;
+        try
+        {
+            dis = new DataInputStream(client.getSocket().getInputStream());
+            String friendName = dis.readUTF();
+            Client friend = searchClient(friendName);
+            if(friend == null)
+            {
+                System.out.println("Friend can't be found on server");
+                for(Client c : listClient)
+                {
+                    System.out.println(c.getUsername());
+                }
+                return;
+            }
+            dos = new DataOutputStream(friend.getSocket().getOutputStream());
+            dos.writeUTF("Friend-request");
+            dos.writeUTF(client.getUsername());
+            System.out.println("Friend request forwarded");
+        }
+        catch(IOException ex)
+        {
+            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    /**
+     * This function start when server receive client's friend request result
+     */
+    private void friendRequestHandle(Client client, boolean isAccepted)
+    {
+        DataInputStream dis = null;
+        DataOutputStream dos = null;
+        try
+        {
+            dis = new DataInputStream(client.getSocket().getInputStream());
+            String senderName = dis.readUTF();
+            Client sender = searchClient(senderName);
+            if(sender == null)
+                return;
+            dos = new DataOutputStream(sender.getSocket().getOutputStream());
+            if(isAccepted)
+                dos.writeUTF("Friend-request-accepted");
+            else
+                dos.writeUTF("Friend-request-declined");
+            dos.writeUTF(client.getUsername());
+        }
+        catch(IOException ex)
+        {
+            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     /////////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////UDP HANDLING/////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -568,6 +639,17 @@ public class Server extends javax.swing.JFrame
         for(Channel channel : listChannel)
             if(channelName.equals(channel.getName()))
                 return channel;
+        return null;
+    }
+    
+    /**
+     * Search online client by name
+     */
+    private Client searchClient(String clientName)
+    {
+        for(Client client : listClient)
+            if(clientName.equals(client.getUsername()))
+                return client;
         return null;
     }
     

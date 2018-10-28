@@ -76,7 +76,8 @@ public class ClientMainFrm extends javax.swing.JFrame {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
 
         jMenuItem1 = new javax.swing.JMenuItem();
         dlgCreate = new javax.swing.JDialog();
@@ -136,6 +137,7 @@ public class ClientMainFrm extends javax.swing.JFrame {
         itemConnect = new javax.swing.JMenuItem();
         txtCreate = new javax.swing.JMenuItem();
         itemEditChannel = new javax.swing.JMenuItem();
+        itemAddFriend = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         fileTransferItem = new javax.swing.JMenuItem();
 
@@ -204,15 +206,19 @@ public class ClientMainFrm extends javax.swing.JFrame {
         fileDownload.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         uploadBtn.setText("Upload");
-        uploadBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        uploadBtn.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 uploadBtnActionPerformed(evt);
             }
         });
 
         dowloadBtn.setText("Download");
-        dowloadBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        dowloadBtn.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 dowloadBtnActionPerformed(evt);
             }
         });
@@ -222,15 +228,19 @@ public class ClientMainFrm extends javax.swing.JFrame {
         fileUpload.setText("no file selected");
 
         browseBtn.setText("Browse");
-        browseBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        browseBtn.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 browseBtnActionPerformed(evt);
             }
         });
 
         changeDirectoryBtn.setText("Cd");
-        changeDirectoryBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        changeDirectoryBtn.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 changeDirectoryBtnActionPerformed(evt);
             }
         });
@@ -271,23 +281,29 @@ public class ClientMainFrm extends javax.swing.JFrame {
         );
 
         fileTbl.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+            new Object [][]
+            {
 
             },
-            new String [] {
+            new String []
+            {
                 "Type", "Name", "Size (Byte)"
             }
-        ) {
-            boolean[] canEdit = new boolean [] {
+        )
+        {
+            boolean[] canEdit = new boolean []
+            {
                 false, false, false
             };
 
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
+            public boolean isCellEditable(int rowIndex, int columnIndex)
+            {
                 return canEdit [columnIndex];
             }
         });
         jScrollPane7.setViewportView(fileTbl);
-        if (fileTbl.getColumnModel().getColumnCount() > 0) {
+        if (fileTbl.getColumnModel().getColumnCount() > 0)
+        {
             fileTbl.getColumnModel().getColumn(0).setMinWidth(30);
             fileTbl.getColumnModel().getColumn(0).setPreferredWidth(40);
             fileTbl.getColumnModel().getColumn(0).setMaxWidth(60);
@@ -436,8 +452,10 @@ public class ClientMainFrm extends javax.swing.JFrame {
         roomPanel.setPreferredSize(new java.awt.Dimension(350, 250));
 
         listChannel.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        listChannel.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
+        listChannel.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseClicked(java.awt.event.MouseEvent evt)
+            {
                 listChannelMouseClicked(evt);
             }
         });
@@ -526,8 +544,10 @@ public class ClientMainFrm extends javax.swing.JFrame {
         textFieldChat.setMaximumSize(new java.awt.Dimension(2147483647, 15));
         textFieldChat.setMinimumSize(new java.awt.Dimension(6, 15));
         textFieldChat.setPreferredSize(new java.awt.Dimension(6, 15));
-        textFieldChat.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
+        textFieldChat.addKeyListener(new java.awt.event.KeyAdapter()
+        {
+            public void keyPressed(java.awt.event.KeyEvent evt)
+            {
                 textFieldChatKeyPressed(evt);
             }
         });
@@ -542,28 +562,44 @@ public class ClientMainFrm extends javax.swing.JFrame {
         jMenu1.setText("File");
 
         itemConnect.setText("Connect to channel");
-        itemConnect.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        itemConnect.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 itemConnectActionPerformed(evt);
             }
         });
         jMenu1.add(itemConnect);
 
         txtCreate.setText("Create new channel");
-        txtCreate.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        txtCreate.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 txtCreateActionPerformed(evt);
             }
         });
         jMenu1.add(txtCreate);
 
         itemEditChannel.setText("Edit channel");
-        itemEditChannel.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        itemEditChannel.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 itemEditChannelActionPerformed(evt);
             }
         });
         jMenu1.add(itemEditChannel);
+
+        itemAddFriend.setText("Add as friend");
+        itemAddFriend.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                itemAddFriendActionPerformed(evt);
+            }
+        });
+        jMenu1.add(itemAddFriend);
 
         jMenuBar1.add(jMenu1);
 
@@ -571,8 +607,10 @@ public class ClientMainFrm extends javax.swing.JFrame {
 
         fileTransferItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/ftransfer.png"))); // NOI18N
         fileTransferItem.setText("File Transfer");
-        fileTransferItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        fileTransferItem.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 fileTransferItemActionPerformed(evt);
             }
         });
@@ -635,6 +673,11 @@ public class ClientMainFrm extends javax.swing.JFrame {
         changeDirectory();
     }//GEN-LAST:event_changeDirectoryBtnActionPerformed
 
+    private void itemAddFriendActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_itemAddFriendActionPerformed
+    {//GEN-HEADEREND:event_itemAddFriendActionPerformed
+        cmc.itemAddFriendClicked();
+    }//GEN-LAST:event_itemAddFriendActionPerformed
+
 
     /**
      * This function update the channel list
@@ -647,7 +690,7 @@ public class ClientMainFrm extends javax.swing.JFrame {
             dlm.addElement(channel.getName());
             for(Client client : channel.getListClient())
             {
-                dlm.addElement("     " + client.getUsername());
+                dlm.addElement(client.getUsername());
                 if(client.getUsername().equals(cmc.user.getUsername()))
                     cmc.currentChannel.setName(channel.getName());
             }
@@ -728,9 +771,35 @@ public class ClientMainFrm extends javax.swing.JFrame {
     }
     
     /**
+     * This function shows the friend request dialog
+     */
+    public int showFriendRequest(String senderName)
+    {
+        String[] options = 
+        {
+            "Accept",
+            "Decline"
+        };
+        int option = JOptionPane.showOptionDialog(this, senderName + " has sent you a friend request", "Friend request", JOptionPane.NO_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+        if(option == 0)
+            return 1;
+        else
+            return 0;
+    }
+    
+    /**
      * This function returns currently selected channel
      */
     public String getSelectedChannel()
+    {
+        int index = listChannel.getSelectedIndex();
+        if(index == -1)
+            return null;
+        else
+            return listChannel.getModel().getElementAt(index);
+    }
+    
+    public String getSelectedClient()
     {
         int index = listChannel.getSelectedIndex();
         if(index == -1)
@@ -912,6 +981,7 @@ public class ClientMainFrm extends javax.swing.JFrame {
     private javax.swing.JTable fileTbl;
     private javax.swing.JMenuItem fileTransferItem;
     private javax.swing.JLabel fileUpload;
+    private javax.swing.JMenuItem itemAddFriend;
     private javax.swing.JMenuItem itemConnect;
     private javax.swing.JMenuItem itemEditChannel;
     private javax.swing.JLabel jLabel1;

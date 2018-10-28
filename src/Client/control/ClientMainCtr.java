@@ -135,6 +135,20 @@ public class ClientMainCtr
             {
                 receiveMessage();
             }
+            else if(protocol.equals("Friend-request"))
+            {
+                receiveFriendRequest();
+            }
+            else if(protocol.equals("Friend-request-accepted"))
+            {
+                String friendName = dis.readUTF();
+                JOptionPane.showMessageDialog(cmf, friendName + " has accepted your friend request.", "Friend", JOptionPane.INFORMATION_MESSAGE);
+            }
+            else if(protocol.equals("Friend-request-declined"))
+            {
+                String friendName = dis.readUTF();
+                JOptionPane.showMessageDialog(cmf, friendName + " has declined your friend request.", "Friend", JOptionPane.INFORMATION_MESSAGE);
+            }
         }
         catch (IOException ex)
         {
@@ -227,6 +241,22 @@ public class ClientMainCtr
         }
     }
     
+    public void itemAddFriendClicked()
+    {
+        String clientName = cmf.getSelectedClient();
+        if(clientName == null)
+            return;
+        try
+        {
+            dos.writeUTF("Add-friend");
+            dos.writeUTF(clientName);
+        }
+        catch(IOException ex)
+        {
+            Logger.getLogger(ClientMainCtr.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     private Channel getChannelbyName(String name)
     {
         for(Channel c : listChannel)
@@ -253,6 +283,29 @@ public class ClientMainCtr
             String sender = dis.readUTF();
             String msg = dis.readUTF();
             cmf.printMessage(sender, msg);
+        }
+        catch(IOException ex)
+        {
+            Logger.getLogger(ClientMainCtr.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    private void receiveFriendRequest()
+    {
+        try
+        {
+            String senderName = dis.readUTF();
+            int result = cmf.showFriendRequest(senderName);
+            if(result == 1)
+            {
+                dos.writeUTF("Friend-request-accepted");
+                dos.writeUTF(senderName);
+            }
+            else
+            {
+                dos.writeUTF("Friend-request-declined");
+                dos.writeUTF(senderName);
+            }
         }
         catch(IOException ex)
         {

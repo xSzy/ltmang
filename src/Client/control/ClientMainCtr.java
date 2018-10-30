@@ -110,6 +110,10 @@ public class ClientMainCtr
                 cmf.writeConsole("Channel list received");
                 return;
             }
+            else if(protocol.equals("Friend-list"))
+            {
+                readFriendList();
+            }
             else if(protocol.equals("TEST"))
             {
                 cmf.writeConsole("TEST protocol received");
@@ -352,6 +356,30 @@ public class ClientMainCtr
                 listChannel.add(c);
             }
             cmf.updateChannelList(listChannel);
+        }
+        catch(IOException ex)
+        {
+            Logger.getLogger(ClientMainCtr.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    private void readFriendList()
+    {
+        ArrayList<String> onlineList = new ArrayList<>();
+        ArrayList<String> offlineList = new ArrayList<>();
+        try
+        {
+            int onlineSize = dis.readInt();
+            for(int i = 0; i < onlineSize; i++)
+            {
+                onlineList.add(dis.readUTF());
+            }
+            int offlineSize = dis.readInt();
+            for(int i = 0; i < offlineSize; i++)
+            {
+                offlineList.add(dis.readUTF());
+            }
+            cmf.cff.displayFriendList(onlineList, offlineList);
         }
         catch(IOException ex)
         {

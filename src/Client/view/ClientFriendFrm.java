@@ -5,18 +5,22 @@
  */
 package Client.view;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author xSzy
  */
 public class ClientFriendFrm extends javax.swing.JFrame
 {
-
+    private ClientMainFrm cmf;
+    
     /**
      * Creates new form ClientFriendFrm
      */
-    public ClientFriendFrm()
+    public ClientFriendFrm(ClientMainFrm cmf)
     {
+        this.cmf = cmf;
         initComponents();
     }
 
@@ -33,7 +37,6 @@ public class ClientFriendFrm extends javax.swing.JFrame
         jScrollPane1 = new javax.swing.JScrollPane();
         listFriend = new javax.swing.JList<>();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Friends");
 
         listFriend.setModel(new javax.swing.AbstractListModel<String>()
@@ -59,6 +62,14 @@ public class ClientFriendFrm extends javax.swing.JFrame
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * This function display the friendlist from input
+     */
+    public void displayFriendList(ArrayList<String> onlineList, ArrayList<String> offlineList)
+    {
+        
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -103,7 +114,7 @@ public class ClientFriendFrm extends javax.swing.JFrame
         {
             public void run()
             {
-                new ClientFriendFrm().setVisible(true);
+                new ClientFriendFrm(null).setVisible(true);
             }
         });
     }

@@ -48,6 +48,7 @@ public class ClientMainFrm extends javax.swing.JFrame {
     private String currentDirectory = "";
     private String userHomeDirectory = "";
     private String ipServer;
+    public ClientFriendFrm cff;
     /**
      * Creates new form ClientMainFrm
      */
@@ -66,6 +67,7 @@ public class ClientMainFrm extends javax.swing.JFrame {
         ipServer = server.getInetAddress().getHostAddress();
         System.out.println(ipServer);
         mySetting();
+        cff = new ClientFriendFrm(this);
         cmc = new ClientMainCtr(this, server, user);
     }
     

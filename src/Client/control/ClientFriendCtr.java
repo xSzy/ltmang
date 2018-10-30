@@ -19,7 +19,6 @@ public class ClientFriendCtr
     public ClientFriendCtr(ClientMainCtr cmc)
     {
         this.cmc = cmc;
-        cff = new ClientFriendFrm();
         cff.setVisible(true);
     }
 }

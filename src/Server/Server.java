@@ -175,6 +175,9 @@ public class Server extends javax.swing.JFrame
         client.setChannel(lobby);
         printConsole("Client " + client.getUsername() + " entered server lobby!");
         
+        //update friendlist for client
+        sendFriendList(client);
+        
         //send all channel list to allclient
         for(Client c : listClient)
             updateChannelList(c);
@@ -202,46 +205,77 @@ public class Server extends javax.swing.JFrame
     }
     
     /**
+     * This function send friendlist to client
+     */
+    private void sendFriendList(Client client)
+    {
+        //get all friendlist
+        ServerDAO sdao = new ServerDAO();
+        ArrayList<String> friendList = sdao.getFriendList(client.getUsername());
+        
+        //get online friend and offline friend
+        ArrayList<String> onlineList = new ArrayList<>();
+        ArrayList<String> offlineList = new ArrayList<>();
+        for(String name : friendList)
+        {
+            if(searchClient(name) != null)
+                onlineList.add(name);
+            else
+                offlineList.add(name);
+        }
+        
+        DataOutputStream dos = null;
+        try
+        {
+            dos = new DataOutputStream(client.getSocket().getOutputStream());
+            dos.writeUTF("Friend-list");
+            dos.writeInt(onlineList.size());
+            for(String name : onlineList)
+                dos.writeUTF(name);
+            dos.writeInt(offlineList.size());
+            for(String name : offlineList)
+                dos.writeUTF(name);
+        }
+        catch(IOException ex)
+        {
+            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    /**
      * This function send all channel available to client
      */
     private void updateChannelList(Client client)
     {
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run()
+        try
+        {
+            DataOutputStream dos = new DataOutputStream(client.getSocket().getOutputStream());
+            dos.writeUTF("Channel-list");
+            //write the number of available channel
+            dos.writeInt(listChannel.size());
+            //write all channel's info
+            for(Channel channel : listChannel)
             {
-                try
+                //write channel name
+                dos.writeUTF(channel.getName());
+                //write channel password
+                dos.writeUTF(channel.getPassword());
+                //write channel owner name
+                dos.writeUTF(channel.getOwner().getUsername());
+                //write the number of channel's client
+                dos.writeInt(channel.getListClient().size());
+                //write all channel's username
+                for(Client c : channel.getListClient())
                 {
-                    DataOutputStream dos = new DataOutputStream(client.getSocket().getOutputStream());
-                    dos.writeUTF("Channel-list");
-                    //write the number of available channel
-                    dos.writeInt(listChannel.size());
-                    //write all channel's info
-                    for(Channel channel : listChannel)
-                    {
-                        //write channel name
-                        dos.writeUTF(channel.getName());
-                        //write channel password
-                        dos.writeUTF(channel.getPassword());
-                        //write channel owner name
-                        dos.writeUTF(channel.getOwner().getUsername());
-                        //write the number of channel's client
-                        dos.writeInt(channel.getListClient().size());
-                        //write all channel's username
-                        for(Client c : channel.getListClient())
-                        {
-                            dos.writeUTF(c.getUsername());
-                        }
-                    }
-                    printConsole("Channel list sent to client " + client.getSocket().getRemoteSocketAddress());
-                }
-                catch (IOException ex)
-                {
-                    Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+                    dos.writeUTF(c.getUsername());
                 }
             }
-        });
-        t.start();
+            printConsole("Channel list sent to client " + client.getSocket().getRemoteSocketAddress());
+        }
+        catch (IOException ex)
+        {
+            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     /**
@@ -575,7 +609,11 @@ public class Server extends javax.swing.JFrame
                 return;
             dos = new DataOutputStream(sender.getSocket().getOutputStream());
             if(isAccepted)
+            {
+                ServerDAO sdao = new ServerDAO();
+                sdao.addFriend(senderName, client.getUsername());
                 dos.writeUTF("Friend-request-accepted");
+            }
             else
                 dos.writeUTF("Friend-request-declined");
             dos.writeUTF(client.getUsername());

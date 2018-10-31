@@ -5,7 +5,10 @@
  */
 package Client.view;
 
+import Client.control.ClientFriendCtr;
 import java.util.ArrayList;
+import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -13,7 +16,8 @@ import java.util.ArrayList;
  */
 public class ClientFriendFrm extends javax.swing.JFrame
 {
-    private ClientMainFrm cmf;
+    public ClientMainFrm cmf;
+    public ClientFriendCtr cfc;
     
     /**
      * Creates new form ClientFriendFrm
@@ -22,6 +26,7 @@ public class ClientFriendFrm extends javax.swing.JFrame
     {
         this.cmf = cmf;
         initComponents();
+        cfc = new ClientFriendCtr(this);
     }
 
     /**
@@ -67,7 +72,40 @@ public class ClientFriendFrm extends javax.swing.JFrame
      */
     public void displayFriendList(ArrayList<String> onlineList, ArrayList<String> offlineList)
     {
-        
+        DefaultListModel dlm = new DefaultListModel();
+        dlm.addElement(new String("Online"));
+        for(String name : onlineList)
+            dlm.addElement(new String("    " + name));
+        dlm.addElement(new String("Offline"));
+        for(String name : offlineList)
+            dlm.addElement(new String("    " + name));
+        listFriend.setModel(dlm);
+    }
+    
+    /**
+     * This function shows a confirm delete message
+     */
+    public int showDeleteConfirmMessage(String name)
+    {
+        int option = JOptionPane.showConfirmDialog(this, "Are you sure want to delete " + name + " from your friendlist ?", "Confirmation", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+        if(option == JOptionPane.YES_OPTION)
+            return 1;
+        return 0;
+    }
+    
+    /**
+     * This function return the selected client name
+     */
+    public String getSelectedClient()
+    {
+        int index = listFriend.getSelectedIndex();
+        if(index == -1)
+            return null;
+        else
+        {
+            String result = listFriend.getModel().getElementAt(index);
+            return result.substring(4, result.length());
+        }
     }
     
     /**

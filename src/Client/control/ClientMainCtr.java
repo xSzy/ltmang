@@ -245,22 +245,6 @@ public class ClientMainCtr
         }
     }
     
-    public void itemAddFriendClicked()
-    {
-        String clientName = cmf.getSelectedClient();
-        if(clientName == null)
-            return;
-        try
-        {
-            dos.writeUTF("Add-friend");
-            dos.writeUTF(clientName);
-        }
-        catch(IOException ex)
-        {
-            Logger.getLogger(ClientMainCtr.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
     private Channel getChannelbyName(String name)
     {
         for(Channel c : listChannel)

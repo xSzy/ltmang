@@ -40,7 +40,7 @@ import model.FtpFile;
  */
 public class ClientMainFrm extends javax.swing.JFrame {
     
-    private ClientMainCtr cmc;
+    public ClientMainCtr cmc;
     private File fileSelected;
     private ClientFtpCtr cfc;
     private DefaultTableModel fileTblModel;
@@ -65,10 +65,10 @@ public class ClientMainFrm extends javax.swing.JFrame {
         initComponents();
         this.setVisible(true); 
         ipServer = server.getInetAddress().getHostAddress();
-        System.out.println(ipServer);
         mySetting();
-        cff = new ClientFriendFrm(this);
         cmc = new ClientMainCtr(this, server, user);
+        cff = new ClientFriendFrm(this);
+        cff.setVisible(true);
     }
     
     public void mySetting(){        
@@ -151,7 +151,10 @@ public class ClientMainFrm extends javax.swing.JFrame {
         itemConnect = new javax.swing.JMenuItem();
         txtCreate = new javax.swing.JMenuItem();
         itemEditChannel = new javax.swing.JMenuItem();
+        jMenu3 = new javax.swing.JMenu();
+        jCheckBoxMenuItem1 = new javax.swing.JCheckBoxMenuItem();
         itemAddFriend = new javax.swing.JMenuItem();
+        itemRemoveFriend = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         fileTransferItem = new javax.swing.JMenuItem();
 
@@ -573,7 +576,7 @@ public class ClientMainFrm extends javax.swing.JFrame {
 
         getContentPane().add(splitPanel1, java.awt.BorderLayout.CENTER);
 
-        jMenu1.setText("File");
+        jMenu1.setText("Channel");
 
         itemConnect.setText("Connect to channel");
         itemConnect.addActionListener(new java.awt.event.ActionListener()
@@ -605,6 +608,14 @@ public class ClientMainFrm extends javax.swing.JFrame {
         });
         jMenu1.add(itemEditChannel);
 
+        jMenuBar1.add(jMenu1);
+
+        jMenu3.setText("Friend");
+
+        jCheckBoxMenuItem1.setSelected(true);
+        jCheckBoxMenuItem1.setText("Show Friend panel");
+        jMenu3.add(jCheckBoxMenuItem1);
+
         itemAddFriend.setText("Add as friend");
         itemAddFriend.addActionListener(new java.awt.event.ActionListener()
         {
@@ -613,9 +624,19 @@ public class ClientMainFrm extends javax.swing.JFrame {
                 itemAddFriendActionPerformed(evt);
             }
         });
-        jMenu1.add(itemAddFriend);
+        jMenu3.add(itemAddFriend);
 
-        jMenuBar1.add(jMenu1);
+        itemRemoveFriend.setText("Remove friend");
+        itemRemoveFriend.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                itemRemoveFriendActionPerformed(evt);
+            }
+        });
+        jMenu3.add(itemRemoveFriend);
+
+        jMenuBar1.add(jMenu3);
 
         jMenu2.setText("Tool");
 
@@ -689,8 +710,13 @@ public class ClientMainFrm extends javax.swing.JFrame {
 
     private void itemAddFriendActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_itemAddFriendActionPerformed
     {//GEN-HEADEREND:event_itemAddFriendActionPerformed
-        cmc.itemAddFriendClicked();
+        cff.cfc.itemAddFriendClicked();
     }//GEN-LAST:event_itemAddFriendActionPerformed
+
+    private void itemRemoveFriendActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_itemRemoveFriendActionPerformed
+    {//GEN-HEADEREND:event_itemRemoveFriendActionPerformed
+        cff.cfc.itemRemoveFriendClicked();
+    }//GEN-LAST:event_itemRemoveFriendActionPerformed
 
 
     /**
@@ -998,6 +1024,8 @@ public class ClientMainFrm extends javax.swing.JFrame {
     private javax.swing.JMenuItem itemAddFriend;
     private javax.swing.JMenuItem itemConnect;
     private javax.swing.JMenuItem itemEditChannel;
+    private javax.swing.JMenuItem itemRemoveFriend;
+    private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -1009,6 +1037,7 @@ public class ClientMainFrm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;

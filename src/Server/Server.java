@@ -48,6 +48,7 @@ public class Server extends javax.swing.JFrame
         {
             server = new ServerSocket(port);
             udpServer = new DatagramSocket(udpPort);
+            ServerDAO sdao = new ServerDAO();
             initialize();
             
             Thread t = new Thread(new ConnectionThread());
@@ -218,8 +219,12 @@ public class Server extends javax.swing.JFrame
         ArrayList<String> offlineList = new ArrayList<>();
         for(String name : friendList)
         {
-            if(searchClient(name) != null)
+            Client c = searchClient(name);
+            if(c != null)
+            {
                 onlineList.add(name);
+                updateFriendList(c);
+            }
             else
                 offlineList.add(name);
         }
@@ -240,6 +245,49 @@ public class Server extends javax.swing.JFrame
         {
             Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
         }
+        this.printConsole("Friendlist sent to client " + client.getUsername());
+    }
+    
+    /**
+     * This function update friendlist of the selected client
+     */
+    private void updateFriendList(Client client)
+    {
+        //get all friendlist
+        ServerDAO sdao = new ServerDAO();
+        ArrayList<String> friendList = sdao.getFriendList(client.getUsername());
+        
+        //get online friend and offline friend
+        ArrayList<String> onlineList = new ArrayList<>();
+        ArrayList<String> offlineList = new ArrayList<>();
+        for(String name : friendList)
+        {
+            Client c = searchClient(name);
+            if(c != null)
+            {
+                onlineList.add(name);
+            }
+            else
+                offlineList.add(name);
+        }
+        
+        DataOutputStream dos = null;
+        try
+        {
+            dos = new DataOutputStream(client.getSocket().getOutputStream());
+            dos.writeUTF("Friend-list");
+            dos.writeInt(onlineList.size());
+            for(String name : onlineList)
+                dos.writeUTF(name);
+            dos.writeInt(offlineList.size());
+            for(String name : offlineList)
+                dos.writeUTF(name);
+        }
+        catch(IOException ex)
+        {
+            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        this.printConsole("Friendlist updated to client " + client.getUsername());
     }
     
     /**
@@ -298,6 +346,8 @@ public class Server extends javax.swing.JFrame
                 client.setUsername(username);
                 client.setPassword(password);
             }
+            else
+                client.getSocket().close();
         }
         catch (IOException ex)
         {
@@ -382,6 +432,10 @@ public class Server extends javax.swing.JFrame
             else if(protocol.equals("Friend-request-declined"))
             {
                 friendRequestHandle(client, false);
+            }
+            else if(protocol.equals("Remove-friend"))
+            {
+                clientRemoveFriend(client);
             }
         }
         catch (IOException ex)
@@ -610,13 +664,34 @@ public class Server extends javax.swing.JFrame
             dos = new DataOutputStream(sender.getSocket().getOutputStream());
             if(isAccepted)
             {
-                ServerDAO sdao = new ServerDAO();
-                sdao.addFriend(senderName, client.getUsername());
+                ServerDAO.addFriend(senderName, client.getUsername());
                 dos.writeUTF("Friend-request-accepted");
             }
             else
                 dos.writeUTF("Friend-request-declined");
             dos.writeUTF(client.getUsername());
+        }
+        catch(IOException ex)
+        {
+            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    /**
+     * This function starts when client remove a friend
+     */
+    private void clientRemoveFriend(Client client)
+    {
+        DataInputStream dis = null;
+        try
+        {
+            dis = new DataInputStream(client.getSocket().getInputStream());
+            String name = dis.readUTF();
+            ServerDAO.removeFriend(client.getUsername(), name);
+            updateFriendList(client);
+            Client c = searchClient(name);
+            if(c != null)
+                updateFriendList(c);
         }
         catch(IOException ex)
         {
@@ -780,12 +855,19 @@ public class Server extends javax.swing.JFrame
                 
                 while(true)
                 {
-                    readProtocol(client);
+                    if(!client.getSocket().isClosed())
+                        readProtocol(client);
+                    else
+                    {
+                        System.out.println("Client disconnected");
+                        break;
+                    }
                 }
             }
             catch (IOException ex)
             {
                 Logger.getLogger(ServerSocketDemo.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println("Client disconnected");
             }
         }
     }

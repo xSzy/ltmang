@@ -18,11 +18,11 @@ public class ServerDAO
     private static Connection conn;
     
     public ServerDAO(){
-        String dbClass = "net.sourceforge.jtds.jdbc.Driver";
+        String dbClass = "com.mysql.jdbc.Driver";
         try {
             Class.forName(dbClass);
-            String url = "jdbc:jtds:sqlserver://127.0.0.1:1433/mydb;instance=SQLEXPRESS";
-            conn = DriverManager.getConnection(url, "xSzy", "ffieosgc");
+            String url = "jdbc:mysql://localhost:3306/btlltm?useSSL=false";
+            conn = DriverManager.getConnection(url, "root", "ffieosgc");
         } catch (ClassNotFoundException | SQLException ex) {
             System.out.println("No sql server class or can connect to the database");
         }        
@@ -33,19 +33,9 @@ public class ServerDAO
      */           
     public static int checkLogin(String username, String password)
     {
-        if (username.equals("test") && password.equals("test"))
-            return 0;
-        
-        if (username.equals("test2") && password.equals("test2"))
-            return 0;
-        /*
-        String dbClass = "net.sourceforge.jtds.jdbc.Driver";
         try
         {
-            Class.forName(dbClass);
-            String url = "jdbc:jtds:sqlserver://127.0.0.1:1433/mydb;instance=SQLEXPRESS";
-            Connection conn = DriverManager.getConnection(url, "xSzy", "ffieosgc");
-            PreparedStatement ps = conn.prepareStatement("SELECT password FROM tblAccount WHERE account = ?");
+            PreparedStatement ps = conn.prepareStatement("SELECT password FROM tblaccount WHERE account = ?");
             ps.setString(1, username);
             ResultSet rs = ps.executeQuery();
             while(rs.next())
@@ -56,45 +46,40 @@ public class ServerDAO
             }
             return 2;
         }
-        catch (ClassNotFoundException ex)
-        {
-            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
-            System.out.println("Class not found!");
-            return 1;
-        }
         catch (SQLException ex)
         {
             Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println("SQL Exception");
             return 1;
-        }*/
-        return 0;
+        }
     }
     
     public static int register(String username, String password)
     {                                      
         try {
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM tblAccount WHERE account = ?");
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM tblaccount WHERE account = ?");
             ps.setString(1, username);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 return 2;
             }
-            ps = conn.prepareStatement("INSERT INTO tblAccount VALUES (?, ?)");
+            ps = conn.prepareStatement("INSERT INTO tblaccount(account, password) VALUES (?, ?)");
             ps.setString(1, username);
             ps.setString(2, password);
             ps.executeUpdate();            
-        } catch (SQLException ex) {
-            System.out.println("sql exception register function");
+        }
+        catch(SQLException ex)
+        {
+            Logger.getLogger(ServerDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return 0;
     }
     
-    public boolean addFriend(String sender, String receiver)
+    public static boolean addFriend(String sender, String receiver)
     {
         try
         {
-            PreparedStatement ps = conn.prepareStatement("SELECT id FROM tblAccount WHERE account = ?");
+            PreparedStatement ps = conn.prepareStatement("SELECT id FROM tblaccount WHERE account = ?");
             ps.setString(1, sender);
             ResultSet rs = ps.executeQuery();
             int senderId, receiverId;
@@ -102,14 +87,14 @@ public class ServerDAO
                 senderId = rs.getInt(1);
             else
                 return false;
-            ps = conn.prepareStatement("SELECT id FROM tblAccount WHERE account = ?");
+            ps = conn.prepareStatement("SELECT id FROM tblaccount WHERE account = ?");
             ps.setString(1, receiver);
             rs = ps.executeQuery();
             if(rs.next())
                 receiverId = rs.getInt(1);
             else
                 return false;
-            ps = conn.prepareStatement("INSERT INTO tblFriend VALUES (?,?)");
+            ps = conn.prepareStatement("INSERT INTO tblfriend VALUES (?,?)");
             ps.setInt(1, senderId);
             ps.setInt(2, receiverId);
             ps.executeUpdate();
@@ -122,12 +107,12 @@ public class ServerDAO
         }
     }
     
-    public ArrayList<String> getFriendList(String username)
+    public static ArrayList<String> getFriendList(String username)
     {
         try
         {
             ArrayList<String> result = new ArrayList<>();
-            PreparedStatement ps = conn.prepareStatement("SELECT id FROM tblAccount WHERE account = ?");
+            PreparedStatement ps = conn.prepareStatement("SELECT id FROM tblaccount WHERE account = ?");
             ps.setString(1, username);
             ResultSet rs = ps.executeQuery();
             int userId = 0;
@@ -136,14 +121,14 @@ public class ServerDAO
                 userId = rs.getInt(1);
             }
             ArrayList<Integer> friendId = new ArrayList<>();
-            ps = conn.prepareStatement("SELECT idReceiver FROM tblFriend WHERE idSender = ?");
+            ps = conn.prepareStatement("SELECT idReceiver FROM tblfriend WHERE idSender = ?");
             ps.setInt(1, userId);
             rs = ps.executeQuery();
             while(rs.next())
             {
                 friendId.add(rs.getInt(1));
             }
-            ps = conn.prepareStatement("SELECT idSender FROM tblFriend WHERE idReceiver = ?");
+            ps = conn.prepareStatement("SELECT idSender FROM tblfriend WHERE idReceiver = ?");
             ps.setInt(1, userId);
             rs = ps.executeQuery();
             while(rs.next())
@@ -152,7 +137,7 @@ public class ServerDAO
             }
             for(Integer i : friendId)
             {
-                ps = conn.prepareStatement("SELECT account FROM tblAccount WHERE id = ?");
+                ps = conn.prepareStatement("SELECT account FROM tblaccount WHERE id = ?");
                 ps.setInt(1, i);
                 rs = ps.executeQuery();
                 while(rs.next())
@@ -166,6 +151,40 @@ public class ServerDAO
         {
             Logger.getLogger(ServerDAO.class.getName()).log(Level.SEVERE, null, ex);
             return null;
+        }
+    }
+    
+    public static void removeFriend(String user1, String user2)
+    {
+        try
+        {
+            int uid1, uid2;
+            PreparedStatement ps = conn.prepareStatement("SELECT id FROM tblaccount WHERE account = ?");
+            ps.setString(1, user1);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next())
+                uid1 = rs.getInt(1);
+            else
+                return;
+            ps.setString(1, user2);
+            rs = ps.executeQuery();
+            if(rs.next())
+                uid2 = rs.getInt(1);
+            else
+                return;
+            ps = conn.prepareStatement("DELETE FROM tblfriend WHERE idSender = ? AND idReceiver = ?");
+            ps.setInt(1, uid1);
+            ps.setInt(2, uid2);
+            if(ps.executeUpdate() > 0)
+                return;
+            ps.setInt(1, uid2);
+            ps.setInt(2, uid1);
+            ps.executeUpdate();
+            return;
+        }
+        catch(SQLException ex)
+        {
+            Logger.getLogger(ServerDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

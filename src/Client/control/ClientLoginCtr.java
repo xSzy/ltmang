@@ -48,7 +48,17 @@ public class ClientLoginCtr
         }
         catch (IOException ex)
         {
-            return 1;
+            try
+            {
+                if(socket != null)
+                    socket.close();
+                return 1;
+            }
+            catch(IOException ex1)
+            {
+                Logger.getLogger(ClientLoginCtr.class.getName()).log(Level.SEVERE, null, ex1);
+                return 1;
+            }
         }
     }
     public int register(String serverIP, int port, String username, char[] password)

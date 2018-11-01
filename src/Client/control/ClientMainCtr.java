@@ -153,6 +153,18 @@ public class ClientMainCtr
                 String friendName = dis.readUTF();
                 JOptionPane.showMessageDialog(cmf, friendName + " has declined your friend request.", "Friend", JOptionPane.INFORMATION_MESSAGE);
             }
+            else if(protocol.equals("Redirect-invitation"))
+            {
+                receiveInviteRequest();
+            }
+            else if(protocol.equals("Friend-offline"))
+            {
+                JOptionPane.showMessageDialog(cmf, "Your friend is offline at the moment.", "Invite to channel", JOptionPane.INFORMATION_MESSAGE);
+            }
+            else if(protocol.equals("Same-channel"))
+            {
+                JOptionPane.showMessageDialog(cmf, "You are in the same channel with your friend.", "Invite to channel", JOptionPane.INFORMATION_MESSAGE);
+            }
         }
         catch (IOException ex)
         {
@@ -238,6 +250,48 @@ public class ClientMainCtr
             dos.writeUTF(newChannel.getPassword());
             dos.writeUTF(newChannel.getTopic());
             dos.writeUTF(newChannel.getDescription());
+        }
+        catch(IOException ex)
+        {
+            Logger.getLogger(ClientMainCtr.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void itemDeleteChannelClicked()
+    {
+        String channelName = cmf.getSelectedChannel();
+        if(channelName == null)
+            return;
+        Channel channel = getChannelbyName(channelName);
+        if(channel == null)
+            return;
+        if(!user.getUsername().equals(channel.getOwner().getUsername()))
+        {
+            JOptionPane.showMessageDialog(cmf, "You do not have permission to edit this channel!", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        try
+        {
+            dos.writeUTF("Delete-channel");
+            dos.writeUTF(channel.getName());
+        }
+        catch(IOException ex)
+        {
+            Logger.getLogger(ClientMainCtr.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    private void receiveInviteRequest()
+    {
+        try
+        {
+            String sender = dis.readUTF();
+            String channelName = dis.readUTF(); 
+            if(cmf.showInviteRequest(sender, channelName))
+            {
+                dos.writeUTF("Invitation-accepted");
+                dos.writeUTF(sender);
+            }
         }
         catch(IOException ex)
         {

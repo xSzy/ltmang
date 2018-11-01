@@ -421,6 +421,10 @@ public class Server extends javax.swing.JFrame
             {
                 clientEditChannel(client);
             }
+            else if(protocol.equals("Delete-channel"))
+            {
+                clientDeleteChannel(client);
+            }
             else if(protocol.equals("Add-friend"))
             {
                 clientAddFriend(client);
@@ -436,6 +440,14 @@ public class Server extends javax.swing.JFrame
             else if(protocol.equals("Remove-friend"))
             {
                 clientRemoveFriend(client);
+            }
+            else if(protocol.equals("Invite-to-channel"))
+            {
+                clientInviteFriend(client);
+            }
+            else if(protocol.equals("Invitation-accepted"))
+            {
+                invitationHandle(client);
             }
         }
         catch (IOException ex)
@@ -616,6 +628,38 @@ public class Server extends javax.swing.JFrame
     }
     
     /**
+     * This function starts when client request to delete channel
+     */
+    private void clientDeleteChannel(Client client)
+    {
+        DataInputStream dis = null;
+        DataOutputStream dos = null;
+        try
+        {
+            dis = new DataInputStream(client.getSocket().getInputStream());
+            dos = new DataOutputStream(client.getSocket().getOutputStream());
+            String channelName = dis.readUTF();
+            Channel channel = searchChannel(channelName);
+            if(channel == null)
+                return;
+            //move all channel back to lobby
+            for(int i = channel.getListClient().size()-1; i >= 0; i--)
+            {
+                Client c = channel.getListClient().get(i);
+                changeChannel(c, lobby);
+            }
+            //delete the channel
+            listChannel.remove(channel);
+            for(Client c : listClient)
+                updateChannelList(c);
+        }
+        catch(IOException ex)
+        {
+            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    /**
      * This function starts when a client is adding a friend
      */
     private void clientAddFriend(Client client)
@@ -666,6 +710,8 @@ public class Server extends javax.swing.JFrame
             {
                 ServerDAO.addFriend(senderName, client.getUsername());
                 dos.writeUTF("Friend-request-accepted");
+                updateFriendList(client);
+                updateFriendList(sender);
             }
             else
                 dos.writeUTF("Friend-request-declined");
@@ -692,6 +738,60 @@ public class Server extends javax.swing.JFrame
             Client c = searchClient(name);
             if(c != null)
                 updateFriendList(c);
+        }
+        catch(IOException ex)
+        {
+            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    /**
+     * This function starts when a client invite friend to his/her channel
+     */
+    private void clientInviteFriend(Client client)
+    {
+        DataInputStream dis = null;
+        DataOutputStream dos = null;
+        try
+        {
+            dis = new DataInputStream(client.getSocket().getInputStream());
+            String name = dis.readUTF();
+            Client receiver = searchClient(name);
+            if(receiver == null)
+            {
+                dos = new DataOutputStream(client.getSocket().getOutputStream());
+                dos.writeUTF("Friend-offline");
+            }
+            if(receiver.getChannel() == client.getChannel())
+            {
+                dos = new DataOutputStream(client.getSocket().getOutputStream());
+                dos.writeUTF("Same-channel");
+            }
+            dos = new DataOutputStream(receiver.getSocket().getOutputStream());
+            dos.writeUTF("Redirect-invitation");
+            dos.writeUTF(client.getUsername());
+            dos.writeUTF(client.getChannel().getName());
+        }
+        catch(IOException ex)
+        {
+            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    /**
+     * This function starts when receiver accepted the invite request
+     */
+    private void invitationHandle(Client client)
+    {
+        DataInputStream dis = null;
+        try
+        {
+            dis = new DataInputStream(client.getSocket().getInputStream());
+            String senderName = dis.readUTF();
+            Client sender = searchClient(senderName);
+            if(sender == null)
+                return;
+            this.changeChannel(client, sender.getChannel());
         }
         catch(IOException ex)
         {

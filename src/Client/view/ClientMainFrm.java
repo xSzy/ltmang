@@ -151,10 +151,12 @@ public class ClientMainFrm extends javax.swing.JFrame {
         itemConnect = new javax.swing.JMenuItem();
         txtCreate = new javax.swing.JMenuItem();
         itemEditChannel = new javax.swing.JMenuItem();
+        itemDeleteChannel = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         jCheckBoxMenuItem1 = new javax.swing.JCheckBoxMenuItem();
         itemAddFriend = new javax.swing.JMenuItem();
         itemRemoveFriend = new javax.swing.JMenuItem();
+        itemInvite = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         fileTransferItem = new javax.swing.JMenuItem();
 
@@ -608,6 +610,16 @@ public class ClientMainFrm extends javax.swing.JFrame {
         });
         jMenu1.add(itemEditChannel);
 
+        itemDeleteChannel.setText("Delete channel");
+        itemDeleteChannel.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                itemDeleteChannelActionPerformed(evt);
+            }
+        });
+        jMenu1.add(itemDeleteChannel);
+
         jMenuBar1.add(jMenu1);
 
         jMenu3.setText("Friend");
@@ -635,6 +647,16 @@ public class ClientMainFrm extends javax.swing.JFrame {
             }
         });
         jMenu3.add(itemRemoveFriend);
+
+        itemInvite.setText("Invite to channel");
+        itemInvite.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                itemInviteActionPerformed(evt);
+            }
+        });
+        jMenu3.add(itemInvite);
 
         jMenuBar1.add(jMenu3);
 
@@ -718,6 +740,16 @@ public class ClientMainFrm extends javax.swing.JFrame {
         cff.cfc.itemRemoveFriendClicked();
     }//GEN-LAST:event_itemRemoveFriendActionPerformed
 
+    private void itemInviteActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_itemInviteActionPerformed
+    {//GEN-HEADEREND:event_itemInviteActionPerformed
+        cff.cfc.itemInviteClicked();
+    }//GEN-LAST:event_itemInviteActionPerformed
+
+    private void itemDeleteChannelActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_itemDeleteChannelActionPerformed
+    {//GEN-HEADEREND:event_itemDeleteChannelActionPerformed
+        cmc.itemDeleteChannelClicked();
+    }//GEN-LAST:event_itemDeleteChannelActionPerformed
+
 
     /**
      * This function update the channel list
@@ -730,7 +762,7 @@ public class ClientMainFrm extends javax.swing.JFrame {
             dlm.addElement(channel.getName());
             for(Client client : channel.getListClient())
             {
-                dlm.addElement(client.getUsername());
+                dlm.addElement("    " + client.getUsername());
                 if(client.getUsername().equals(cmc.user.getUsername()))
                     cmc.currentChannel.setName(channel.getName());
             }
@@ -828,6 +860,23 @@ public class ClientMainFrm extends javax.swing.JFrame {
     }
     
     /**
+     * This function shows the invite request
+     */
+    public boolean showInviteRequest(String sender, String channelName)
+    {
+        String[] options = 
+        {
+            "Accept",
+            "Decline"
+        };
+        int option = JOptionPane.showOptionDialog(this, sender + " invite you to join channel " + channelName, "Invitation", JOptionPane.NO_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+        if(option == 0)
+            return true;
+        else
+            return false;
+    }
+    
+    /**
      * This function returns currently selected channel
      */
     public String getSelectedChannel()
@@ -845,7 +894,10 @@ public class ClientMainFrm extends javax.swing.JFrame {
         if(index == -1)
             return null;
         else
-            return listChannel.getModel().getElementAt(index);
+        {
+            String result = listChannel.getModel().getElementAt(index);
+            return result.substring(4, result.length());
+        }
     }
     
     /**
@@ -1023,7 +1075,9 @@ public class ClientMainFrm extends javax.swing.JFrame {
     private javax.swing.JLabel fileUpload;
     private javax.swing.JMenuItem itemAddFriend;
     private javax.swing.JMenuItem itemConnect;
+    private javax.swing.JMenuItem itemDeleteChannel;
     private javax.swing.JMenuItem itemEditChannel;
+    private javax.swing.JMenuItem itemInvite;
     private javax.swing.JMenuItem itemRemoveFriend;
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
     private javax.swing.JLabel jLabel1;

@@ -76,4 +76,23 @@ public class ClientFriendCtr
             Logger.getLogger(ClientMainCtr.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    /**
+     * This function starts when invite item is clicked
+     */
+    public void itemInviteClicked()
+    {
+        String clientName = cff.getSelectedClient();
+        if(clientName == null)
+            return;
+        try
+        {
+            dos.writeUTF("Invite-to-channel");
+            dos.writeUTF(clientName);
+        }
+        catch(IOException ex)
+        {
+            Logger.getLogger(ClientFriendCtr.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }

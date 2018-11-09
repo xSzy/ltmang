@@ -28,6 +28,7 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JPopupMenu;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
@@ -92,8 +93,7 @@ public class ClientMainFrm extends javax.swing.JFrame {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         dlgCreate = new javax.swing.JDialog();
         jLabel1 = new javax.swing.JLabel();
@@ -108,11 +108,9 @@ public class ClientMainFrm extends javax.swing.JFrame {
         transferPanel = new javax.swing.JDialog();
         fileDownload = new javax.swing.JPanel();
         uploadBtn = new javax.swing.JButton();
-        dowloadBtn = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         fileUpload = new javax.swing.JLabel();
         browseBtn = new javax.swing.JButton();
-        changeDirectoryBtn = new javax.swing.JButton();
         jScrollPane7 = new javax.swing.JScrollPane();
         fileTbl = new javax.swing.JTable();
         dlgEditChannel = new javax.swing.JDialog();
@@ -132,6 +130,10 @@ public class ClientMainFrm extends javax.swing.JFrame {
         popupitemDelete = new javax.swing.JMenuItem();
         popupClient = new javax.swing.JPopupMenu();
         popupitemKick = new javax.swing.JMenuItem();
+        filePopupMenu = new javax.swing.JPopupMenu();
+        downloadItem = new javax.swing.JMenuItem();
+        removeItem = new javax.swing.JMenuItem();
+        newFolderItem = new javax.swing.JMenuItem();
         jToolBar1 = new javax.swing.JToolBar();
         jPanel1 = new javax.swing.JPanel();
         underBar = new javax.swing.JPanel();
@@ -231,20 +233,9 @@ public class ClientMainFrm extends javax.swing.JFrame {
         fileDownload.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         uploadBtn.setText("Upload");
-        uploadBtn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        uploadBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 uploadBtnActionPerformed(evt);
-            }
-        });
-
-        dowloadBtn.setText("Download");
-        dowloadBtn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
-                dowloadBtnActionPerformed(evt);
             }
         });
 
@@ -253,20 +244,9 @@ public class ClientMainFrm extends javax.swing.JFrame {
         fileUpload.setText("no file selected");
 
         browseBtn.setText("Browse");
-        browseBtn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        browseBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 browseBtnActionPerformed(evt);
-            }
-        });
-
-        changeDirectoryBtn.setText("Cd");
-        changeDirectoryBtn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
-                changeDirectoryBtnActionPerformed(evt);
             }
         });
 
@@ -276,18 +256,14 @@ public class ClientMainFrm extends javax.swing.JFrame {
             fileDownloadLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(fileDownloadLayout.createSequentialGroup()
                 .addGap(18, 18, 18)
-                .addGroup(fileDownloadLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(uploadBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(dowloadBtn))
-                .addGap(44, 44, 44)
+                .addGroup(fileDownloadLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(browseBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(uploadBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 79, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
                 .addComponent(jLabel5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(fileUpload)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
-                .addGroup(fileDownloadLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(browseBtn)
-                    .addComponent(changeDirectoryBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                .addContainerGap(143, Short.MAX_VALUE))
         );
         fileDownloadLayout.setVerticalGroup(
             fileDownloadLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -296,39 +272,42 @@ public class ClientMainFrm extends javax.swing.JFrame {
                 .addGroup(fileDownloadLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(uploadBtn)
                     .addComponent(jLabel5)
-                    .addComponent(fileUpload)
-                    .addComponent(browseBtn))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(fileDownloadLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(dowloadBtn)
-                    .addComponent(changeDirectoryBtn))
-                .addContainerGap())
+                    .addComponent(fileUpload))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(browseBtn)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         fileTbl.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][]
-            {
+            new Object [][] {
 
             },
-            new String []
-            {
+            new String [] {
                 "Type", "Name", "Size (Byte)"
             }
-        )
-        {
-            boolean[] canEdit = new boolean []
-            {
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Object.class, java.lang.Object.class, java.lang.Long.class
+            };
+            boolean[] canEdit = new boolean [] {
                 false, false, false
             };
 
-            public boolean isCellEditable(int rowIndex, int columnIndex)
-            {
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
+        fileTbl.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                fileTblMouseClicked(evt);
+            }
+        });
         jScrollPane7.setViewportView(fileTbl);
-        if (fileTbl.getColumnModel().getColumnCount() > 0)
-        {
+        if (fileTbl.getColumnModel().getColumnCount() > 0) {
             fileTbl.getColumnModel().getColumn(0).setMinWidth(30);
             fileTbl.getColumnModel().getColumn(0).setPreferredWidth(40);
             fileTbl.getColumnModel().getColumn(0).setMaxWidth(60);
@@ -346,7 +325,7 @@ public class ClientMainFrm extends javax.swing.JFrame {
         transferPanelLayout.setVerticalGroup(
             transferPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(transferPanelLayout.createSequentialGroup()
-                .addContainerGap(39, Short.MAX_VALUE)
+                .addContainerGap(34, Short.MAX_VALUE)
                 .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(fileDownload, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -410,54 +389,68 @@ public class ClientMainFrm extends javax.swing.JFrame {
         );
 
         popupitemConnect.setText("Connect to channel");
-        popupitemConnect.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        popupitemConnect.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 popupitemConnectActionPerformed(evt);
             }
         });
         popupChannel.add(popupitemConnect);
 
         popupitemCreate.setText("Create new channel");
-        popupitemCreate.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        popupitemCreate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 popupitemCreateActionPerformed(evt);
             }
         });
         popupChannel.add(popupitemCreate);
 
         popupitemEdit.setText("Edit channel");
-        popupitemEdit.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        popupitemEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 popupitemEditActionPerformed(evt);
             }
         });
         popupChannel.add(popupitemEdit);
 
         popupitemDelete.setText("Delete channel");
-        popupitemDelete.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        popupitemDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 popupitemDeleteActionPerformed(evt);
             }
         });
         popupChannel.add(popupitemDelete);
 
         popupitemKick.setText("jMenuItem1");
-        popupitemKick.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        popupitemKick.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 popupitemKickActionPerformed(evt);
             }
         });
         popupClient.add(popupitemKick);
+
+        downloadItem.setText("Download");
+        downloadItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                downloadItemActionPerformed(evt);
+            }
+        });
+        filePopupMenu.add(downloadItem);
+
+        removeItem.setText("remove");
+        removeItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeItemActionPerformed(evt);
+            }
+        });
+        filePopupMenu.add(removeItem);
+
+        newFolderItem.setText("New folder");
+        newFolderItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                newFolderItemActionPerformed(evt);
+            }
+        });
+        filePopupMenu.add(newFolderItem);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new java.awt.BorderLayout(1, 1));
@@ -527,14 +520,11 @@ public class ClientMainFrm extends javax.swing.JFrame {
         roomPanel.setPreferredSize(new java.awt.Dimension(350, 250));
 
         listChannel.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        listChannel.addMouseListener(new java.awt.event.MouseAdapter()
-        {
-            public void mouseClicked(java.awt.event.MouseEvent evt)
-            {
+        listChannel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
                 listChannelMouseClicked(evt);
             }
-            public void mousePressed(java.awt.event.MouseEvent evt)
-            {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
                 listChannelMousePressed(evt);
             }
         });
@@ -623,10 +613,8 @@ public class ClientMainFrm extends javax.swing.JFrame {
         textFieldChat.setMaximumSize(new java.awt.Dimension(2147483647, 15));
         textFieldChat.setMinimumSize(new java.awt.Dimension(6, 15));
         textFieldChat.setPreferredSize(new java.awt.Dimension(6, 15));
-        textFieldChat.addKeyListener(new java.awt.event.KeyAdapter()
-        {
-            public void keyPressed(java.awt.event.KeyEvent evt)
-            {
+        textFieldChat.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
                 textFieldChatKeyPressed(evt);
             }
         });
@@ -641,40 +629,32 @@ public class ClientMainFrm extends javax.swing.JFrame {
         jMenu1.setText("Channel");
 
         itemConnect.setText("Connect to channel");
-        itemConnect.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        itemConnect.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 itemConnectActionPerformed(evt);
             }
         });
         jMenu1.add(itemConnect);
 
         txtCreate.setText("Create new channel");
-        txtCreate.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        txtCreate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtCreateActionPerformed(evt);
             }
         });
         jMenu1.add(txtCreate);
 
         itemEditChannel.setText("Edit channel");
-        itemEditChannel.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        itemEditChannel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 itemEditChannelActionPerformed(evt);
             }
         });
         jMenu1.add(itemEditChannel);
 
         itemDeleteChannel.setText("Delete channel");
-        itemDeleteChannel.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        itemDeleteChannel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 itemDeleteChannelActionPerformed(evt);
             }
         });
@@ -689,30 +669,24 @@ public class ClientMainFrm extends javax.swing.JFrame {
         jMenu3.add(jCheckBoxMenuItem1);
 
         itemAddFriend.setText("Add as friend");
-        itemAddFriend.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        itemAddFriend.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 itemAddFriendActionPerformed(evt);
             }
         });
         jMenu3.add(itemAddFriend);
 
         itemRemoveFriend.setText("Remove friend");
-        itemRemoveFriend.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        itemRemoveFriend.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 itemRemoveFriendActionPerformed(evt);
             }
         });
         jMenu3.add(itemRemoveFriend);
 
         itemInvite.setText("Invite to channel");
-        itemInvite.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        itemInvite.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 itemInviteActionPerformed(evt);
             }
         });
@@ -724,10 +698,8 @@ public class ClientMainFrm extends javax.swing.JFrame {
 
         fileTransferItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/ftransfer.png"))); // NOI18N
         fileTransferItem.setText("File Transfer");
-        fileTransferItem.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        fileTransferItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 fileTransferItemActionPerformed(evt);
             }
         });
@@ -776,20 +748,12 @@ public class ClientMainFrm extends javax.swing.JFrame {
         browseClick();
     }//GEN-LAST:event_browseBtnActionPerformed
 
-    private void dowloadBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dowloadBtnActionPerformed
-        downloadClick();
-    }//GEN-LAST:event_dowloadBtnActionPerformed
-
 
     private void itemEditChannelActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_itemEditChannelActionPerformed
     {//GEN-HEADEREND:event_itemEditChannelActionPerformed
         cmc.itemEditChannelClicked();
     }//GEN-LAST:event_itemEditChannelActionPerformed
     
-    private void changeDirectoryBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeDirectoryBtnActionPerformed
-        changeDirectory();
-    }//GEN-LAST:event_changeDirectoryBtnActionPerformed
-
     private void itemAddFriendActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_itemAddFriendActionPerformed
     {//GEN-HEADEREND:event_itemAddFriendActionPerformed
         cff.cfc.itemAddFriendClicked();
@@ -839,6 +803,31 @@ public class ClientMainFrm extends javax.swing.JFrame {
     {//GEN-HEADEREND:event_popupitemKickActionPerformed
         cmc.itemKickClicked();
     }//GEN-LAST:event_popupitemKickActionPerformed
+
+    private void fileTblMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fileTblMouseClicked
+        if (evt.getClickCount() == 2){
+            changeDirectory();
+        }
+        if (SwingUtilities.isRightMouseButton(evt)){            
+            int r = fileTbl.rowAtPoint(evt.getPoint());
+            if (r != 0){
+                fileTbl.setRowSelectionInterval(r, r);
+                filePopupMenu.show(fileTbl, evt.getPoint().x, evt.getPoint().y);
+            }
+        }
+    }//GEN-LAST:event_fileTblMouseClicked
+
+    private void downloadItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_downloadItemActionPerformed
+        downloadClick();
+    }//GEN-LAST:event_downloadItemActionPerformed
+
+    private void removeItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeItemActionPerformed
+        removeClick();
+    }//GEN-LAST:event_removeItemActionPerformed
+
+    private void newFolderItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newFolderItemActionPerformed
+        newFolderClick();
+    }//GEN-LAST:event_newFolderItemActionPerformed
 
 
     /**
@@ -1131,14 +1120,46 @@ public class ClientMainFrm extends javax.swing.JFrame {
         int rowSelected = fileTbl.getSelectedRow(); 
         if (rowSelected == -1)
             return;
-        String fileName = (String) fileTblModel.getValueAt(rowSelected, 1);
-        boolean flag = cfc.downloadFile(fileName);
-        System.out.println(flag);
+        String fileName = (String) fileTblModel.getValueAt(rowSelected, 1);        
+        String fileTypeStr = (String) fileTblModel.getValueAt(rowSelected, 0);
+        int fileType = fileTypeStr.equals("Folder") ? 1: 0;
+        long size = (long) fileTblModel.getValueAt(rowSelected, 2);
+        FtpFile file = new FtpFile(fileName, size, fileType);
+        boolean flag = cfc.downloadFile(file);
+        if (flag == true){
+            JOptionPane.showMessageDialog(this, "Download successfully");
+        }
+        else
+            JOptionPane.showMessageDialog(this, "can not download");
     }
     
-    private void browseClick(){        
-        FileFilter filter = new FileNameExtensionFilter("txt", "png", "jpeg", "docx");
-        fileChooser.setFileFilter(filter);
+    private void newFolderClick(){
+        boolean flag = false;
+        String folderName = JOptionPane.showInputDialog(fileTbl, "Folder name?");
+        if (folderName.equals(""))
+            folderName = "New folder";
+        flag = cfc.mkdir(folderName);
+        if (flag == false)
+            JOptionPane.showMessageDialog(fileTbl, "fail to create new folder");
+        listFileInServer();
+    }
+    
+    private void removeClick(){
+        int rowSelected = fileTbl.getSelectedRow(); 
+        if (rowSelected == -1)
+            return;
+        String fileName = (String) fileTblModel.getValueAt(rowSelected, 1);        
+        String fileTypeStr = (String) fileTblModel.getValueAt(rowSelected, 0);
+        int fileType = fileTypeStr.equals("Folder") ? 1: 0;
+        long size = (long) fileTblModel.getValueAt(rowSelected, 2);
+        FtpFile file = new FtpFile(fileName, size, fileType);
+        boolean flag = cfc.remove(file);        
+        if (flag == false)
+            JOptionPane.showMessageDialog(this, "can not remove");
+        listFileInServer();
+    }
+    
+    private void browseClick(){                
         int selection = fileChooser.showDialog(this, "Upload");        
         if (selection == JFileChooser.APPROVE_OPTION){
             fileSelected = fileChooser.getSelectedFile();
@@ -1199,14 +1220,14 @@ public class ClientMainFrm extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton browseBtn;
-    private javax.swing.JButton changeDirectoryBtn;
     private javax.swing.JPanel channelMsgPanel;
     private javax.swing.JPanel chatPanel;
     private javax.swing.JPanel chat_msgPanel;
     private javax.swing.JDialog dlgCreate;
     private javax.swing.JDialog dlgEditChannel;
-    private javax.swing.JButton dowloadBtn;
+    private javax.swing.JMenuItem downloadItem;
     private javax.swing.JPanel fileDownload;
+    private javax.swing.JPopupMenu filePopupMenu;
     private javax.swing.JTable fileTbl;
     private javax.swing.JMenuItem fileTransferItem;
     private javax.swing.JLabel fileUpload;
@@ -1243,6 +1264,7 @@ public class ClientMainFrm extends javax.swing.JFrame {
     private javax.swing.JToolBar jToolBar1;
     public javax.swing.JList<String> listChannel;
     private javax.swing.JTabbedPane msgPanel;
+    private javax.swing.JMenuItem newFolderItem;
     private javax.swing.JPopupMenu popupChannel;
     private javax.swing.JPopupMenu popupClient;
     private javax.swing.JMenuItem popupitemConnect;
@@ -1250,6 +1272,7 @@ public class ClientMainFrm extends javax.swing.JFrame {
     private javax.swing.JMenuItem popupitemDelete;
     private javax.swing.JMenuItem popupitemEdit;
     private javax.swing.JMenuItem popupitemKick;
+    private javax.swing.JMenuItem removeItem;
     private javax.swing.JPanel roomInfoPanel;
     private javax.swing.JPanel roomPanel;
     private javax.swing.JPanel serverMsgPanel;

@@ -449,6 +449,10 @@ public class Server extends javax.swing.JFrame
             {
                 invitationHandle(client);
             }
+            else if(protocol.equals("Kick-client"))
+            {
+                clientKick(client);
+            }
         }
         catch (IOException ex)
         {
@@ -792,6 +796,31 @@ public class Server extends javax.swing.JFrame
             if(sender == null)
                 return;
             this.changeChannel(client, sender.getChannel());
+        }
+        catch(IOException ex)
+        {
+            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    /**
+     * This function starts when a client send the kick request
+     */
+    private void clientKick(Client client)
+    {
+        DataInputStream dis = null;
+        try
+        {
+            dis = new DataInputStream(client.getSocket().getInputStream());
+            String username = dis.readUTF();
+            Client c = searchClient(username);
+            if(c == null)
+                return;
+            String channelName = c.getChannel().getName();
+            changeChannel(c, lobby);
+            DataOutputStream dos = new DataOutputStream(c.getSocket().getOutputStream());
+            dos.writeUTF("Kicked");
+            dos.writeUTF(channelName);
         }
         catch(IOException ex)
         {

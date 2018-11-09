@@ -7,6 +7,7 @@ package Client.view;
 
 import Client.control.ClientFtpCtr;
 import Client.control.ClientMainCtr;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -73,7 +74,8 @@ public class ClientMainFrm extends javax.swing.JFrame {
     
     public void mySetting(){        
         txtConsole.setEditable(false);
-        msgPanel.remove(channelMsgPanel);  
+        msgPanel.remove(channelMsgPanel);
+        //listChannel.setComponentPopupMenu(popupChannel);
         cfc = new ClientFtpCtr(ipServer);
         cfc.connect();
         fileTbl.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -93,7 +95,6 @@ public class ClientMainFrm extends javax.swing.JFrame {
     private void initComponents()
     {
 
-        jMenuItem1 = new javax.swing.JMenuItem();
         dlgCreate = new javax.swing.JDialog();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -124,6 +125,13 @@ public class ClientMainFrm extends javax.swing.JFrame {
         jScrollPane6 = new javax.swing.JScrollPane();
         txtChannelDesc = new javax.swing.JTextArea();
         txtChannelPassword = new javax.swing.JPasswordField();
+        popupChannel = new javax.swing.JPopupMenu();
+        popupitemConnect = new javax.swing.JMenuItem();
+        popupitemCreate = new javax.swing.JMenuItem();
+        popupitemEdit = new javax.swing.JMenuItem();
+        popupitemDelete = new javax.swing.JMenuItem();
+        popupClient = new javax.swing.JPopupMenu();
+        popupitemKick = new javax.swing.JMenuItem();
         jToolBar1 = new javax.swing.JToolBar();
         jPanel1 = new javax.swing.JPanel();
         underBar = new javax.swing.JPanel();
@@ -159,8 +167,6 @@ public class ClientMainFrm extends javax.swing.JFrame {
         itemInvite = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         fileTransferItem = new javax.swing.JMenuItem();
-
-        jMenuItem1.setText("jMenuItem1");
 
         dlgCreate.setTitle("Create Channel");
         dlgCreate.setIconImage(new ImageIcon("img/plus.png").getImage());
@@ -403,6 +409,56 @@ public class ClientMainFrm extends javax.swing.JFrame {
                 .addContainerGap(59, Short.MAX_VALUE))
         );
 
+        popupitemConnect.setText("Connect to channel");
+        popupitemConnect.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                popupitemConnectActionPerformed(evt);
+            }
+        });
+        popupChannel.add(popupitemConnect);
+
+        popupitemCreate.setText("Create new channel");
+        popupitemCreate.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                popupitemCreateActionPerformed(evt);
+            }
+        });
+        popupChannel.add(popupitemCreate);
+
+        popupitemEdit.setText("Edit channel");
+        popupitemEdit.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                popupitemEditActionPerformed(evt);
+            }
+        });
+        popupChannel.add(popupitemEdit);
+
+        popupitemDelete.setText("Delete channel");
+        popupitemDelete.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                popupitemDeleteActionPerformed(evt);
+            }
+        });
+        popupChannel.add(popupitemDelete);
+
+        popupitemKick.setText("jMenuItem1");
+        popupitemKick.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                popupitemKickActionPerformed(evt);
+            }
+        });
+        popupClient.add(popupitemKick);
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new java.awt.BorderLayout(1, 1));
 
@@ -476,6 +532,10 @@ public class ClientMainFrm extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt)
             {
                 listChannelMouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt)
+            {
+                listChannelMousePressed(evt);
             }
         });
         jScrollPane4.setViewportView(listChannel);
@@ -750,6 +810,36 @@ public class ClientMainFrm extends javax.swing.JFrame {
         cmc.itemDeleteChannelClicked();
     }//GEN-LAST:event_itemDeleteChannelActionPerformed
 
+    private void popupitemConnectActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_popupitemConnectActionPerformed
+    {//GEN-HEADEREND:event_popupitemConnectActionPerformed
+        cmc.itemConnectClicked();
+    }//GEN-LAST:event_popupitemConnectActionPerformed
+
+    private void listChannelMousePressed(java.awt.event.MouseEvent evt)//GEN-FIRST:event_listChannelMousePressed
+    {//GEN-HEADEREND:event_listChannelMousePressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_listChannelMousePressed
+
+    private void popupitemEditActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_popupitemEditActionPerformed
+    {//GEN-HEADEREND:event_popupitemEditActionPerformed
+        cmc.itemEditChannelClicked();
+    }//GEN-LAST:event_popupitemEditActionPerformed
+
+    private void popupitemDeleteActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_popupitemDeleteActionPerformed
+    {//GEN-HEADEREND:event_popupitemDeleteActionPerformed
+        cmc.itemDeleteChannelClicked();
+    }//GEN-LAST:event_popupitemDeleteActionPerformed
+
+    private void popupitemCreateActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_popupitemCreateActionPerformed
+    {//GEN-HEADEREND:event_popupitemCreateActionPerformed
+        cmc.itemCreateClicked();
+    }//GEN-LAST:event_popupitemCreateActionPerformed
+
+    private void popupitemKickActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_popupitemKickActionPerformed
+    {//GEN-HEADEREND:event_popupitemKickActionPerformed
+        cmc.itemKickClicked();
+    }//GEN-LAST:event_popupitemKickActionPerformed
+
 
     /**
      * This function update the channel list
@@ -877,6 +967,22 @@ public class ClientMainFrm extends javax.swing.JFrame {
     }
     
     /**
+     * This function shows the channel popup menu
+     */
+    public void showChannelPopupMenu(Point p)
+    {
+        this.popupChannel.show(listChannel, listChannel.getX() + p.x, listChannel.getY() + p.y);
+    }
+    
+    /**
+     * This function shows the channel popup menu
+     */
+    public void showClientPopupMenu(Point p)
+    {
+        this.popupClient.show(listChannel, listChannel.getX() + p.x, listChannel.getY() + p.y);
+    }
+    
+    /**
      * This function returns currently selected channel
      */
     public String getSelectedChannel()
@@ -885,7 +991,13 @@ public class ClientMainFrm extends javax.swing.JFrame {
         if(index == -1)
             return null;
         else
-            return listChannel.getModel().getElementAt(index);
+        {
+            String s = listChannel.getModel().getElementAt(index);
+            if(s.substring(0, 4).equals("    "))
+                return null;
+            else
+                return s;
+        }
     }
     
     public String getSelectedClient()
@@ -895,9 +1007,34 @@ public class ClientMainFrm extends javax.swing.JFrame {
             return null;
         else
         {
-            String result = listChannel.getModel().getElementAt(index);
-            return result.substring(4, result.length());
+            String s = listChannel.getModel().getElementAt(index);
+            if(!s.substring(0, 4).equals("    "))
+                return null;
+            else
+                return s.substring(4, s.length());
         }
+    }
+    
+    /**
+     * This function return the client's current channel
+     */
+    public String getUserChannel(String username)
+    {
+        String result = null;
+        for(int i = 0; i < listChannel.getModel().getSize(); i++)
+        {
+            String s = listChannel.getModel().getElementAt(i);
+            if(!s.substring(0, 4).equals("    "))
+            {
+                result = listChannel.getModel().getElementAt(i);
+            }
+            else
+            {
+                if(s.substring(4, s.length()).equals(username))
+                    return result;
+            }
+        }
+        return null;
     }
     
     /**
@@ -1093,7 +1230,6 @@ public class ClientMainFrm extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
@@ -1105,8 +1241,15 @@ public class ClientMainFrm extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JToolBar jToolBar1;
-    private javax.swing.JList<String> listChannel;
+    public javax.swing.JList<String> listChannel;
     private javax.swing.JTabbedPane msgPanel;
+    private javax.swing.JPopupMenu popupChannel;
+    private javax.swing.JPopupMenu popupClient;
+    private javax.swing.JMenuItem popupitemConnect;
+    private javax.swing.JMenuItem popupitemCreate;
+    private javax.swing.JMenuItem popupitemDelete;
+    private javax.swing.JMenuItem popupitemEdit;
+    private javax.swing.JMenuItem popupitemKick;
     private javax.swing.JPanel roomInfoPanel;
     private javax.swing.JPanel roomPanel;
     private javax.swing.JPanel serverMsgPanel;
@@ -1129,29 +1272,4 @@ public class ClientMainFrm extends javax.swing.JFrame {
     private javax.swing.JButton uploadBtn;
     // End of variables declaration//GEN-END:variables
 
-    public class ChannelPopupMenu extends JPopupMenu
-    {
-        JMenuItem itemConnect, itemCreate;
-        public ChannelPopupMenu(Channel channel)
-        {
-            JMenuItem itemConnect = new JMenuItem("Connect to channel");
-            itemConnect.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent ae)
-                {
-                    cmc.itemConnectClicked();
-                }
-            });
-            add(itemConnect);
-            JMenuItem itemCreate = new JMenuItem("Create new channel");
-            itemCreate.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent ae)
-                {
-                    showCreateChannelDialog();
-                }
-            });
-            
-        }
-    }
 }

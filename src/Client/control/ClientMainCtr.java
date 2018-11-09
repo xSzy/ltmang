@@ -165,6 +165,11 @@ public class ClientMainCtr
             {
                 JOptionPane.showMessageDialog(cmf, "You are in the same channel with your friend.", "Invite to channel", JOptionPane.INFORMATION_MESSAGE);
             }
+            else if(protocol.equals("Kicked"))
+            {
+                String channelName = dis.readUTF();
+                JOptionPane.showMessageDialog(cmf, "You have been kicked from channel " + channelName, "Kicked", JOptionPane.INFORMATION_MESSAGE);
+            }
         }
         catch (IOException ex)
         {
@@ -174,9 +179,23 @@ public class ClientMainCtr
 
     public void ChannelListClicked(MouseEvent evt)
     {
+        //check if doubleclick
+        if(evt.getClickCount() == 2)
+        {
+            this.itemConnectClicked();
+        }
         //check if right mouse button clicked
         if(SwingUtilities.isRightMouseButton(evt))
         {
+            cmf.listChannel.setSelectedIndex(cmf.listChannel.locationToIndex(evt.getPoint()));
+            if(cmf.getSelectedChannel() != null)
+            {
+                cmf.showChannelPopupMenu(evt.getPoint());
+            }
+            else if(cmf.getSelectedClient() != null)
+            {
+                cmf.showClientPopupMenu(evt.getPoint());
+            }
         }
     }
     
@@ -274,6 +293,30 @@ public class ClientMainCtr
         {
             dos.writeUTF("Delete-channel");
             dos.writeUTF(channel.getName());
+        }
+        catch(IOException ex)
+        {
+            Logger.getLogger(ClientMainCtr.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    public void itemKickClicked()
+    {
+        String username = cmf.getSelectedClient();
+        if(username == null)
+            return;
+        String theirchannelName = cmf.getUserChannel(username);
+        Channel theirchannel = getChannelbyName(theirchannelName);
+        if(theirchannel == null)
+            return;
+        if(!user.getUsername().equals(theirchannel.getOwner().getUsername()))
+        {
+            JOptionPane.showMessageDialog(cmf, "You do not have permission to kick this user!", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        try
+        {
+            dos.writeUTF("Kick-client");
+            dos.writeUTF(username);
         }
         catch(IOException ex)
         {

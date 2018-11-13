@@ -146,24 +146,46 @@ public class ClientFtpCtr {
         return code;
     }
     
-    public boolean remove(FtpFile file){
+    public boolean removeFile(String fileName){
         boolean flag = false;
-        if (file.getType() == 1) {
-            try {                
-                flag = ftpClient.removeDirectory("/"+file.getName());                                        
-            } catch (IOException ex) {
-                Logger.getLogger(ClientFtpCtr.class.getName()).log(Level.SEVERE, null, ex);
-            }            
-        }
-        else{
-            try {
-                flag = ftpClient.deleteFile(file.getName());                
-            } catch (IOException ex) {
-                Logger.getLogger(ClientFtpCtr.class.getName()).log(Level.SEVERE, null, ex);
-            }
+        try {            
+            flag = ftpClient.deleteFile(fileName);            
+            
+        } catch (IOException ex) {
+            Logger.getLogger(ClientFtpCtr.class.getName()).log(Level.SEVERE, null, ex);
         }
         return flag;
     }
+    
+    public boolean removeDir(String cwd){
+        boolean flag = false;
+        try {            
+            flag = ftpClient.removeDirectory(cwd);
+        } catch (IOException ex) {
+            Logger.getLogger(ClientFtpCtr.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return flag;
+    }
+    
+    public boolean removeDirRecursive(String cwd){
+        boolean flag = false;        
+        try {                        
+            FTPFile[] files = ftpClient.listFiles(cwd);            
+            for (FTPFile file : files){            
+                if (file.isDirectory()){                    
+                    removeDirRecursive(cwd+ "/" + file.getName());
+                    System.out.println(cwd+ "/" + file.getName());
+                    flag = ftpClient.removeDirectory(cwd + "/" +file.getName());                    
+                }
+                else
+                    flag = ftpClient.deleteFile(cwd + "/" + file.getName());
+            }
+            //System.out.println(ftpClient.removeDirectory("abc/level2/level3"));
+        } catch (IOException ex) {
+            Logger.getLogger(ClientFtpCtr.class.getName()).log(Level.SEVERE, null, ex);
+        }        
+        return flag;
+    }        
     
     public boolean downloadFile(FtpFile file){
         

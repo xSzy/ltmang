@@ -27,11 +27,14 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JPopupMenu;
+import javax.swing.JTextPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.StyledDocument;
+import javax.swing.text.html.HTMLDocument;
 import model.Channel;
 import model.Client;
 import model.FtpFile;
@@ -83,8 +86,8 @@ public class ClientMainFrm extends javax.swing.JFrame {
         fileTblModel = (DefaultTableModel) fileTbl.getModel();
         fileChooser = new JFileChooser();
         userHomeDirectory =  fileChooser.getFileSystemView().getHomeDirectory().getPath();   
-        cfc.setUserHomeDirectory(userHomeDirectory);        
-    }
+        cfc.setUserHomeDirectory(userHomeDirectory);               
+    }    
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -134,6 +137,17 @@ public class ClientMainFrm extends javax.swing.JFrame {
         downloadItem = new javax.swing.JMenuItem();
         removeItem = new javax.swing.JMenuItem();
         newFolderItem = new javax.swing.JMenuItem();
+        emojiPanel = new javax.swing.JDialog();
+        happyBtn = new javax.swing.JButton();
+        happy2Btn = new javax.swing.JButton();
+        angryBtn = new javax.swing.JButton();
+        inloveBtn = new javax.swing.JButton();
+        illBtn = new javax.swing.JButton();
+        silenceBtn = new javax.swing.JButton();
+        sleepBtn = new javax.swing.JButton();
+        cryBtn = new javax.swing.JButton();
+        manBtn = new javax.swing.JButton();
+        ninjaBtn = new javax.swing.JButton();
         jToolBar1 = new javax.swing.JToolBar();
         jPanel1 = new javax.swing.JPanel();
         underBar = new javax.swing.JPanel();
@@ -153,8 +167,9 @@ public class ClientMainFrm extends javax.swing.JFrame {
         serverMsgPanel = new javax.swing.JPanel();
         channelMsgPanel = new javax.swing.JPanel();
         jScrollPane5 = new javax.swing.JScrollPane();
-        txtChannelMsg = new javax.swing.JTextArea();
+        txtChannelMsg = new javax.swing.JTextPane();
         chatPanel = new javax.swing.JPanel();
+        emojiBtn = new javax.swing.JButton();
         textFieldChat = new javax.swing.JTextField();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
@@ -452,6 +467,110 @@ public class ClientMainFrm extends javax.swing.JFrame {
         });
         filePopupMenu.add(newFolderItem);
 
+        emojiPanel.setBackground(new java.awt.Color(51, 255, 255));
+        emojiPanel.setUndecorated(true);
+        emojiPanel.setPreferredSize(new java.awt.Dimension(200, 100));
+        emojiPanel.setResizable(false);
+        emojiPanel.setSize(new java.awt.Dimension(200, 100));
+        emojiPanel.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                emojiPanelFocusLost(evt);
+            }
+        });
+        emojiPanel.getContentPane().setLayout(new java.awt.GridLayout(2, 5));
+
+        happyBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/emoji/happy.png"))); // NOI18N
+        happyBtn.setToolTipText(":)");
+        happyBtn.setBorder(null);
+        happyBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                happyBtnActionPerformed(evt);
+            }
+        });
+        emojiPanel.getContentPane().add(happyBtn);
+
+        happy2Btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/emoji/happy2.png"))); // NOI18N
+        happy2Btn.setToolTipText(":D");
+        happy2Btn.setBorder(null);
+        happy2Btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                happy2BtnActionPerformed(evt);
+            }
+        });
+        emojiPanel.getContentPane().add(happy2Btn);
+
+        angryBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/emoji/angry2.png"))); // NOI18N
+        angryBtn.setToolTipText(":C ");
+        angryBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                angryBtnActionPerformed(evt);
+            }
+        });
+        emojiPanel.getContentPane().add(angryBtn);
+
+        inloveBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/emoji/inlove.png"))); // NOI18N
+        inloveBtn.setToolTipText(":x");
+        inloveBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                inloveBtnActionPerformed(evt);
+            }
+        });
+        emojiPanel.getContentPane().add(inloveBtn);
+
+        illBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/emoji/ill.png"))); // NOI18N
+        illBtn.setToolTipText(":-&");
+        illBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                illBtnActionPerformed(evt);
+            }
+        });
+        emojiPanel.getContentPane().add(illBtn);
+
+        silenceBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/emoji/quiet.png"))); // NOI18N
+        silenceBtn.setToolTipText(":q");
+        silenceBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                silenceBtnActionPerformed(evt);
+            }
+        });
+        emojiPanel.getContentPane().add(silenceBtn);
+
+        sleepBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/emoji/sleep.png"))); // NOI18N
+        sleepBtn.setToolTipText(":s");
+        sleepBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sleepBtnActionPerformed(evt);
+            }
+        });
+        emojiPanel.getContentPane().add(sleepBtn);
+
+        cryBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/emoji/unhappy.png"))); // NOI18N
+        cryBtn.setToolTipText(":-s");
+        cryBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cryBtnActionPerformed(evt);
+            }
+        });
+        emojiPanel.getContentPane().add(cryBtn);
+
+        manBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/emoji/man.png"))); // NOI18N
+        manBtn.setToolTipText(":-$");
+        manBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                manBtnActionPerformed(evt);
+            }
+        });
+        emojiPanel.getContentPane().add(manBtn);
+
+        ninjaBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/emoji/ninja.png"))); // NOI18N
+        ninjaBtn.setToolTipText(":-@");
+        ninjaBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ninjaBtnActionPerformed(evt);
+            }
+        });
+        emojiPanel.getContentPane().add(ninjaBtn);
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new java.awt.BorderLayout(1, 1));
 
@@ -585,8 +704,9 @@ public class ClientMainFrm extends javax.swing.JFrame {
 
         msgPanel.addTab("Server", serverMsgPanel);
 
-        txtChannelMsg.setColumns(20);
-        txtChannelMsg.setRows(5);
+        txtChannelMsg.setEditable(false);
+        txtChannelMsg.setContentType("text/html\n"); // NOI18N
+        txtChannelMsg.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jScrollPane5.setViewportView(txtChannelMsg);
 
         javax.swing.GroupLayout channelMsgPanelLayout = new javax.swing.GroupLayout(channelMsgPanel);
@@ -610,9 +730,16 @@ public class ClientMainFrm extends javax.swing.JFrame {
         chatPanel.setPreferredSize(new java.awt.Dimension(494, 50));
         chatPanel.setLayout(new java.awt.BorderLayout());
 
-        textFieldChat.setMaximumSize(new java.awt.Dimension(2147483647, 15));
-        textFieldChat.setMinimumSize(new java.awt.Dimension(6, 15));
-        textFieldChat.setPreferredSize(new java.awt.Dimension(6, 15));
+        emojiBtn.setBackground(new java.awt.Color(255, 255, 255));
+        emojiBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/emoji/happy.png"))); // NOI18N
+        emojiBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        emojiBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                emojiBtnActionPerformed(evt);
+            }
+        });
+        chatPanel.add(emojiBtn, java.awt.BorderLayout.LINE_END);
+
         textFieldChat.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 textFieldChatKeyPressed(evt);
@@ -727,15 +854,6 @@ public class ClientMainFrm extends javax.swing.JFrame {
         cmc.itemCreateClicked();
     }//GEN-LAST:event_txtCreateActionPerformed
 
-    private void textFieldChatKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textFieldChatKeyPressed
-        if (evt.getKeyCode() == 10){
-            String msg = textFieldChat.getText();
-            if(!msg.isEmpty())
-                cmc.sendMsg(msg);
-            textFieldChat.setText("");
-        }
-    }//GEN-LAST:event_textFieldChatKeyPressed
-
     private void fileTransferItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileTransferItemActionPerformed
         listFileInServer();
     }//GEN-LAST:event_fileTransferItemActionPerformed
@@ -828,6 +946,96 @@ public class ClientMainFrm extends javax.swing.JFrame {
     private void newFolderItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newFolderItemActionPerformed
         newFolderClick();
     }//GEN-LAST:event_newFolderItemActionPerformed
+
+    private void emojiBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_emojiBtnActionPerformed
+        Point btnPoint = emojiBtn.getLocationOnScreen();
+        emojiPanel.setLocation(new Point(btnPoint.x + 30, btnPoint.y - 100));
+        showEmojiDialog();        
+    }//GEN-LAST:event_emojiBtnActionPerformed
+
+    private void happyBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_happyBtnActionPerformed
+        emojiPanel.hide();        
+        String msg = textFieldChat.getText();
+        textFieldChat.setText(msg + ":)");
+        textFieldChat.requestFocus();
+    }//GEN-LAST:event_happyBtnActionPerformed
+
+    private void happy2BtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_happy2BtnActionPerformed
+        emojiPanel.hide();
+        String msg = textFieldChat.getText();
+        textFieldChat.setText(msg + ":D");
+        textFieldChat.requestFocus();
+    }//GEN-LAST:event_happy2BtnActionPerformed
+
+    private void angryBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_angryBtnActionPerformed
+        emojiPanel.hide();
+        String msg = textFieldChat.getText();
+        textFieldChat.setText(msg + ":C");
+        textFieldChat.requestFocus();
+    }//GEN-LAST:event_angryBtnActionPerformed
+
+    private void inloveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inloveBtnActionPerformed
+        emojiPanel.hide();
+        String msg = textFieldChat.getText();
+        textFieldChat.setText(msg + ":x");
+        textFieldChat.requestFocus();
+    }//GEN-LAST:event_inloveBtnActionPerformed
+
+    private void illBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_illBtnActionPerformed
+        emojiPanel.hide();
+        String msg = textFieldChat.getText();
+        textFieldChat.setText(msg + ":-&");
+        textFieldChat.requestFocus();
+    }//GEN-LAST:event_illBtnActionPerformed
+
+    private void silenceBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_silenceBtnActionPerformed
+        emojiPanel.hide();
+        String msg = textFieldChat.getText();
+        textFieldChat.setText(msg + ":q");
+        textFieldChat.requestFocus();
+    }//GEN-LAST:event_silenceBtnActionPerformed
+
+    private void sleepBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sleepBtnActionPerformed
+        emojiPanel.hide();
+        String msg = textFieldChat.getText();
+        textFieldChat.setText(msg + ":s");
+        textFieldChat.requestFocus();
+    }//GEN-LAST:event_sleepBtnActionPerformed
+
+    private void cryBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cryBtnActionPerformed
+        emojiPanel.hide();
+        String msg = textFieldChat.getText();
+        textFieldChat.setText(msg + ":-s");
+        textFieldChat.requestFocus();
+    }//GEN-LAST:event_cryBtnActionPerformed
+
+    private void manBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_manBtnActionPerformed
+        emojiPanel.hide();
+        String msg = textFieldChat.getText();
+        textFieldChat.setText(msg + ":-$");
+        textFieldChat.requestFocus();
+    }//GEN-LAST:event_manBtnActionPerformed
+
+    private void ninjaBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ninjaBtnActionPerformed
+        emojiPanel.hide();
+        String msg = textFieldChat.getText();
+        textFieldChat.setText(msg + ":-@");
+        textFieldChat.requestFocus();
+    }//GEN-LAST:event_ninjaBtnActionPerformed
+
+    private void emojiPanelFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_emojiPanelFocusLost
+        emojiPanel.hide();
+        textFieldChat.requestFocus();
+    }//GEN-LAST:event_emojiPanelFocusLost
+
+    private void textFieldChatKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textFieldChatKeyPressed
+        if (evt.getKeyCode() == 10){
+            String msg = textFieldChat.getText();
+            if(!msg.isEmpty())
+                cmc.sendMsg(msg);
+            textFieldChat.setText("");
+        }
+    }//GEN-LAST:event_textFieldChatKeyPressed
 
 
     /**
@@ -1054,8 +1262,11 @@ public class ClientMainFrm extends javax.swing.JFrame {
      * This function prints chat message
      */
     public void printMessage(String sender, String message)
-    {
-        txtChannelMsg.setText(txtChannelMsg.getText() + sender + ": " + message + "\n");
+    {        
+        System.out.println(txtChannelMsg.getText());
+        txtChannelMsg.setContentType("text/html");        
+        txtChannelMsg.setText(txtChannelMsg.getText() + sender + ": " + message + "\n");        
+        txtChannelMsg.setText("<html><b>hello</b></html>");        
     }
     
     /**
@@ -1066,11 +1277,21 @@ public class ClientMainFrm extends javax.swing.JFrame {
         txtConsole.setText(txtConsole.getText() + s + "\n");
     }
     
+    private void showEmojiDialog(){
+        emojiPanel.show();
+        emojiPanel.setFocusable(true);
+        
+    }
+    
+    
     
     /*
     *   this function opens fileChooser and does file transfer
     */
-    //TEST DO NOT MODIFY
+    
+
+
+    //FTP part
     private void listFileInServer(){
         transferPanel.setVisible(true);
         transferPanel.pack();                                         
@@ -1148,12 +1369,16 @@ public class ClientMainFrm extends javax.swing.JFrame {
         int rowSelected = fileTbl.getSelectedRow(); 
         if (rowSelected == -1)
             return;
-        String fileName = (String) fileTblModel.getValueAt(rowSelected, 1);        
-        String fileTypeStr = (String) fileTblModel.getValueAt(rowSelected, 0);
-        int fileType = fileTypeStr.equals("Folder") ? 1: 0;
-        long size = (long) fileTblModel.getValueAt(rowSelected, 2);
-        FtpFile file = new FtpFile(fileName, size, fileType);
-        boolean flag = cfc.remove(file);        
+        boolean flag = false;
+        String fileName = (String) fileTblModel.getValueAt(rowSelected, 1);
+        String fileType = (String) fileTblModel.getValueAt(rowSelected, 0);
+        if (fileType.equals("File")){
+            flag = cfc.removeFile(fileName);            
+        }
+        else{            
+            flag = cfc.removeDirRecursive(fileName);
+            flag = cfc.removeDir(fileName);
+        }
         if (flag == false)
             JOptionPane.showMessageDialog(this, "can not remove");
         listFileInServer();
@@ -1219,18 +1444,26 @@ public class ClientMainFrm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton angryBtn;
     private javax.swing.JButton browseBtn;
     private javax.swing.JPanel channelMsgPanel;
     private javax.swing.JPanel chatPanel;
     private javax.swing.JPanel chat_msgPanel;
+    private javax.swing.JButton cryBtn;
     private javax.swing.JDialog dlgCreate;
     private javax.swing.JDialog dlgEditChannel;
     private javax.swing.JMenuItem downloadItem;
+    private javax.swing.JButton emojiBtn;
+    private javax.swing.JDialog emojiPanel;
     private javax.swing.JPanel fileDownload;
     private javax.swing.JPopupMenu filePopupMenu;
     private javax.swing.JTable fileTbl;
     private javax.swing.JMenuItem fileTransferItem;
     private javax.swing.JLabel fileUpload;
+    private javax.swing.JButton happy2Btn;
+    private javax.swing.JButton happyBtn;
+    private javax.swing.JButton illBtn;
+    private javax.swing.JButton inloveBtn;
     private javax.swing.JMenuItem itemAddFriend;
     private javax.swing.JMenuItem itemConnect;
     private javax.swing.JMenuItem itemDeleteChannel;
@@ -1263,8 +1496,10 @@ public class ClientMainFrm extends javax.swing.JFrame {
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JToolBar jToolBar1;
     public javax.swing.JList<String> listChannel;
+    private javax.swing.JButton manBtn;
     private javax.swing.JTabbedPane msgPanel;
     private javax.swing.JMenuItem newFolderItem;
+    private javax.swing.JButton ninjaBtn;
     private javax.swing.JPopupMenu popupChannel;
     private javax.swing.JPopupMenu popupClient;
     private javax.swing.JMenuItem popupitemConnect;
@@ -1276,12 +1511,14 @@ public class ClientMainFrm extends javax.swing.JFrame {
     private javax.swing.JPanel roomInfoPanel;
     private javax.swing.JPanel roomPanel;
     private javax.swing.JPanel serverMsgPanel;
+    private javax.swing.JButton silenceBtn;
+    private javax.swing.JButton sleepBtn;
     private javax.swing.JSplitPane splitPanel1;
     private javax.swing.JSplitPane splitPanel2;
     private javax.swing.JTextField textFieldChat;
     private javax.swing.JDialog transferPanel;
     private javax.swing.JTextArea txtChannelDesc;
-    private javax.swing.JTextArea txtChannelMsg;
+    private javax.swing.JTextPane txtChannelMsg;
     private javax.swing.JTextField txtChannelName;
     private javax.swing.JPasswordField txtChannelPassword;
     private javax.swing.JTextField txtChannelTopic;

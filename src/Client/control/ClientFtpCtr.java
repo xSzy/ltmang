@@ -55,8 +55,7 @@ public class ClientFtpCtr {
     }
 
     public boolean connect(){
-        ftpClient = new FTPClient();                          
-        String serverIp = prop.getProperty("serverIp");
+        ftpClient = new FTPClient();               
         byte[] ip = ipParse(ipServer);
         try {
             InetAddress address = InetAddress.getByAddress(ip);
@@ -94,6 +93,7 @@ public class ClientFtpCtr {
     
     public void uploadFile(File fileUpload){
         try {
+            ftpClient.setFileType(FTPClient.BINARY_FILE_TYPE);
             ftpClient.storeFile(fileUpload.getName(), new FileInputStream(fileUpload));
             replyCode = ftpClient.getReplyCode();            
                 
@@ -115,7 +115,17 @@ public class ClientFtpCtr {
         }
         return list;
     }
-       
+    
+    public boolean mkdir(String folderName){
+        boolean flag = false;
+        try {            
+            flag = ftpClient.makeDirectory(folderName);            
+        } catch (IOException ex) {
+            Logger.getLogger(ClientFtpCtr.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return flag;
+    }
+    
     public int makeChanelFolder(String name){
         int code = 550;
         try {
@@ -136,12 +146,57 @@ public class ClientFtpCtr {
         return code;
     }
     
-    public boolean downloadFile(String fileName){
-        File downloadFile = new File(userHomeDirectory + "\\" +fileName);
+    public boolean removeFile(String fileName){
+        boolean flag = false;
+        try {            
+            flag = ftpClient.deleteFile(fileName);            
+            
+        } catch (IOException ex) {
+            Logger.getLogger(ClientFtpCtr.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return flag;
+    }
+    
+    public boolean removeDir(String cwd){
+        boolean flag = false;
+        try {            
+            flag = ftpClient.removeDirectory(cwd);
+        } catch (IOException ex) {
+            Logger.getLogger(ClientFtpCtr.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return flag;
+    }
+    
+    public boolean removeDirRecursive(String cwd){
+        boolean flag = false;        
+        try {                        
+            FTPFile[] files = ftpClient.listFiles(cwd);            
+            for (FTPFile file : files){            
+                if (file.isDirectory()){                    
+                    removeDirRecursive(cwd+ "/" + file.getName());
+                    System.out.println(cwd+ "/" + file.getName());
+                    flag = ftpClient.removeDirectory(cwd + "/" +file.getName());                    
+                }
+                else
+                    flag = ftpClient.deleteFile(cwd + "/" + file.getName());
+            }
+            //System.out.println(ftpClient.removeDirectory("abc/level2/level3"));
+        } catch (IOException ex) {
+            Logger.getLogger(ClientFtpCtr.class.getName()).log(Level.SEVERE, null, ex);
+        }        
+        return flag;
+    }        
+    
+    public boolean downloadFile(FtpFile file){
+        
+        File downloadFile = new File(userHomeDirectory + "\\" +file.getName());
+        if (file.getType() == 1)
+            return false;
         boolean flag = false;
         try {
-            OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(downloadFile));
-            flag = ftpClient.retrieveFile(fileName, outputStream);
+            ftpClient.setFileType(FTPClient.BINARY_FILE_TYPE);
+            OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(downloadFile));            
+            flag = ftpClient.retrieveFile(file.getName(), outputStream);
             outputStream.close();
         } catch (IOException ex) {
             System.out.println("File not found");

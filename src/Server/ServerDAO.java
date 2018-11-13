@@ -18,11 +18,11 @@ public class ServerDAO
     private static Connection conn;
     
     public ServerDAO(){
-        String dbClass = "com.mysql.jdbc.Driver";
+        String dbClass = "com.mysql.cj.jdbc.Driver";
         try {
             Class.forName(dbClass);
             String url = "jdbc:mysql://localhost:3306/btlltm?useSSL=false";
-            conn = DriverManager.getConnection(url, "root", "ffieosgc");
+            conn = DriverManager.getConnection(url, "root", "Huy811");
         } catch (ClassNotFoundException | SQLException ex) {
             System.out.println("No sql server class or can connect to the database");
         }        

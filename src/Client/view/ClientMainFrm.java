@@ -132,6 +132,7 @@ public class ClientMainFrm extends javax.swing.JFrame {
         popupitemDelete = new javax.swing.JMenuItem();
         popupClient = new javax.swing.JPopupMenu();
         popupitemKick = new javax.swing.JMenuItem();
+        popupitemAddFriend = new javax.swing.JMenuItem();
         jToolBar1 = new javax.swing.JToolBar();
         jPanel1 = new javax.swing.JPanel();
         underBar = new javax.swing.JPanel();
@@ -161,7 +162,7 @@ public class ClientMainFrm extends javax.swing.JFrame {
         itemEditChannel = new javax.swing.JMenuItem();
         itemDeleteChannel = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
-        jCheckBoxMenuItem1 = new javax.swing.JCheckBoxMenuItem();
+        itemShowFriendFrm = new javax.swing.JCheckBoxMenuItem();
         itemAddFriend = new javax.swing.JMenuItem();
         itemRemoveFriend = new javax.swing.JMenuItem();
         itemInvite = new javax.swing.JMenuItem();
@@ -449,7 +450,7 @@ public class ClientMainFrm extends javax.swing.JFrame {
         });
         popupChannel.add(popupitemDelete);
 
-        popupitemKick.setText("jMenuItem1");
+        popupitemKick.setText("Kick");
         popupitemKick.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -458,6 +459,16 @@ public class ClientMainFrm extends javax.swing.JFrame {
             }
         });
         popupClient.add(popupitemKick);
+
+        popupitemAddFriend.setText("Add as friend");
+        popupitemAddFriend.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                popupitemAddFriendActionPerformed(evt);
+            }
+        });
+        popupClient.add(popupitemAddFriend);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new java.awt.BorderLayout(1, 1));
@@ -684,9 +695,16 @@ public class ClientMainFrm extends javax.swing.JFrame {
 
         jMenu3.setText("Friend");
 
-        jCheckBoxMenuItem1.setSelected(true);
-        jCheckBoxMenuItem1.setText("Show Friend panel");
-        jMenu3.add(jCheckBoxMenuItem1);
+        itemShowFriendFrm.setSelected(true);
+        itemShowFriendFrm.setText("Show Friend panel");
+        itemShowFriendFrm.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                itemShowFriendFrmActionPerformed(evt);
+            }
+        });
+        jMenu3.add(itemShowFriendFrm);
 
         itemAddFriend.setText("Add as friend");
         itemAddFriend.addActionListener(new java.awt.event.ActionListener()
@@ -839,6 +857,21 @@ public class ClientMainFrm extends javax.swing.JFrame {
     {//GEN-HEADEREND:event_popupitemKickActionPerformed
         cmc.itemKickClicked();
     }//GEN-LAST:event_popupitemKickActionPerformed
+
+    private void popupitemAddFriendActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_popupitemAddFriendActionPerformed
+    {//GEN-HEADEREND:event_popupitemAddFriendActionPerformed
+        cff.cfc.itemAddFriendClicked();
+    }//GEN-LAST:event_popupitemAddFriendActionPerformed
+
+    private void itemShowFriendFrmActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_itemShowFriendFrmActionPerformed
+    {//GEN-HEADEREND:event_itemShowFriendFrmActionPerformed
+        if(itemShowFriendFrm.isSelected())
+        {
+            cff.setVisible(true);
+        }
+        else
+            cff.setVisible(false);
+    }//GEN-LAST:event_itemShowFriendFrmActionPerformed
 
 
     /**
@@ -1216,7 +1249,7 @@ public class ClientMainFrm extends javax.swing.JFrame {
     private javax.swing.JMenuItem itemEditChannel;
     private javax.swing.JMenuItem itemInvite;
     private javax.swing.JMenuItem itemRemoveFriend;
-    private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
+    private javax.swing.JCheckBoxMenuItem itemShowFriendFrm;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -1245,6 +1278,7 @@ public class ClientMainFrm extends javax.swing.JFrame {
     private javax.swing.JTabbedPane msgPanel;
     private javax.swing.JPopupMenu popupChannel;
     private javax.swing.JPopupMenu popupClient;
+    private javax.swing.JMenuItem popupitemAddFriend;
     private javax.swing.JMenuItem popupitemConnect;
     private javax.swing.JMenuItem popupitemCreate;
     private javax.swing.JMenuItem popupitemDelete;

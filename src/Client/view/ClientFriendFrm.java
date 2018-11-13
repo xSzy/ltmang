@@ -6,6 +6,7 @@
 package Client.view;
 
 import Client.control.ClientFriendCtr;
+import java.awt.Point;
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
@@ -39,8 +40,31 @@ public class ClientFriendFrm extends javax.swing.JFrame
     private void initComponents()
     {
 
+        popupFriend = new javax.swing.JPopupMenu();
+        itemDeleteFriend = new javax.swing.JMenuItem();
+        itemInviteFriend = new javax.swing.JMenuItem();
         jScrollPane1 = new javax.swing.JScrollPane();
         listFriend = new javax.swing.JList<>();
+
+        itemDeleteFriend.setText("Delete friend");
+        itemDeleteFriend.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                itemDeleteFriendActionPerformed(evt);
+            }
+        });
+        popupFriend.add(itemDeleteFriend);
+
+        itemInviteFriend.setText("Invite to channel");
+        itemInviteFriend.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                itemInviteFriendActionPerformed(evt);
+            }
+        });
+        popupFriend.add(itemInviteFriend);
 
         setTitle("Friends");
 
@@ -51,6 +75,13 @@ public class ClientFriendFrm extends javax.swing.JFrame
             public String getElementAt(int i) { return strings[i]; }
         });
         listFriend.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        listFriend.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseClicked(java.awt.event.MouseEvent evt)
+            {
+                listFriendMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(listFriend);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -66,6 +97,21 @@ public class ClientFriendFrm extends javax.swing.JFrame
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void listFriendMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_listFriendMouseClicked
+    {//GEN-HEADEREND:event_listFriendMouseClicked
+        cfc.listFriendMouseClicked(evt);
+    }//GEN-LAST:event_listFriendMouseClicked
+
+    private void itemDeleteFriendActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_itemDeleteFriendActionPerformed
+    {//GEN-HEADEREND:event_itemDeleteFriendActionPerformed
+        cfc.itemRemoveFriendClicked();
+    }//GEN-LAST:event_itemDeleteFriendActionPerformed
+
+    private void itemInviteFriendActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_itemInviteFriendActionPerformed
+    {//GEN-HEADEREND:event_itemInviteFriendActionPerformed
+        cfc.itemInviteClicked();
+    }//GEN-LAST:event_itemInviteFriendActionPerformed
 
     /**
      * This function display the friendlist from input
@@ -106,6 +152,31 @@ public class ClientFriendFrm extends javax.swing.JFrame
             String result = listFriend.getModel().getElementAt(index);
             return result.substring(4, result.length());
         }
+    }
+    
+    /**
+     * This function shows a popup menu when rightclick to a client
+     */
+    public void showClientPopupMenu(Point p)
+    {
+        this.popupFriend.show(listFriend, listFriend.getX() + p.x, listFriend.getY() + p.y);
+    }
+    
+    /**
+     * This function shows if a client is online or not
+     */
+    public boolean isClientOnline(String clientName)
+    {
+        boolean result = false;
+        for(int i = 1; i < listFriend.getModel().getSize(); i++)
+        {
+            if(listFriend.getModel().getElementAt(i).equals("Offline"))
+                break;
+            String s = listFriend.getModel().getElementAt(i);
+            if(s.substring(4, s.length()).equals(clientName))
+                return true;
+        }
+        return result;
     }
     
     /**
@@ -158,7 +229,10 @@ public class ClientFriendFrm extends javax.swing.JFrame
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem itemDeleteFriend;
+    private javax.swing.JMenuItem itemInviteFriend;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JList<String> listFriend;
+    public javax.swing.JList<String> listFriend;
+    private javax.swing.JPopupMenu popupFriend;
     // End of variables declaration//GEN-END:variables
 }

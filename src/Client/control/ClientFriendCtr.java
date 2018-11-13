@@ -6,10 +6,13 @@
 package Client.control;
 
 import Client.view.ClientFriendFrm;
+import java.awt.event.MouseEvent;
 import java.io.*;
 import java.net.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -85,6 +88,11 @@ public class ClientFriendCtr
         String clientName = cff.getSelectedClient();
         if(clientName == null)
             return;
+        if(!cff.isClientOnline(clientName))
+        {
+            JOptionPane.showMessageDialog(cff.cmf, clientName + " is currently offline.", "Invite", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
         try
         {
             dos.writeUTF("Invite-to-channel");
@@ -93,6 +101,22 @@ public class ClientFriendCtr
         catch(IOException ex)
         {
             Logger.getLogger(ClientFriendCtr.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    /**
+     * This function starts when user clicked the friend panel
+     */
+    public void listFriendMouseClicked(MouseEvent evt)
+    {
+        //check if right mouse button clicked
+        if(SwingUtilities.isRightMouseButton(evt))
+        {
+            cff.listFriend.setSelectedIndex(cff.listFriend.locationToIndex(evt.getPoint()));
+            if(cff.getSelectedClient() != null)
+            {
+                cff.showClientPopupMenu(evt.getPoint());
+            }
         }
     }
 }

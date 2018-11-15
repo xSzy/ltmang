@@ -55,12 +55,17 @@ public class Channel implements Serializable
     {
         this.name = name;
         this.password = password;
+        topic = "";
+        description = "";
         listClient = new ArrayList<>();
     }
 
     public Channel()
     {
-        
+        name = "";
+        password = "";
+        topic = "";
+        description = "";
     }
 
     public String getName()

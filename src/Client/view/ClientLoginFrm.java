@@ -197,31 +197,42 @@ public class ClientLoginFrm extends javax.swing.JFrame
             JOptionPane.showMessageDialog(this, "Please enter your password to continue!", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        int result = clc.login(txtIP.getText(), Integer.parseInt(txtPort.getText()), txtUsername.getText(), txtPassword.getPassword());
-        switch(result)
-        {
-            case 0: //success
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run()
             {
-                finishLogin();
-                this.dispose();
-                return;
+                int result = clc.login(txtIP.getText(), Integer.parseInt(txtPort.getText()), txtUsername.getText(), txtPassword.getPassword());
+                switch(result)
+                {
+                    case 0: //success
+                    {
+                        finishLogin();
+                        ClientLoginFrm.this.dispose();
+                        return;
+                    }
+                    case 1: //cannot connect to server
+                    {
+                        JOptionPane.showMessageDialog(ClientLoginFrm.this, "Cannot connect to server, please check your internet connection!", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                    case 2: //username cannot be found
+                    {
+                        JOptionPane.showMessageDialog(ClientLoginFrm.this, "Username cannot be found!", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                    case 3: //password incorrect
+                    {
+                        JOptionPane.showMessageDialog(ClientLoginFrm.this, "Password incorrect!", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                    case 5: //client is already in server
+                    {
+                        JOptionPane.showMessageDialog(ClientLoginFrm.this, "Client is already logged in!", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
             }
-            case 1: //cannot connect to server
-            {
-                JOptionPane.showMessageDialog(this, "Cannot connect to server, please check your internet connection!", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            case 2: //username cannot be found
-            {
-                JOptionPane.showMessageDialog(this, "Username cannot be found!", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            case 3: //password incorrect
-            {
-                JOptionPane.showMessageDialog(this, "Password incorrect!", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-        }
+        });
+        t.start();
     }//GEN-LAST:event_btnLoginActionPerformed
 
     private void btnRegisterActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnRegisterActionPerformed
@@ -247,25 +258,32 @@ public class ClientLoginFrm extends javax.swing.JFrame
             JOptionPane.showMessageDialog(this, "Please enter your password to continue!", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        int result = clc.register(txtIP.getText(), Integer.parseInt(txtPort.getText()), txtUsername.getText(), txtPassword.getPassword());
-        switch(result)
-        {
-            case 0: //success
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run()
             {
-                JOptionPane.showMessageDialog(this, "Register successful!", "Announce", JOptionPane.INFORMATION_MESSAGE);
-                return;
+                int result = clc.register(txtIP.getText(), Integer.parseInt(txtPort.getText()), txtUsername.getText(), txtPassword.getPassword());
+                switch(result)
+                {
+                    case 0: //success
+                    {
+                        JOptionPane.showMessageDialog(ClientLoginFrm.this, "Register successful!", "Announce", JOptionPane.INFORMATION_MESSAGE);
+                        return;
+                    }
+                    case 1: //cannot connect to server
+                    {
+                        JOptionPane.showMessageDialog(ClientLoginFrm.this, "Cannot connect to server, please check your internet connection!", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                    case 2: //username is used
+                    {
+                        JOptionPane.showMessageDialog(ClientLoginFrm.this, "Username existed! Please choose another username.", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                }
             }
-            case 1: //cannot connect to server
-            {
-                JOptionPane.showMessageDialog(this, "Cannot connect to server, please check your internet connection!", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            case 2: //username is used
-            {
-                JOptionPane.showMessageDialog(this, "Username existed! Please choose another username.", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-        }
+        });
+        t.start();
     }//GEN-LAST:event_btnRegisterActionPerformed
 
     /**

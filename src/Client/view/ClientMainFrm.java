@@ -11,6 +11,7 @@ import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -27,12 +28,14 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JPopupMenu;
+import javax.swing.JScrollBar;
 import javax.swing.JTextPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.BadLocationException;
 import javax.swing.text.StyledDocument;
 import javax.swing.text.html.HTMLDocument;
 import model.Channel;
@@ -54,7 +57,25 @@ public class ClientMainFrm extends javax.swing.JFrame {
     private String userHomeDirectory = "";
     private String ipServer;
     public ClientFriendFrm cff;
-    /**
+    
+    //emoji url
+    private final int numberofemo = 10;
+    private String[] emoName = {":\\)", ":D", ":C", ":x", ":-&", ":q", ":s", ":-s", ":-\\$", ":-@"};
+    private String[] emoPath = 
+    {
+        "img/emoji/happy.png",
+        "img/emoji/happy2.png",
+        "img/emoji/angry2.png",
+        "img/emoji/inlove.png",
+        "img/emoji/ill.png",
+        "img/emoji/quiet.png",
+        "img/emoji/sleep.png",
+        "img/emoji/unhappy.png",
+        "img/emoji/man.png",
+        "img/emoji/ninja.png"
+    };
+    private String[] emoAbspath = new String[numberofemo];
+    /*H
      * Creates new form ClientMainFrm
      */
     /*public ClientMainFrm(ClientMainCtr cmc)
@@ -86,7 +107,12 @@ public class ClientMainFrm extends javax.swing.JFrame {
         fileTblModel = (DefaultTableModel) fileTbl.getModel();
         fileChooser = new JFileChooser();
         userHomeDirectory =  fileChooser.getFileSystemView().getHomeDirectory().getPath();   
-        cfc.setUserHomeDirectory(userHomeDirectory);               
+        cfc.setUserHomeDirectory(userHomeDirectory);
+        for(int i = 0; i < emoPath.length; i++)
+        {
+            emoAbspath[i] = ClassLoader.getSystemClassLoader().getResource(emoPath[i]).toString();
+            System.out.println(emoAbspath[i]);
+        }
     }    
     
     /**
@@ -96,7 +122,8 @@ public class ClientMainFrm extends javax.swing.JFrame {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
 
         dlgCreate = new javax.swing.JDialog();
         jLabel1 = new javax.swing.JLabel();
@@ -150,13 +177,19 @@ public class ClientMainFrm extends javax.swing.JFrame {
         manBtn = new javax.swing.JButton();
         ninjaBtn = new javax.swing.JButton();
         jToolBar1 = new javax.swing.JToolBar();
-        jPanel1 = new javax.swing.JPanel();
+        barbtnCreate = new javax.swing.JButton();
+        barbtnEdit = new javax.swing.JButton();
+        barbtnDelete = new javax.swing.JButton();
+        barbtnConnect = new javax.swing.JButton();
+        jSeparator1 = new javax.swing.JToolBar.Separator();
+        barbtnMicEnable = new javax.swing.JToggleButton();
+        barbtnVoiceEnable = new javax.swing.JToggleButton();
         underBar = new javax.swing.JPanel();
         splitPanel1 = new javax.swing.JSplitPane();
         splitPanel2 = new javax.swing.JSplitPane();
         roomInfoPanel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        txtInfo = new javax.swing.JTextArea();
         roomPanel = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
         listChannel = new javax.swing.JList<>();
@@ -167,7 +200,7 @@ public class ClientMainFrm extends javax.swing.JFrame {
         txtConsole = new javax.swing.JTextArea();
         serverMsgPanel = new javax.swing.JPanel();
         channelMsgPanel = new javax.swing.JPanel();
-        jScrollPane5 = new javax.swing.JScrollPane();
+        scrollpaneChat = new javax.swing.JScrollPane();
         txtChannelMsg = new javax.swing.JTextPane();
         chatPanel = new javax.swing.JPanel();
         emojiBtn = new javax.swing.JButton();
@@ -175,9 +208,11 @@ public class ClientMainFrm extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         itemConnect = new javax.swing.JMenuItem();
-        txtCreate = new javax.swing.JMenuItem();
+        itemCreate = new javax.swing.JMenuItem();
         itemEditChannel = new javax.swing.JMenuItem();
         itemDeleteChannel = new javax.swing.JMenuItem();
+        itemMicEnable = new javax.swing.JCheckBoxMenuItem();
+        itemVoiceEnable = new javax.swing.JCheckBoxMenuItem();
         jMenu3 = new javax.swing.JMenu();
         itemShowFriendFrm = new javax.swing.JCheckBoxMenuItem();
         itemAddFriend = new javax.swing.JMenuItem();
@@ -190,12 +225,16 @@ public class ClientMainFrm extends javax.swing.JFrame {
         dlgCreate.setIconImage(new ImageIcon("img/plus.png").getImage());
         dlgCreate.setResizable(false);
 
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/16x16_channel_chat.png"))); // NOI18N
         jLabel1.setText("Name");
 
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/16x16_channel_chat.png"))); // NOI18N
         jLabel2.setText("Password");
 
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/16x16_channel_chat.png"))); // NOI18N
         jLabel3.setText("Topic");
 
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/16x16_channel_chat.png"))); // NOI18N
         jLabel4.setText("Description");
 
         txtDesc.setColumns(20);
@@ -219,7 +258,7 @@ public class ClientMainFrm extends javax.swing.JFrame {
                     .addComponent(txtTopic)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 227, Short.MAX_VALUE)
                     .addComponent(txtPassword))
-                .addContainerGap(51, Short.MAX_VALUE))
+                .addContainerGap(31, Short.MAX_VALUE))
         );
         dlgCreateLayout.setVerticalGroup(
             dlgCreateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -249,8 +288,10 @@ public class ClientMainFrm extends javax.swing.JFrame {
         fileDownload.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         uploadBtn.setText("Upload");
-        uploadBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        uploadBtn.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 uploadBtnActionPerformed(evt);
             }
         });
@@ -260,8 +301,10 @@ public class ClientMainFrm extends javax.swing.JFrame {
         fileUpload.setText("no file selected");
 
         browseBtn.setText("Browse");
-        browseBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        browseBtn.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 browseBtnActionPerformed(evt);
             }
         });
@@ -295,35 +338,45 @@ public class ClientMainFrm extends javax.swing.JFrame {
         );
 
         fileTbl.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+            new Object [][]
+            {
 
             },
-            new String [] {
+            new String []
+            {
                 "Type", "Name", "Size (Byte)"
             }
-        ) {
-            Class[] types = new Class [] {
+        )
+        {
+            Class[] types = new Class []
+            {
                 java.lang.Object.class, java.lang.Object.class, java.lang.Long.class
             };
-            boolean[] canEdit = new boolean [] {
+            boolean[] canEdit = new boolean []
+            {
                 false, false, false
             };
 
-            public Class getColumnClass(int columnIndex) {
+            public Class getColumnClass(int columnIndex)
+            {
                 return types [columnIndex];
             }
 
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
+            public boolean isCellEditable(int rowIndex, int columnIndex)
+            {
                 return canEdit [columnIndex];
             }
         });
-        fileTbl.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
+        fileTbl.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseClicked(java.awt.event.MouseEvent evt)
+            {
                 fileTblMouseClicked(evt);
             }
         });
         jScrollPane7.setViewportView(fileTbl);
-        if (fileTbl.getColumnModel().getColumnCount() > 0) {
+        if (fileTbl.getColumnModel().getColumnCount() > 0)
+        {
             fileTbl.getColumnModel().getColumn(0).setMinWidth(30);
             fileTbl.getColumnModel().getColumn(0).setPreferredWidth(40);
             fileTbl.getColumnModel().getColumn(0).setMaxWidth(60);
@@ -351,12 +404,16 @@ public class ClientMainFrm extends javax.swing.JFrame {
         dlgEditChannel.setIconImage(new ImageIcon("img/plus.png").getImage());
         dlgEditChannel.setResizable(false);
 
+        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/16x16_channel_chat.png"))); // NOI18N
         jLabel9.setText("Name");
 
+        jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/16x16_channel_chat.png"))); // NOI18N
         jLabel10.setText("Password");
 
+        jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/16x16_channel_chat.png"))); // NOI18N
         jLabel11.setText("Topic");
 
+        jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/16x16_channel_chat.png"))); // NOI18N
         jLabel12.setText("Description");
 
         txtChannelDesc.setColumns(20);
@@ -380,7 +437,7 @@ public class ClientMainFrm extends javax.swing.JFrame {
                     .addComponent(txtChannelTopic)
                     .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 227, Short.MAX_VALUE)
                     .addComponent(txtChannelPassword))
-                .addContainerGap(51, Short.MAX_VALUE))
+                .addContainerGap(31, Short.MAX_VALUE))
         );
         dlgEditChannelLayout.setVerticalGroup(
             dlgEditChannelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -404,50 +461,62 @@ public class ClientMainFrm extends javax.swing.JFrame {
                 .addContainerGap(59, Short.MAX_VALUE))
         );
 
+        popupitemConnect.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/16x16_channel_switch.png"))); // NOI18N
         popupitemConnect.setText("Connect to channel");
-        popupitemConnect.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        popupitemConnect.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 popupitemConnectActionPerformed(evt);
             }
         });
         popupChannel.add(popupitemConnect);
 
+        popupitemCreate.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/16x16_channel_create.png"))); // NOI18N
         popupitemCreate.setText("Create new channel");
-        popupitemCreate.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        popupitemCreate.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 popupitemCreateActionPerformed(evt);
             }
         });
         popupChannel.add(popupitemCreate);
 
+        popupitemEdit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/16x16_channel_edit.png"))); // NOI18N
         popupitemEdit.setText("Edit channel");
-        popupitemEdit.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        popupitemEdit.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 popupitemEditActionPerformed(evt);
             }
         });
         popupChannel.add(popupitemEdit);
 
+        popupitemDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/16x16_remove_friend.png"))); // NOI18N
         popupitemDelete.setText("Delete channel");
-        popupitemDelete.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        popupitemDelete.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 popupitemDeleteActionPerformed(evt);
             }
         });
         popupChannel.add(popupitemDelete);
-        popupitemKick.setText("Kick");
+
+        popupitemKick.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/16x16_remove_foe.png"))); // NOI18N
+        popupitemKick.setText("Kick from channel");
         popupitemKick.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
             {
-        popupitemKick.setText("jMenuItem1");
-        popupitemKick.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 popupitemKickActionPerformed(evt);
             }
         });
         popupClient.add(popupitemKick);
 
+        popupitemAddFriend.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/16x16_add_friend.png"))); // NOI18N
         popupitemAddFriend.setText("Add as friend");
         popupitemAddFriend.addActionListener(new java.awt.event.ActionListener()
         {
@@ -457,25 +526,32 @@ public class ClientMainFrm extends javax.swing.JFrame {
             }
         });
         popupClient.add(popupitemAddFriend);
+
         downloadItem.setText("Download");
-        downloadItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        downloadItem.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 downloadItemActionPerformed(evt);
             }
         });
         filePopupMenu.add(downloadItem);
 
         removeItem.setText("remove");
-        removeItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        removeItem.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 removeItemActionPerformed(evt);
             }
         });
         filePopupMenu.add(removeItem);
 
         newFolderItem.setText("New folder");
-        newFolderItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        newFolderItem.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 newFolderItemActionPerformed(evt);
             }
         });
@@ -483,11 +559,12 @@ public class ClientMainFrm extends javax.swing.JFrame {
 
         emojiPanel.setBackground(new java.awt.Color(51, 255, 255));
         emojiPanel.setUndecorated(true);
-        emojiPanel.setPreferredSize(new java.awt.Dimension(200, 100));
         emojiPanel.setResizable(false);
         emojiPanel.setSize(new java.awt.Dimension(200, 100));
-        emojiPanel.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
+        emojiPanel.addFocusListener(new java.awt.event.FocusAdapter()
+        {
+            public void focusLost(java.awt.event.FocusEvent evt)
+            {
                 emojiPanelFocusLost(evt);
             }
         });
@@ -496,8 +573,10 @@ public class ClientMainFrm extends javax.swing.JFrame {
         happyBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/emoji/happy.png"))); // NOI18N
         happyBtn.setToolTipText(":)");
         happyBtn.setBorder(null);
-        happyBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        happyBtn.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 happyBtnActionPerformed(evt);
             }
         });
@@ -506,8 +585,10 @@ public class ClientMainFrm extends javax.swing.JFrame {
         happy2Btn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/emoji/happy2.png"))); // NOI18N
         happy2Btn.setToolTipText(":D");
         happy2Btn.setBorder(null);
-        happy2Btn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        happy2Btn.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 happy2BtnActionPerformed(evt);
             }
         });
@@ -515,8 +596,10 @@ public class ClientMainFrm extends javax.swing.JFrame {
 
         angryBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/emoji/angry2.png"))); // NOI18N
         angryBtn.setToolTipText(":C ");
-        angryBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        angryBtn.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 angryBtnActionPerformed(evt);
             }
         });
@@ -524,8 +607,10 @@ public class ClientMainFrm extends javax.swing.JFrame {
 
         inloveBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/emoji/inlove.png"))); // NOI18N
         inloveBtn.setToolTipText(":x");
-        inloveBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        inloveBtn.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 inloveBtnActionPerformed(evt);
             }
         });
@@ -533,8 +618,10 @@ public class ClientMainFrm extends javax.swing.JFrame {
 
         illBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/emoji/ill.png"))); // NOI18N
         illBtn.setToolTipText(":-&");
-        illBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        illBtn.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 illBtnActionPerformed(evt);
             }
         });
@@ -542,8 +629,10 @@ public class ClientMainFrm extends javax.swing.JFrame {
 
         silenceBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/emoji/quiet.png"))); // NOI18N
         silenceBtn.setToolTipText(":q");
-        silenceBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        silenceBtn.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 silenceBtnActionPerformed(evt);
             }
         });
@@ -551,8 +640,10 @@ public class ClientMainFrm extends javax.swing.JFrame {
 
         sleepBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/emoji/sleep.png"))); // NOI18N
         sleepBtn.setToolTipText(":s");
-        sleepBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        sleepBtn.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 sleepBtnActionPerformed(evt);
             }
         });
@@ -560,8 +651,10 @@ public class ClientMainFrm extends javax.swing.JFrame {
 
         cryBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/emoji/unhappy.png"))); // NOI18N
         cryBtn.setToolTipText(":-s");
-        cryBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        cryBtn.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 cryBtnActionPerformed(evt);
             }
         });
@@ -569,8 +662,10 @@ public class ClientMainFrm extends javax.swing.JFrame {
 
         manBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/emoji/man.png"))); // NOI18N
         manBtn.setToolTipText(":-$");
-        manBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        manBtn.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 manBtnActionPerformed(evt);
             }
         });
@@ -578,32 +673,122 @@ public class ClientMainFrm extends javax.swing.JFrame {
 
         ninjaBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/emoji/ninja.png"))); // NOI18N
         ninjaBtn.setToolTipText(":-@");
-        ninjaBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        ninjaBtn.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 ninjaBtnActionPerformed(evt);
             }
         });
         emojiPanel.getContentPane().add(ninjaBtn);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addComponentListener(new java.awt.event.ComponentAdapter()
+        {
+            public void componentMoved(java.awt.event.ComponentEvent evt)
+            {
+                formComponentMoved(evt);
+            }
+        });
+        addWindowListener(new java.awt.event.WindowAdapter()
+        {
+            public void windowClosing(java.awt.event.WindowEvent evt)
+            {
+                formWindowClosing(evt);
+            }
+        });
         getContentPane().setLayout(new java.awt.BorderLayout(1, 1));
 
         jToolBar1.setRollover(true);
 
-        jPanel1.setPreferredSize(new java.awt.Dimension(487, 25));
+        barbtnCreate.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/24x24_channel_create.png"))); // NOI18N
+        barbtnCreate.setText("Create channel");
+        barbtnCreate.setFocusable(false);
+        barbtnCreate.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        barbtnCreate.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        barbtnCreate.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                barbtnCreateActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(barbtnCreate);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 487, Short.MAX_VALUE)
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 25, Short.MAX_VALUE)
-        );
+        barbtnEdit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/24x24_channel_create_sub.png"))); // NOI18N
+        barbtnEdit.setText("Edit channel");
+        barbtnEdit.setFocusable(false);
+        barbtnEdit.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        barbtnEdit.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        barbtnEdit.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                barbtnEditActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(barbtnEdit);
 
-        jToolBar1.add(jPanel1);
+        barbtnDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/24x24_channel_delete.png"))); // NOI18N
+        barbtnDelete.setText("Delete channel");
+        barbtnDelete.setFocusable(false);
+        barbtnDelete.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        barbtnDelete.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        barbtnDelete.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                barbtnDeleteActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(barbtnDelete);
+
+        barbtnConnect.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/24x24_connect.png"))); // NOI18N
+        barbtnConnect.setText("Connect to channel");
+        barbtnConnect.setFocusable(false);
+        barbtnConnect.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        barbtnConnect.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        barbtnConnect.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                barbtnConnectActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(barbtnConnect);
+        jToolBar1.add(jSeparator1);
+
+        barbtnMicEnable.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/24x24_input_muted.png"))); // NOI18N
+        barbtnMicEnable.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/img/24x24_activate_microphone.png"))); // NOI18N
+        barbtnMicEnable.setSelected(true);
+        barbtnMicEnable.setText("Microphone");
+        barbtnMicEnable.setFocusable(false);
+        barbtnMicEnable.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        barbtnMicEnable.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        barbtnMicEnable.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                barbtnMicEnableActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(barbtnMicEnable);
+
+        barbtnVoiceEnable.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/24x24_output_muted.png"))); // NOI18N
+        barbtnVoiceEnable.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/img/24x24_playback.png"))); // NOI18N
+        barbtnVoiceEnable.setSelected(true);
+        barbtnVoiceEnable.setText("Sound");
+        barbtnVoiceEnable.setFocusable(false);
+        barbtnVoiceEnable.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        barbtnVoiceEnable.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        barbtnVoiceEnable.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                barbtnVoiceEnableActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(barbtnVoiceEnable);
 
         getContentPane().add(jToolBar1, java.awt.BorderLayout.PAGE_START);
 
@@ -632,9 +817,10 @@ public class ClientMainFrm extends javax.swing.JFrame {
         roomInfoPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         roomInfoPanel.setPreferredSize(new java.awt.Dimension(300, 250));
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        txtInfo.setEditable(false);
+        txtInfo.setColumns(20);
+        txtInfo.setRows(5);
+        jScrollPane1.setViewportView(txtInfo);
 
         javax.swing.GroupLayout roomInfoPanelLayout = new javax.swing.GroupLayout(roomInfoPanel);
         roomInfoPanel.setLayout(roomInfoPanelLayout);
@@ -653,11 +839,14 @@ public class ClientMainFrm extends javax.swing.JFrame {
         roomPanel.setPreferredSize(new java.awt.Dimension(350, 250));
 
         listChannel.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        listChannel.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
+        listChannel.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseClicked(java.awt.event.MouseEvent evt)
+            {
                 listChannelMouseClicked(evt);
             }
-            public void mousePressed(java.awt.event.MouseEvent evt) {
+            public void mousePressed(java.awt.event.MouseEvent evt)
+            {
                 listChannelMousePressed(evt);
             }
         });
@@ -697,7 +886,7 @@ public class ClientMainFrm extends javax.swing.JFrame {
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 233, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 209, Short.MAX_VALUE)
         );
 
         msgPanel.addTab("Console", jPanel2);
@@ -713,7 +902,7 @@ public class ClientMainFrm extends javax.swing.JFrame {
         );
         serverMsgPanelLayout.setVerticalGroup(
             serverMsgPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 233, Short.MAX_VALUE)
+            .addGap(0, 209, Short.MAX_VALUE)
         );
 
         msgPanel.addTab("Server", serverMsgPanel);
@@ -721,17 +910,17 @@ public class ClientMainFrm extends javax.swing.JFrame {
         txtChannelMsg.setEditable(false);
         txtChannelMsg.setContentType("text/html\n"); // NOI18N
         txtChannelMsg.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        jScrollPane5.setViewportView(txtChannelMsg);
+        scrollpaneChat.setViewportView(txtChannelMsg);
 
         javax.swing.GroupLayout channelMsgPanelLayout = new javax.swing.GroupLayout(channelMsgPanel);
         channelMsgPanel.setLayout(channelMsgPanelLayout);
         channelMsgPanelLayout.setHorizontalGroup(
             channelMsgPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 485, Short.MAX_VALUE)
+            .addComponent(scrollpaneChat, javax.swing.GroupLayout.DEFAULT_SIZE, 485, Short.MAX_VALUE)
         );
         channelMsgPanelLayout.setVerticalGroup(
             channelMsgPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 233, Short.MAX_VALUE)
+            .addComponent(scrollpaneChat, javax.swing.GroupLayout.DEFAULT_SIZE, 209, Short.MAX_VALUE)
         );
 
         msgPanel.addTab("Channel", channelMsgPanel);
@@ -747,15 +936,19 @@ public class ClientMainFrm extends javax.swing.JFrame {
         emojiBtn.setBackground(new java.awt.Color(255, 255, 255));
         emojiBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/emoji/happy.png"))); // NOI18N
         emojiBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        emojiBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        emojiBtn.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 emojiBtnActionPerformed(evt);
             }
         });
         chatPanel.add(emojiBtn, java.awt.BorderLayout.LINE_END);
 
-        textFieldChat.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
+        textFieldChat.addKeyListener(new java.awt.event.KeyAdapter()
+        {
+            public void keyPressed(java.awt.event.KeyEvent evt)
+            {
                 textFieldChatKeyPressed(evt);
             }
         });
@@ -769,37 +962,71 @@ public class ClientMainFrm extends javax.swing.JFrame {
 
         jMenu1.setText("Channel");
 
+        itemConnect.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/16x16_channel_switch.png"))); // NOI18N
         itemConnect.setText("Connect to channel");
-        itemConnect.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        itemConnect.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 itemConnectActionPerformed(evt);
             }
         });
         jMenu1.add(itemConnect);
 
-        txtCreate.setText("Create new channel");
-        txtCreate.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtCreateActionPerformed(evt);
+        itemCreate.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/16x16_channel_create.png"))); // NOI18N
+        itemCreate.setText("Create new channel");
+        itemCreate.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                itemCreateActionPerformed(evt);
             }
         });
-        jMenu1.add(txtCreate);
+        jMenu1.add(itemCreate);
 
+        itemEditChannel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/16x16_channel_edit.png"))); // NOI18N
         itemEditChannel.setText("Edit channel");
-        itemEditChannel.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        itemEditChannel.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 itemEditChannelActionPerformed(evt);
             }
         });
         jMenu1.add(itemEditChannel);
 
+        itemDeleteChannel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/16x16_channel_delete.png"))); // NOI18N
         itemDeleteChannel.setText("Delete channel");
-        itemDeleteChannel.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        itemDeleteChannel.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 itemDeleteChannelActionPerformed(evt);
             }
         });
         jMenu1.add(itemDeleteChannel);
+
+        itemMicEnable.setSelected(true);
+        itemMicEnable.setText("Enable microphone");
+        itemMicEnable.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                itemMicEnableActionPerformed(evt);
+            }
+        });
+        jMenu1.add(itemMicEnable);
+
+        itemVoiceEnable.setSelected(true);
+        itemVoiceEnable.setText("Enable incoming voice");
+        itemVoiceEnable.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                itemVoiceEnableActionPerformed(evt);
+            }
+        });
+        jMenu1.add(itemVoiceEnable);
 
         jMenuBar1.add(jMenu1);
 
@@ -816,25 +1043,34 @@ public class ClientMainFrm extends javax.swing.JFrame {
         });
         jMenu3.add(itemShowFriendFrm);
 
+        itemAddFriend.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/16x16_add_friend.png"))); // NOI18N
         itemAddFriend.setText("Add as friend");
-        itemAddFriend.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        itemAddFriend.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 itemAddFriendActionPerformed(evt);
             }
         });
         jMenu3.add(itemAddFriend);
 
+        itemRemoveFriend.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/16x16_remove_friend.png"))); // NOI18N
         itemRemoveFriend.setText("Remove friend");
-        itemRemoveFriend.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        itemRemoveFriend.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 itemRemoveFriendActionPerformed(evt);
             }
         });
         jMenu3.add(itemRemoveFriend);
 
+        itemInvite.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/16x16_new_chat.png"))); // NOI18N
         itemInvite.setText("Invite to channel");
-        itemInvite.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        itemInvite.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 itemInviteActionPerformed(evt);
             }
         });
@@ -846,8 +1082,10 @@ public class ClientMainFrm extends javax.swing.JFrame {
 
         fileTransferItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/ftransfer.png"))); // NOI18N
         fileTransferItem.setText("File Transfer");
-        fileTransferItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        fileTransferItem.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 fileTransferItemActionPerformed(evt);
             }
         });
@@ -870,10 +1108,10 @@ public class ClientMainFrm extends javax.swing.JFrame {
         cmc.itemConnectClicked();
     }//GEN-LAST:event_itemConnectActionPerformed
 
-    private void txtCreateActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_txtCreateActionPerformed
-    {//GEN-HEADEREND:event_txtCreateActionPerformed
+    private void itemCreateActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_itemCreateActionPerformed
+    {//GEN-HEADEREND:event_itemCreateActionPerformed
         cmc.itemCreateClicked();
-    }//GEN-LAST:event_txtCreateActionPerformed
+    }//GEN-LAST:event_itemCreateActionPerformed
 
     private void fileTransferItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileTransferItemActionPerformed
         listFileInServer();
@@ -943,20 +1181,6 @@ public class ClientMainFrm extends javax.swing.JFrame {
         cmc.itemKickClicked();
     }//GEN-LAST:event_popupitemKickActionPerformed
 
-    private void popupitemAddFriendActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_popupitemAddFriendActionPerformed
-    {//GEN-HEADEREND:event_popupitemAddFriendActionPerformed
-        cff.cfc.itemAddFriendClicked();
-    }//GEN-LAST:event_popupitemAddFriendActionPerformed
-
-    private void itemShowFriendFrmActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_itemShowFriendFrmActionPerformed
-    {//GEN-HEADEREND:event_itemShowFriendFrmActionPerformed
-        if(itemShowFriendFrm.isSelected())
-        {
-            cff.setVisible(true);
-        }
-        else
-            cff.setVisible(false);
-    }//GEN-LAST:event_itemShowFriendFrmActionPerformed
     private void fileTblMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fileTblMouseClicked
         if (evt.getClickCount() == 2){
             changeDirectory();
@@ -964,6 +1188,14 @@ public class ClientMainFrm extends javax.swing.JFrame {
         if (SwingUtilities.isRightMouseButton(evt)){            
             int r = fileTbl.rowAtPoint(evt.getPoint());
             if (r != 0){
+                downloadItem.setEnabled(true);
+                removeItem.setEnabled(true);
+                fileTbl.setRowSelectionInterval(r, r);
+                filePopupMenu.show(fileTbl, evt.getPoint().x, evt.getPoint().y);
+            }
+            else{
+                downloadItem.setEnabled(false);
+                removeItem.setEnabled(false);
                 fileTbl.setRowSelectionInterval(r, r);
                 filePopupMenu.show(fileTbl, evt.getPoint().x, evt.getPoint().y);
             }
@@ -1072,6 +1304,82 @@ public class ClientMainFrm extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_textFieldChatKeyPressed
 
+    private void popupitemAddFriendActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_popupitemAddFriendActionPerformed
+    {//GEN-HEADEREND:event_popupitemAddFriendActionPerformed
+        cff.cfc.itemAddFriendClicked();
+    }//GEN-LAST:event_popupitemAddFriendActionPerformed
+
+    private void itemShowFriendFrmActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_itemShowFriendFrmActionPerformed
+    {//GEN-HEADEREND:event_itemShowFriendFrmActionPerformed
+        if(itemShowFriendFrm.isSelected())
+        {
+            cff.setVisible(true);
+        }
+        else
+            cff.setVisible(false);
+    }//GEN-LAST:event_itemShowFriendFrmActionPerformed
+
+    private void formComponentMoved(java.awt.event.ComponentEvent evt)//GEN-FIRST:event_formComponentMoved
+    {//GEN-HEADEREND:event_formComponentMoved
+        setFriendFrmPosition();
+    }//GEN-LAST:event_formComponentMoved
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt)//GEN-FIRST:event_formWindowClosing
+    {//GEN-HEADEREND:event_formWindowClosing
+        cmc.disconnect();
+    }//GEN-LAST:event_formWindowClosing
+
+    private void barbtnCreateActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_barbtnCreateActionPerformed
+    {//GEN-HEADEREND:event_barbtnCreateActionPerformed
+        cmc.itemCreateClicked();
+    }//GEN-LAST:event_barbtnCreateActionPerformed
+
+    private void barbtnEditActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_barbtnEditActionPerformed
+    {//GEN-HEADEREND:event_barbtnEditActionPerformed
+        cmc.itemEditChannelClicked();
+    }//GEN-LAST:event_barbtnEditActionPerformed
+
+    private void barbtnDeleteActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_barbtnDeleteActionPerformed
+    {//GEN-HEADEREND:event_barbtnDeleteActionPerformed
+        cmc.itemDeleteChannelClicked();
+    }//GEN-LAST:event_barbtnDeleteActionPerformed
+
+    private void barbtnConnectActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_barbtnConnectActionPerformed
+    {//GEN-HEADEREND:event_barbtnConnectActionPerformed
+        cmc.itemConnectClicked();
+    }//GEN-LAST:event_barbtnConnectActionPerformed
+
+    private void barbtnMicEnableActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_barbtnMicEnableActionPerformed
+    {//GEN-HEADEREND:event_barbtnMicEnableActionPerformed
+        if(barbtnMicEnable.isSelected())
+            itemMicEnable.setSelected(true);
+        else
+            itemMicEnable.setSelected(false);
+    }//GEN-LAST:event_barbtnMicEnableActionPerformed
+
+    private void barbtnVoiceEnableActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_barbtnVoiceEnableActionPerformed
+    {//GEN-HEADEREND:event_barbtnVoiceEnableActionPerformed
+        if(barbtnVoiceEnable.isSelected())
+            itemVoiceEnable.setSelected(true);
+        else
+            itemVoiceEnable.setSelected(false);
+    }//GEN-LAST:event_barbtnVoiceEnableActionPerformed
+
+    private void itemMicEnableActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_itemMicEnableActionPerformed
+    {//GEN-HEADEREND:event_itemMicEnableActionPerformed
+        if(itemMicEnable.isSelected())
+            barbtnMicEnable.setSelected(true);
+        else
+            barbtnMicEnable.setSelected(false);
+    }//GEN-LAST:event_itemMicEnableActionPerformed
+
+    private void itemVoiceEnableActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_itemVoiceEnableActionPerformed
+    {//GEN-HEADEREND:event_itemVoiceEnableActionPerformed
+        if(itemVoiceEnable.isSelected())
+            barbtnVoiceEnable.setSelected(true);
+        else
+            barbtnVoiceEnable.setSelected(false);
+    }//GEN-LAST:event_itemVoiceEnableActionPerformed
 
 
     /**
@@ -1101,7 +1409,7 @@ public class ClientMainFrm extends javax.swing.JFrame {
     {
         if(channelMsgPanel.getParent() != msgPanel)
             msgPanel.add(channelMsgPanel);
-        txtChannelMsg.setText("");
+        txtChannelMsg.setContentType("text/html");
         msgPanel.setTitleAt(2, cmc.currentChannel.getName());
         msgPanel.setSelectedIndex(2);
     }
@@ -1116,6 +1424,10 @@ public class ClientMainFrm extends javax.swing.JFrame {
             "Create",
             "Cancel"
         };
+        txtName.setText("");
+        txtPassword.setText("");
+        txtTopic.setText("");
+        txtDesc.setText("");
         int option = JOptionPane.showOptionDialog(this, dlgCreate.getRootPane(), "Create channel", JOptionPane.NO_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
         if(option == 0)
         {
@@ -1216,6 +1528,29 @@ public class ClientMainFrm extends javax.swing.JFrame {
     }
     
     /**
+     * This function enable/disable all item related to channel
+     */
+    public void setChannelItem(boolean isEnabled)
+    {
+        this.itemConnect.setEnabled(isEnabled);
+        this.itemDeleteChannel.setEnabled(isEnabled);
+        this.itemEditChannel.setEnabled(isEnabled);
+        this.barbtnConnect.setEnabled(isEnabled);
+        this.barbtnDelete.setEnabled(isEnabled);
+        this.barbtnEdit.setEnabled(isEnabled);
+    }
+    
+    /**
+     * This function enable/disable all item related to friend
+     */
+    public void setFriendItem(boolean isEnabled)
+    {
+        this.itemAddFriend.setEnabled(isEnabled);
+        this.itemRemoveFriend.setEnabled(isEnabled);
+        this.itemInvite.setEnabled(isEnabled);
+    }
+    
+    /**
      * This function returns currently selected channel
      */
     public String getSelectedChannel()
@@ -1297,12 +1632,101 @@ public class ClientMainFrm extends javax.swing.JFrame {
     /**
      * This function prints chat message
      */
+    
+    private String replaceIcon(String input){        
+        for(int i = 0; i < numberofemo; i++)
+        {
+            input = input.replaceAll(emoName[i], "<img src=\"" + emoAbspath[i] + "\"/>");
+        }
+        return input;
+    }
+    
     public void printMessage(String sender, String message)
     {        
-        System.out.println(txtChannelMsg.getText());
-        txtChannelMsg.setContentType("text/html");        
-        txtChannelMsg.setText(txtChannelMsg.getText() + sender + ": " + message + "\n");        
-        txtChannelMsg.setText("<html><b>hello</b></html>");        
+        message = replaceIcon(message);
+        String output = sender + " : " + message + "<br>";        
+        HTMLDocument doc = (HTMLDocument) txtChannelMsg.getStyledDocument();
+        try
+        {
+            doc.insertAfterEnd(doc.getCharacterElement(doc.getLength()),output);
+            JScrollBar vertical = scrollpaneChat.getVerticalScrollBar();
+            vertical.setValue(vertical.getMaximum());
+        }
+        catch(IOException |BadLocationException ex)
+        {
+            Logger.getLogger(ClientMainFrm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        //txtChannelMsg.setText(txtChannelMsg.getText() + sender + ": " + message + "\n");        
+                
+    }
+    
+    /**
+     * This function shows if user is enabling mic or not
+     */
+    public boolean isMicEnabled()
+    {
+        return itemMicEnable.isSelected();
+    }
+    
+    /**
+     * This function shows if user is enabling voice chat or not
+     */
+    public boolean isVoiceEnabled()
+    {
+        return itemVoiceEnable.isSelected();
+    }
+    
+    /**
+     * This function update the info panel
+     */
+    public void updateInfoPanel(Channel c)
+    {
+        txtInfo.setText("");
+        writeInfo("Channel: " + c.getName());
+        writeInfo("");
+        writeInfo("Owner: " + c.getOwner().getUsername());
+        writeInfo("Topic: " + c.getTopic());
+        writeInfo("Description: ");
+        writeInfo("     " + c.getDescription());
+    }
+    
+    /**
+     * This function update the info panel
+     */
+    public void updateInfoPanel(String clientName)
+    {
+        txtInfo.setText("");
+        writeInfo("Client: " + clientName);
+        writeInfo("Current status: In channel: " + getCurrentChannel(clientName));
+    }
+    
+    /**
+     * This function return the channel name of the client
+     */
+    public String getCurrentChannel(String clientName)
+    {
+        String result = null;
+        for(int i = 0; i < listChannel.getModel().getSize(); i++)
+        {
+            String s = listChannel.getModel().getElementAt(i);
+            if(!s.substring(0, 4).equals("    "))
+            {
+                result = s;
+                continue;
+            }
+            if(clientName.equals(s.substring(4, s.length())))
+                return result;
+        }
+        return result;
+    }
+    
+    /**
+     * This function set the position of friend frame on the right of this frame
+     */
+    private void setFriendFrmPosition()
+    {
+        if(cff != null)
+            cff.setLocation(this.getLocation().x+this.getWidth(), this.getLocation().y);
     }
     
     /**
@@ -1311,6 +1735,14 @@ public class ClientMainFrm extends javax.swing.JFrame {
     public void writeConsole(String s)
     {
         txtConsole.setText(txtConsole.getText() + s + "\n");
+    }
+    
+    /**
+     * This function writes a new line in info text area
+     */
+    public void writeInfo(String s)
+    {
+        txtInfo.setText(txtInfo.getText() + s + "\n");
     }
     
     private void showEmojiDialog(){
@@ -1481,6 +1913,12 @@ public class ClientMainFrm extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton angryBtn;
+    private javax.swing.JButton barbtnConnect;
+    private javax.swing.JButton barbtnCreate;
+    private javax.swing.JButton barbtnDelete;
+    private javax.swing.JButton barbtnEdit;
+    private javax.swing.JToggleButton barbtnMicEnable;
+    private javax.swing.JToggleButton barbtnVoiceEnable;
     private javax.swing.JButton browseBtn;
     private javax.swing.JPanel channelMsgPanel;
     private javax.swing.JPanel chatPanel;
@@ -1502,11 +1940,14 @@ public class ClientMainFrm extends javax.swing.JFrame {
     private javax.swing.JButton inloveBtn;
     private javax.swing.JMenuItem itemAddFriend;
     private javax.swing.JMenuItem itemConnect;
+    private javax.swing.JMenuItem itemCreate;
     private javax.swing.JMenuItem itemDeleteChannel;
     private javax.swing.JMenuItem itemEditChannel;
     private javax.swing.JMenuItem itemInvite;
+    private javax.swing.JCheckBoxMenuItem itemMicEnable;
     private javax.swing.JMenuItem itemRemoveFriend;
     private javax.swing.JCheckBoxMenuItem itemShowFriendFrm;
+    private javax.swing.JCheckBoxMenuItem itemVoiceEnable;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -1520,16 +1961,14 @@ public class ClientMainFrm extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
-    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JToolBar jToolBar1;
     public javax.swing.JList<String> listChannel;
     private javax.swing.JButton manBtn;
@@ -1547,6 +1986,7 @@ public class ClientMainFrm extends javax.swing.JFrame {
     private javax.swing.JMenuItem removeItem;
     private javax.swing.JPanel roomInfoPanel;
     private javax.swing.JPanel roomPanel;
+    private javax.swing.JScrollPane scrollpaneChat;
     private javax.swing.JPanel serverMsgPanel;
     private javax.swing.JButton silenceBtn;
     private javax.swing.JButton sleepBtn;
@@ -1560,8 +2000,8 @@ public class ClientMainFrm extends javax.swing.JFrame {
     private javax.swing.JPasswordField txtChannelPassword;
     private javax.swing.JTextField txtChannelTopic;
     private javax.swing.JTextArea txtConsole;
-    private javax.swing.JMenuItem txtCreate;
     private javax.swing.JTextArea txtDesc;
+    private javax.swing.JTextArea txtInfo;
     private javax.swing.JTextField txtName;
     private javax.swing.JPasswordField txtPassword;
     private javax.swing.JTextField txtTopic;

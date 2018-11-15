@@ -22,7 +22,7 @@ public class ServerDAO
         try {
             Class.forName(dbClass);
             String url = "jdbc:mysql://localhost:3306/btlltm?useSSL=false";
-            conn = DriverManager.getConnection(url, "root", "Huy811");
+            conn = DriverManager.getConnection(url, "root", "ffieosgc");
         } catch (ClassNotFoundException | SQLException ex) {
             System.out.println("No sql server class or can connect to the database");
         }        

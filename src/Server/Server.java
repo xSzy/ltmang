@@ -310,6 +310,10 @@ public class Server extends javax.swing.JFrame
                 dos.writeUTF(channel.getPassword());
                 //write channel owner name
                 dos.writeUTF(channel.getOwner().getUsername());
+                //write channel topic
+                dos.writeUTF(channel.getTopic());
+                //write channel description
+                dos.writeUTF(channel.getDescription());
                 //write the number of channel's client
                 dos.writeInt(channel.getListClient().size());
                 //write all channel's username
@@ -340,6 +344,14 @@ public class Server extends javax.swing.JFrame
             String username = dis.readUTF();
             String password = dis.readUTF();
             int result = ServerDAO.checkLogin(username, password);
+            if(result == 0)
+            {
+                //check if client is already in server;
+                if(searchClient(username) != null)
+                {
+                    result = 5;
+                }
+            }
             dos.writeInt(result);
             if(result == 0) //client login successful
             {
@@ -452,6 +464,10 @@ public class Server extends javax.swing.JFrame
             else if(protocol.equals("Kick-client"))
             {
                 clientKick(client);
+            }
+            else if(protocol.equals("Disconnect"))
+            {
+                clientDisconnect(client);
             }
         }
         catch (IOException ex)
@@ -796,6 +812,8 @@ public class Server extends javax.swing.JFrame
             if(sender == null)
                 return;
             this.changeChannel(client, sender.getChannel());
+            DataOutputStream dos = new DataOutputStream(client.getSocket().getOutputStream());
+            dos.writeUTF("Channel-change-success");
         }
         catch(IOException ex)
         {
@@ -825,6 +843,34 @@ public class Server extends javax.swing.JFrame
         catch(IOException ex)
         {
             Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    /**
+     * This function starts when client disconnects
+     */
+    public void clientDisconnect(Client client)
+    {
+        try
+        {
+            Channel channel = client.getChannel();
+            channel.getListClient().remove(client);
+            listClient.remove(client);
+            client.getSocket().getInputStream().close();
+            client.getSocket().getOutputStream().close();
+            client.getSocket().close();
+        }
+        catch(IOException ex)
+        {
+            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        finally
+        {
+            for(Client c : listClient)
+            {
+                updateChannelList(c);
+                updateFriendList(c);
+            }
         }
     }
     

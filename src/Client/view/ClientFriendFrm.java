@@ -9,6 +9,8 @@ import Client.control.ClientFriendCtr;
 import java.awt.Point;
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 /**
@@ -46,6 +48,7 @@ public class ClientFriendFrm extends javax.swing.JFrame
         jScrollPane1 = new javax.swing.JScrollPane();
         listFriend = new javax.swing.JList<>();
 
+        itemDeleteFriend.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/16x16_remove_friend.png"))); // NOI18N
         itemDeleteFriend.setText("Delete friend");
         itemDeleteFriend.addActionListener(new java.awt.event.ActionListener()
         {
@@ -56,6 +59,7 @@ public class ClientFriendFrm extends javax.swing.JFrame
         });
         popupFriend.add(itemDeleteFriend);
 
+        itemInviteFriend.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/16x16_new_chat.png"))); // NOI18N
         itemInviteFriend.setText("Invite to channel");
         itemInviteFriend.addActionListener(new java.awt.event.ActionListener()
         {

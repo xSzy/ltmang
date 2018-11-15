@@ -97,6 +97,33 @@ public class ClientMainCtr
         }
     }
     
+    public void disconnect()
+    {
+        try
+        {
+            dos.writeUTF("Disconnect");
+        }
+        catch(IOException ex)
+        {
+            Logger.getLogger(ClientMainCtr.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        finally
+        {
+            try
+            {
+                dos.close();
+                dis.close();
+                //server.close();
+                udpServer.close();
+            }
+            catch(IOException ex)
+            {
+                Logger.getLogger(ClientMainCtr.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+        }
+    }
+    
     public void readProtocol()
     {
         try
@@ -184,18 +211,42 @@ public class ClientMainCtr
         {
             this.itemConnectClicked();
         }
+        cmf.listChannel.setSelectedIndex(cmf.listChannel.locationToIndex(evt.getPoint()));
         //check if right mouse button clicked
         if(SwingUtilities.isRightMouseButton(evt))
         {
-            cmf.listChannel.setSelectedIndex(cmf.listChannel.locationToIndex(evt.getPoint()));
             if(cmf.getSelectedChannel() != null)
             {
                 cmf.showChannelPopupMenu(evt.getPoint());
+                cmf.updateInfoPanel(searchChannel(cmf.getSelectedChannel()));
+                //enable all button and menu item
+                cmf.setChannelItem(true);
+                cmf.setFriendItem(false);
             }
             else if(cmf.getSelectedClient() != null)
             {
                 cmf.showClientPopupMenu(evt.getPoint());
+                cmf.updateInfoPanel(cmf.getSelectedClient());
+                cmf.setChannelItem(false);
+                cmf.setFriendItem(true);
             }
+            return;
+        }
+        if(SwingUtilities.isLeftMouseButton(evt))
+        {
+            if(cmf.getSelectedChannel() != null)
+            {
+                cmf.updateInfoPanel(searchChannel(cmf.getSelectedChannel()));
+                cmf.setChannelItem(true);
+                cmf.setFriendItem(false);
+            }
+            else if(cmf.getSelectedClient() != null)
+            {
+                cmf.updateInfoPanel(cmf.getSelectedClient());
+                cmf.setChannelItem(false);
+                cmf.setFriendItem(true);
+            }
+            return;
         }
     }
     
@@ -418,6 +469,12 @@ public class ClientMainCtr
                 Client owner = new Client();
                 owner.setUsername(dis.readUTF());
                 c.setOwner(owner);
+                //read channel topic
+                String channelTopic = dis.readUTF();
+                c.setTopic(channelTopic);
+                //read channel desc
+                String channelDesc = dis.readUTF();
+                c.setDescription(channelDesc);
                 //read number of client
                 int clientSize = dis.readInt();
                 ArrayList<Client> listClient = new ArrayList<>();
@@ -468,8 +525,22 @@ public class ClientMainCtr
         }
     }
     
+    private Channel searchChannel(String name)
+    {
+        for(Channel c : listChannel)
+        {
+            if(name.equals(c.getName()))
+                return c;
+        }
+        return null;
+    }
+    
     private void sendPacket()
     {
+        if(udpServer.isClosed())
+            return;
+        if(!cmf.isMicEnabled())
+            return;
         DatagramPacket packet;
         //get sound from device
         int count = tdline.read(buffer, 0, buffer.length);
@@ -497,7 +568,8 @@ public class ClientMainCtr
             DatagramPacket packet = new DatagramPacket(data, dataSize);
             udpServer.receive(packet);
             data = packet.getData();
-            sdline.write(data, 0, data.length);
+            if(cmf.isVoiceEnabled())
+                sdline.write(data, 0, data.length);
         }
         catch(IOException ex)
         {
@@ -604,7 +676,7 @@ public class ClientMainCtr
         @Override
         public void run()
         {
-            while(true)
+            while(!udpServer.isClosed())
                 receivePacket();
         }
     }               

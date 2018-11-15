@@ -29,7 +29,7 @@
                       <Component id="jScrollPane3" pref="227" max="32767" attributes="0"/>
                       <Component id="txtPassword" max="32767" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="51" max="32767" attributes="0"/>
+                  <EmptySpace pref="31" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -64,11 +64,17 @@
       <SubComponents>
         <Component class="javax.swing.JLabel" name="jLabel1">
           <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/img/16x16_channel_chat.png"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Name"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel2">
           <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/img/16x16_channel_chat.png"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Password"/>
           </Properties>
         </Component>
@@ -76,11 +82,17 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel3">
           <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/img/16x16_channel_chat.png"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Topic"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel4">
           <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/img/16x16_channel_chat.png"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Description"/>
           </Properties>
         </Component>
@@ -277,7 +289,7 @@
                       <Component id="jScrollPane6" alignment="0" pref="227" max="32767" attributes="0"/>
                       <Component id="txtChannelPassword" alignment="0" max="32767" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="51" max="32767" attributes="0"/>
+                  <EmptySpace pref="31" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -312,11 +324,17 @@
       <SubComponents>
         <Component class="javax.swing.JLabel" name="jLabel9">
           <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/img/16x16_channel_chat.png"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Name"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel10">
           <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/img/16x16_channel_chat.png"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Password"/>
           </Properties>
         </Component>
@@ -324,11 +342,17 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel11">
           <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/img/16x16_channel_chat.png"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Topic"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel12">
           <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/img/16x16_channel_chat.png"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Description"/>
           </Properties>
         </Component>
@@ -361,6 +385,9 @@
       <SubComponents>
         <MenuItem class="javax.swing.JMenuItem" name="popupitemConnect">
           <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/img/16x16_channel_switch.png"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Connect to channel"/>
           </Properties>
           <Events>
@@ -369,6 +396,9 @@
         </MenuItem>
         <MenuItem class="javax.swing.JMenuItem" name="popupitemCreate">
           <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/img/16x16_channel_create.png"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Create new channel"/>
           </Properties>
           <Events>
@@ -377,6 +407,9 @@
         </MenuItem>
         <MenuItem class="javax.swing.JMenuItem" name="popupitemEdit">
           <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/img/16x16_channel_edit.png"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Edit channel"/>
           </Properties>
           <Events>
@@ -385,6 +418,9 @@
         </MenuItem>
         <MenuItem class="javax.swing.JMenuItem" name="popupitemDelete">
           <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/img/16x16_remove_friend.png"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Delete channel"/>
           </Properties>
           <Events>
@@ -401,7 +437,10 @@
       <SubComponents>
         <MenuItem class="javax.swing.JMenuItem" name="popupitemKick">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Kick"/>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/img/16x16_remove_foe.png"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Kick from channel"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="popupitemKickActionPerformed"/>
@@ -409,6 +448,9 @@
         </MenuItem>
         <MenuItem class="javax.swing.JMenuItem" name="popupitemAddFriend">
           <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/img/16x16_add_friend.png"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Add as friend"/>
           </Properties>
           <Events>
@@ -455,9 +497,6 @@
           <Color blue="ff" green="ff" red="33" type="rgb"/>
         </Property>
         <Property name="undecorated" type="boolean" value="true"/>
-        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-          <Dimension value="[200, 100]"/>
-        </Property>
         <Property name="resizable" type="boolean" value="false"/>
         <Property name="size" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
           <Dimension value="[200, 100]"/>
@@ -599,22 +638,31 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="itemConnect">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/img/16x16_channel_switch.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Connect to channel"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemConnectActionPerformed"/>
               </Events>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="txtCreate">
+            <MenuItem class="javax.swing.JMenuItem" name="itemCreate">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/img/16x16_channel_create.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Create new channel"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtCreateActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemCreateActionPerformed"/>
               </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="itemEditChannel">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/img/16x16_channel_edit.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Edit channel"/>
               </Properties>
               <Events>
@@ -623,10 +671,31 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="itemDeleteChannel">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/img/16x16_channel_delete.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Delete channel"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemDeleteChannelActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JCheckBoxMenuItem" name="itemMicEnable">
+              <Properties>
+                <Property name="selected" type="boolean" value="true"/>
+                <Property name="text" type="java.lang.String" value="Enable microphone"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemMicEnableActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JCheckBoxMenuItem" name="itemVoiceEnable">
+              <Properties>
+                <Property name="selected" type="boolean" value="true"/>
+                <Property name="text" type="java.lang.String" value="Enable incoming voice"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemVoiceEnableActionPerformed"/>
               </Events>
             </MenuItem>
           </SubComponents>
@@ -647,6 +716,9 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="itemAddFriend">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/img/16x16_add_friend.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Add as friend"/>
               </Properties>
               <Events>
@@ -655,6 +727,9 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="itemRemoveFriend">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/img/16x16_remove_friend.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Remove friend"/>
               </Properties>
               <Events>
@@ -663,6 +738,9 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="itemInvite">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/img/16x16_new_chat.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Invite to channel"/>
               </Properties>
               <Events>
@@ -700,6 +778,10 @@
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
     <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
   </SyntheticProperties>
+  <Events>
+    <EventHandler event="componentMoved" listener="java.awt.event.ComponentListener" parameters="java.awt.event.ComponentEvent" handler="formComponentMoved"/>
+    <EventHandler event="windowClosing" listener="java.awt.event.WindowListener" parameters="java.awt.event.WindowEvent" handler="formWindowClosing"/>
+  </Events>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
@@ -730,26 +812,94 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout"/>
       <SubComponents>
-        <Container class="javax.swing.JPanel" name="jPanel1">
+        <Component class="javax.swing.JButton" name="barbtnCreate">
           <Properties>
-            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-              <Dimension value="[487, 25]"/>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/img/24x24_channel_create.png"/>
             </Property>
+            <Property name="text" type="java.lang.String" value="Create channel"/>
+            <Property name="focusable" type="boolean" value="false"/>
+            <Property name="horizontalTextPosition" type="int" value="0"/>
+            <Property name="verticalTextPosition" type="int" value="3"/>
           </Properties>
-
-          <Layout>
-            <DimensionLayout dim="0">
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="487" max="32767" attributes="0"/>
-              </Group>
-            </DimensionLayout>
-            <DimensionLayout dim="1">
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="25" max="32767" attributes="0"/>
-              </Group>
-            </DimensionLayout>
-          </Layout>
-        </Container>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="barbtnCreateActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="barbtnEdit">
+          <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/img/24x24_channel_create_sub.png"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Edit channel"/>
+            <Property name="focusable" type="boolean" value="false"/>
+            <Property name="horizontalTextPosition" type="int" value="0"/>
+            <Property name="verticalTextPosition" type="int" value="3"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="barbtnEditActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="barbtnDelete">
+          <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/img/24x24_channel_delete.png"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Delete channel"/>
+            <Property name="focusable" type="boolean" value="false"/>
+            <Property name="horizontalTextPosition" type="int" value="0"/>
+            <Property name="verticalTextPosition" type="int" value="3"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="barbtnDeleteActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="barbtnConnect">
+          <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/img/24x24_connect.png"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Connect to channel"/>
+            <Property name="focusable" type="boolean" value="false"/>
+            <Property name="horizontalTextPosition" type="int" value="0"/>
+            <Property name="verticalTextPosition" type="int" value="3"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="barbtnConnectActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JToolBar$Separator" name="jSeparator1">
+        </Component>
+        <Component class="javax.swing.JToggleButton" name="barbtnMicEnable">
+          <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor" postCode="barbtnMicEnable.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource(&quot;/img/24x24_activate_microphone.png&quot;))); // NOI18N">
+              <Image iconType="3" name="/img/24x24_input_muted.png"/>
+            </Property>
+            <Property name="selected" type="boolean" value="true"/>
+            <Property name="text" type="java.lang.String" value="Microphone"/>
+            <Property name="focusable" type="boolean" value="false"/>
+            <Property name="horizontalTextPosition" type="int" value="0"/>
+            <Property name="verticalTextPosition" type="int" value="3"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="barbtnMicEnableActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JToggleButton" name="barbtnVoiceEnable">
+          <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor" postCode="barbtnVoiceEnable.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource(&quot;/img/24x24_playback.png&quot;))); // NOI18N">
+              <Image iconType="3" name="/img/24x24_output_muted.png"/>
+            </Property>
+            <Property name="selected" type="boolean" value="true"/>
+            <Property name="text" type="java.lang.String" value="Sound"/>
+            <Property name="focusable" type="boolean" value="false"/>
+            <Property name="horizontalTextPosition" type="int" value="0"/>
+            <Property name="verticalTextPosition" type="int" value="3"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="barbtnVoiceEnableActionPerformed"/>
+          </Events>
+        </Component>
       </SubComponents>
     </Container>
     <Container class="javax.swing.JPanel" name="underBar">
@@ -847,8 +997,9 @@
 
                   <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                   <SubComponents>
-                    <Component class="javax.swing.JTextArea" name="jTextArea1">
+                    <Component class="javax.swing.JTextArea" name="txtInfo">
                       <Properties>
+                        <Property name="editable" type="boolean" value="false"/>
                         <Property name="columns" type="int" value="20"/>
                         <Property name="rows" type="int" value="5"/>
                       </Properties>
@@ -968,7 +1119,7 @@
                     </DimensionLayout>
                     <DimensionLayout dim="1">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jScrollPane2" alignment="0" pref="233" max="32767" attributes="0"/>
+                          <Component id="jScrollPane2" alignment="0" pref="209" max="32767" attributes="0"/>
                       </Group>
                     </DimensionLayout>
                   </Layout>
@@ -1015,7 +1166,7 @@
                     </DimensionLayout>
                     <DimensionLayout dim="1">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <EmptySpace min="0" pref="233" max="32767" attributes="0"/>
+                          <EmptySpace min="0" pref="209" max="32767" attributes="0"/>
                       </Group>
                     </DimensionLayout>
                   </Layout>
@@ -1032,17 +1183,17 @@
                   <Layout>
                     <DimensionLayout dim="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jScrollPane5" alignment="0" pref="485" max="32767" attributes="0"/>
+                          <Component id="scrollpaneChat" alignment="0" pref="485" max="32767" attributes="0"/>
                       </Group>
                     </DimensionLayout>
                     <DimensionLayout dim="1">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jScrollPane5" alignment="0" pref="233" max="32767" attributes="0"/>
+                          <Component id="scrollpaneChat" alignment="0" pref="209" max="32767" attributes="0"/>
                       </Group>
                     </DimensionLayout>
                   </Layout>
                   <SubComponents>
-                    <Container class="javax.swing.JScrollPane" name="jScrollPane5">
+                    <Container class="javax.swing.JScrollPane" name="scrollpaneChat">
                       <AuxValues>
                         <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
                       </AuxValues>

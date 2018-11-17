@@ -1,0 +1,108 @@
+2018/11/16 01:43:44Server started successfully
+2018/11/16 01:44:06Client /127.0.0.1:63639: Login
+2018/11/16 01:44:11Client /127.0.0.1:63639: UDP-Port
+2018/11/16 01:44:11Client xSzy entered server lobby!
+2018/11/16 01:44:12Friendlist sent to client xSzy
+2018/11/16 01:44:12Channel list sent to client /127.0.0.1:63639
+2018/11/16 01:44:26Client /127.0.0.1:63639: Channel-create
+2018/11/16 01:44:26Channel list sent to client /127.0.0.1:63639
+2018/11/16 01:44:26Client xSzy create the channel test
+2018/11/16 01:45:03Client /127.0.0.1:63639: Disconnect
+2018/11/16 01:45:03Client xSzy disconnected.
+2018/11/16 01:46:00Server started successfully
+2018/11/16 01:46:06Client /127.0.0.1:63795: Login
+2018/11/16 01:46:07Client /127.0.0.1:63795: UDP-Port
+2018/11/16 01:46:07Client xSzy entered server lobby!
+2018/11/16 01:46:07Friendlist sent to client xSzy
+2018/11/16 01:46:07Channel list sent to client /127.0.0.1:63795
+2018/11/16 01:46:12Client /127.0.0.1:63795: Channel-create
+2018/11/16 01:46:12Channel list sent to client /127.0.0.1:63795
+2018/11/16 01:46:12Client xSzy create the channel a
+2018/11/16 14:03:58Server started successfully
+2018/11/16 14:05:10Client /127.0.0.1:49351: Login
+2018/11/16 14:05:12Client /127.0.0.1:49351: UDP-Port
+2018/11/16 14:05:12Client xSzy entered server lobby!
+2018/11/16 14:05:12Friendlist sent to client xSzy
+2018/11/16 14:05:12Channel list sent to client /127.0.0.1:49351
+2018/11/16 14:05:16Client /127.0.0.1:49351: Disconnect
+2018/11/16 14:05:16Client xSzy disconnected.
+2018/11/16 14:05:28Client /127.0.0.1:49372: Login
+2018/11/16 14:05:28Client /127.0.0.1:49372: UDP-Port
+2018/11/16 14:05:29Client xSzy entered server lobby!
+2018/11/16 14:05:29Friendlist sent to client xSzy
+2018/11/16 14:05:29Channel list sent to client /127.0.0.1:49372
+2018/11/16 14:05:43Client /127.0.0.1:49372: Disconnect
+2018/11/16 14:05:43Client xSzy disconnected.
+2018/11/16 14:06:06Client /127.0.0.1:49413: Login
+2018/11/16 14:06:07Client /127.0.0.1:49413: UDP-Port
+2018/11/16 14:06:07Client xSzy entered server lobby!
+2018/11/16 14:06:07Friendlist sent to client xSzy
+2018/11/16 14:06:07Channel list sent to client /127.0.0.1:49413
+2018/11/16 14:06:12Client /127.0.0.1:49413: Disconnect
+2018/11/16 14:06:12Client xSzy disconnected.
+2018/11/16 14:07:03Server started successfully
+2018/11/16 14:07:06Client /192.168.0.100:49179: Login
+2018/11/16 14:07:10Client /192.168.0.100:49179: UDP-Port
+2018/11/16 14:07:10Client huy811 entered server lobby!
+2018/11/16 14:07:10Friendlist sent to client huy811
+2018/11/16 14:07:10Channel list sent to client /192.168.0.100:49179
+2018/11/16 14:07:38Client /127.0.0.1:49547: Login
+2018/11/16 14:07:39Client /127.0.0.1:49547: UDP-Port
+2018/11/16 14:07:39Client xSzy entered server lobby!
+2018/11/16 14:07:39Friendlist updated to client huy811
+2018/11/16 14:07:39Friendlist sent to client xSzy
+2018/11/16 14:07:39Channel list sent to client /192.168.0.100:49179
+2018/11/16 14:07:39Channel list sent to client /127.0.0.1:49547
+2018/11/16 14:08:08Client /127.0.0.1:49547: Disconnect
+2018/11/16 14:08:08Channel list sent to client /192.168.0.100:49179
+2018/11/16 14:08:08Friendlist updated to client huy811
+2018/11/16 14:08:08Client xSzy disconnected.
+2018/11/16 14:08:11Client /192.168.0.100:49179: Disconnect
+2018/11/16 14:08:11Client huy811 disconnected.
+2018/11/16 14:12:27Server started successfully
+2018/11/16 14:12:57Client /127.0.0.1:49885: Register
+2018/11/16 14:12:58User newaccount has registered
+2018/11/16 14:13:01Client /127.0.0.1:49889: Login
+2018/11/16 14:13:01Client /127.0.0.1:49889: UDP-Port
+2018/11/16 14:13:01Client newaccount entered server lobby!
+2018/11/16 14:13:01Friendlist sent to client newaccount
+2018/11/16 14:13:01Channel list sent to client /127.0.0.1:49889
+2018/11/16 14:13:06Client /192.168.0.100:49216: Login
+2018/11/16 14:13:07Client /192.168.0.100:49216: UDP-Port
+2018/11/16 14:13:07Client huy811 entered server lobby!
+2018/11/16 14:13:07Friendlist sent to client huy811
+2018/11/16 14:13:07Channel list sent to client /127.0.0.1:49889
+2018/11/16 14:13:07Channel list sent to client /192.168.0.100:49216
+2018/11/16 14:13:54Client /127.0.0.1:49889: Channel-create
+2018/11/16 14:13:54Channel list sent to client /127.0.0.1:49889
+2018/11/16 14:13:54Channel list sent to client /192.168.0.100:49216
+2018/11/16 14:13:54Client newaccount create the channel testchannel
+2018/11/16 14:14:07Client /127.0.0.1:49889: Add-friend
+2018/11/16 14:14:07Client newaccount sent a friend request to huy811
+2018/11/16 14:14:09Client /192.168.0.100:49216: Friend-request-accepted
+2018/11/16 14:14:09Friendlist updated to client huy811
+2018/11/16 14:14:09Friendlist updated to client newaccount
+2018/11/16 14:14:09Client huy811 accepted friend request from newaccount
+2018/11/16 14:14:16Client /127.0.0.1:49889: Invite-to-channel
+2018/11/16 14:14:16Client newaccount invited huy811 to his/her channel
+2018/11/16 14:14:18Client /192.168.0.100:49216: Invitation-accepted
+2018/11/16 14:14:18Channel list sent to client /127.0.0.1:49889
+2018/11/16 14:14:18Channel list sent to client /192.168.0.100:49216
+2018/11/16 14:14:22Client /192.168.0.100:49216: Chat-message
+2018/11/16 14:14:28Client /127.0.0.1:49889: Chat-message
+2018/11/16 14:14:33Client /192.168.0.100:49216: Chat-message
+2018/11/16 14:21:05Client /192.168.0.100:49216: Chat-message
+2018/11/16 14:21:30Client /192.168.0.100:49216: Chat-message
+2018/11/16 14:21:39Client /192.168.0.100:49216: Channel-create
+2018/11/16 14:21:39Channel list sent to client /127.0.0.1:49889
+2018/11/16 14:21:39Channel list sent to client /192.168.0.100:49216
+2018/11/16 14:21:39Client huy811 create the channel a
+2018/11/16 14:21:41Client /127.0.0.1:49889: Chat-message
+2018/11/16 14:22:17Client /192.168.0.100:49216: Channel-change
+2018/11/16 14:22:17Channel list sent to client /127.0.0.1:49889
+2018/11/16 14:22:17Channel list sent to client /192.168.0.100:49216
+2018/11/16 14:22:17Client huy811 changed to channel testchannel
+2018/11/16 14:22:35Client /127.0.0.1:49889: Disconnect
+2018/11/16 14:22:35Channel list sent to client /192.168.0.100:49216
+2018/11/16 14:22:35Friendlist updated to client huy811
+2018/11/16 14:22:35Client newaccount disconnected.
